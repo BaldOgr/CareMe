@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CareMe</string>
+    <string name="logo">logo</string>
+    <string name="careme">Care Me</string>
+    <string name="login">Вход</string>
+    <string name="sign_up">регистрация</string>
+    <string name="copyright">© Copyrights. All rights are reserved</string>
+    <string name="email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="forgot_password">Забыли пароль?</string>
+</resources>
