@@ -28,10 +28,13 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_done_black_24dp" />
+                            <entry key="height" value="25" />
+                            <entry key="outputName" value="ic_reload" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\CareMe AppDesign\Assets\LogoWhite.svg" />
+                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\CareMe AppDesign\Assets\Reload.svg" />
+                            <entry key="width" value="22" />
                           </map>
                         </option>
                       </PersistentState>

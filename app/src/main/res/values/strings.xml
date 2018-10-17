@@ -14,4 +14,8 @@
     <string name="text_enter_child_code">Введите код, полученный в приложении родителя</string>
     <string name="text_sync_child_phone_with_parent">Чтобы увидеть ребёнка на карте, установите на его телефон приложение “Care me”</string>
     <string name="text_show_child_code">И введите этот код</string>
+    <string name="my_child">Мои дети</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
