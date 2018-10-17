@@ -8,4 +8,10 @@
     <string name="email">Почта</string>
     <string name="password">Пароль</string>
     <string name="forgot_password">Забыли пароль?</string>
+    <string name="child">Ребенок</string>
+    <string name="parent">Родитель</string>
+    <string name="text_sync_parent_phone_with_child">Чтобы связать телефон ребёнка с телефоном родителя</string>
+    <string name="text_enter_child_code">Введите код, полученный в приложении родителя</string>
+    <string name="text_sync_child_phone_with_parent">Чтобы увидеть ребёнка на карте, установите на его телефон приложение “Care me”</string>
+    <string name="text_show_child_code">И введите этот код</string>
 </resources>

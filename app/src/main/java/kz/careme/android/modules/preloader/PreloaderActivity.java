@@ -23,6 +23,7 @@ public class PreloaderActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 startActivity(new Intent(PreloaderActivity.this, ChooseLoginActivity.class));
+                finish();
             }
         }).start();
     }

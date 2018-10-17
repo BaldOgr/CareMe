@@ -29,4 +29,10 @@
         <item name="colorControlActivated">@color/textColor</item>
     </style>
 
+    <style name="EditText" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="colorAccent">@color/textColor</item>
+        <item name="colorControlNormal">@color/textColor</item>
+        <item name="colorControlActivated">@color/textColor</item>
+    </style>
+
 </resources>

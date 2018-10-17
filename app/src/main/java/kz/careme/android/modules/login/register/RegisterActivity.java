@@ -32,7 +32,7 @@ public class RegisterActivity extends BaseActivity {
                 Toast.makeText(this, "Done pressed!", Toast.LENGTH_SHORT).show();
                 break;
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

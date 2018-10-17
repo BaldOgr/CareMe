@@ -28,7 +28,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".modules.login.register.RegisterActivity" />
-        <activity android:name=".modules.login.login.LoginActivity"></activity>
+        <activity android:name=".modules.login.login.LoginActivity" />
+        <activity android:name=".modules.account_type.ChooseAccountTypeActivity" />
+        <activity android:name=".modules.account_type.WriteCodeActivity"></activity>
     </application>
 
 </manifest>
