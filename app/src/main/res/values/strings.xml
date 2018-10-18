@@ -21,4 +21,8 @@
     <string name="subscribe">Подписка</string>
     <string name="settings">Настройки</string>
     <string name="more_functions">Функции</string>
+    <string name="child_movement">Передвижение ребенка</string>
+    <string name="chat">Чат</string>
+    <string name="sound_around_phone">Звук вокруг телефона</string>
+    <string name="send_signal">Отправить сигнал</string>
 </resources>

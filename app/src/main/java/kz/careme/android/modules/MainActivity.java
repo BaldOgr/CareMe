@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kz.careme.android.BaseFragment;
 import kz.careme.android.R;
 import kz.careme.android.modules.kids.MyKidsFragment;
 import kz.careme.android.modules.login.ChooseLoginActivity;
@@ -19,7 +20,7 @@ import kz.careme.android.modules.more.MoreFragment;
 import kz.careme.android.modules.settings.SettingsFragment;
 import kz.careme.android.modules.subscribe.SubscribeFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ChangeBehaviorListener {
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
@@ -52,8 +53,13 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.action_subscribe:
                         showFragment(SubscribeFragment.TAG);
+                        break;
                     case R.id.action_more:
                         showFragment(MoreFragment.TAG);
+                        break;
+                    case R.id.action_chat:
+                        showFragment(ChatFragment.TAG);
+                        break;
                 }
                 return true;
             }
@@ -71,22 +77,27 @@ public class MainActivity extends BaseActivity {
         if (fragment == null) {
             switch (tag) {
                 case SubscribeFragment.TAG:
-                    fragment = SubscribeFragment.newInstance();
+                    fragment = SubscribeFragment.newInstance(this);
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
                     break;
 
                 case SettingsFragment.TAG:
-                    fragment = SettingsFragment.newInstance();
+                    fragment = SettingsFragment.newInstance(this);
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
                     break;
 
                 case MoreFragment.TAG:
-                    fragment = MoreFragment.newInstance();
+                    fragment = MoreFragment.newInstance(this);
+                    transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
+                    break;
+
+                case ChatFragment.TAG:
+                    fragment = ChatFragment.newInstance(this);
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
                     break;
 
                 default:
-                    fragment = MyKidsFragment.newInstance();
+                    fragment = MyKidsFragment.newInstance(this);
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
                     break;
             }
@@ -94,7 +105,14 @@ public class MainActivity extends BaseActivity {
         if (mCurrentFragment != null) {
             transaction.hide(mCurrentFragment);
         }
-        transaction.show(fragment).commit();
+        transaction
+                .show(fragment)
+                .commit();
         mCurrentFragment = fragment;
+    }
+
+    @Override
+    public void changeBehaviorPeekSize(int size) {
+        mBottomSheetBehavior.setPeekHeight(size);
     }
 }
