@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import butterknife.ButterKnife;
 import kz.careme.android.R;
 import kz.careme.android.modules.kids.MyKidsFragment;
 import kz.careme.android.modules.login.ChooseLoginActivity;
+import kz.careme.android.modules.settings.SettingsFragment;
 import kz.careme.android.modules.subscribe.SubscribeFragment;
 
 public class MainActivity extends BaseActivity {
@@ -23,6 +25,7 @@ public class MainActivity extends BaseActivity {
 
     private FragmentManager mFragmentManager;
     private Fragment mCurrentFragment;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +38,16 @@ public class MainActivity extends BaseActivity {
         }
         ButterKnife.bind(this);
         mFragmentManager = getSupportFragmentManager();
+        mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_behavior));
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.action_my_kids:
                         showFragment(MyKidsFragment.TAG);
+                        break;
+                    case R.id.action_settings:
+                        showFragment(SettingsFragment.TAG);
                         break;
                     case R.id.action_subscribe:
                         showFragment(SubscribeFragment.TAG);
@@ -64,6 +71,12 @@ public class MainActivity extends BaseActivity {
                     fragment = SubscribeFragment.newInstance();
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
                     break;
+
+                case SettingsFragment.TAG:
+                    fragment = SettingsFragment.newInstance();
+                    transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
+                    break;
+
                 default:
                     fragment = MyKidsFragment.newInstance();
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);

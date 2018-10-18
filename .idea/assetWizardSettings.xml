@@ -30,8 +30,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_buylight" />
-                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\CareMe AppDesign\Assets\BuyLight.svg" />
+                            <entry key="outputName" value="ic_settingslight" />
+                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\CareMe AppDesign\Assets\SettingsLight.svg" />
                           </map>
                         </option>
                       </PersistentState>
