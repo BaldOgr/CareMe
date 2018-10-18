@@ -25,4 +25,5 @@
     <string name="chat">Чат</string>
     <string name="sound_around_phone">Звук вокруг телефона</string>
     <string name="send_signal">Отправить сигнал</string>
+    <string name="add_kid">Добавить ребенка</string>
 </resources>

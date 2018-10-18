@@ -6,12 +6,13 @@
     android:layout_height="wrap_content"
     tools:context=".modules.kids.MyKidsFragment">
 
-    <include layout="@layout/bottom_sheet_behavior_header" />
+    <include android:id="@+id/header" layout="@layout/bottom_sheet_behavior_header" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/devider"
+        android:id="@+id/recyclerView"
+        android:layout_below="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>
