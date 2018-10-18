@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_white_two_corners"
     app:behavior_hideable="false"
+    app:behavior_peekHeight="80dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <FrameLayout
