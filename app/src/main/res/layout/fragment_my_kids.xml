@@ -6,63 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".modules.kids.MyKidsFragment">
 
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
-
-        <ImageView
-            android:id="@+id/image_my_child"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ic_childlight"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/my_child"
-            android:textColor="@color/textColor"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@id/image_my_child"
-            app:layout_constraintStart_toEndOf="@id/image_my_child" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/ic_line"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/reload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_reload"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
-
-    <View
-        android:id="@+id/devider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/constraint"
-        android:layout_marginBottom="4dp"
-        android:background="#C2C2C2" />
+    <include layout="@layout/bottom_sheet_behavior_header" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_below="@+id/devider"

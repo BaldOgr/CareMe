@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import kz.careme.android.R;
 import kz.careme.android.modules.kids.MyKidsFragment;
 import kz.careme.android.modules.login.ChooseLoginActivity;
+import kz.careme.android.modules.subscribe.SubscribeFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -41,6 +42,8 @@ public class MainActivity extends BaseActivity {
                     case R.id.action_my_kids:
                         showFragment(MyKidsFragment.TAG);
                         break;
+                    case R.id.action_subscribe:
+                        showFragment(SubscribeFragment.TAG);
                 }
                 return true;
             }
@@ -52,11 +55,15 @@ public class MainActivity extends BaseActivity {
     private void showFragment(String tag) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         Fragment fragment = mFragmentManager.findFragmentByTag(tag);
-        if (mCurrentFragment == fragment) {
+        if (mCurrentFragment == fragment && fragment != null) {
             return;
         }
         if (fragment == null) {
             switch (tag) {
+                case SubscribeFragment.TAG:
+                    fragment = SubscribeFragment.newInstance();
+                    transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
+                    break;
                 default:
                     fragment = MyKidsFragment.newInstance();
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
