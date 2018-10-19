@@ -26,4 +26,6 @@
     <string name="sound_around_phone">Звук вокруг телефона</string>
     <string name="send_signal">Отправить сигнал</string>
     <string name="add_kid">Добавить ребенка</string>
+    <string name="first_name">Имя</string>
+    <string name="second_name">Фамилия</string>
 </resources>
