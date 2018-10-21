@@ -28,4 +28,6 @@
     <string name="add_kid">Добавить ребенка</string>
     <string name="first_name">Имя</string>
     <string name="second_name">Фамилия</string>
+    <string name="text_send_signal">Отправить громкий сигнал ребенку Если ваш ребенок не слышить ваш звонок</string>
+    <string name="button_send_signal">Отправить сигнал</string>
 </resources>

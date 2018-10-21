@@ -1,6 +1,7 @@
 package kz.careme.android.modules.more;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kz.careme.android.BaseFragment;
 import kz.careme.android.R;
 import kz.careme.android.modules.ChangeBehaviorListener;
@@ -53,6 +55,11 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
         mHeaderText.setText(R.string.more_functions);
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         return view;
+    }
+
+    @OnClick(R.id.button_send_signal)
+    public void onSendSignalClick() {
+        startActivity(new Intent(getContext(), PullABellActivity.class));
     }
 
 
