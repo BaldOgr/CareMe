@@ -96,11 +96,11 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="170" />
-                            <entry key="outputName" value="ic_recordsound" />
+                            <entry key="height" value="26" />
+                            <entry key="outputName" value="ic_shape" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\RecordSound.svg" />
-                            <entry key="width" value="111" />
+                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\Shape.svg" />
+                            <entry key="width" value="26" />
                           </map>
                         </option>
                       </PersistentState>
