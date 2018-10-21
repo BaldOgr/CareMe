@@ -33,11 +33,9 @@
         <activity android:name=".modules.login.login.LoginActivity" />
         <activity android:name=".modules.account_type.ChooseAccountTypeActivity" />
         <activity android:name=".modules.account_type.WriteCodeActivity" />
-        <activity android:name=".modules.ChildInfoActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
+        <activity android:name=".modules.child_info.ChildInfoActivity">
         </activity>
+        <activity android:name=".modules.chat.ChatActivity"></activity>
     </application>
 
 </manifest>

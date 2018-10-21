@@ -1,4 +1,4 @@
-package kz.careme.android.modules;
+package kz.careme.android.modules.chat;
 
 
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import kz.careme.android.BaseFragment;
 import kz.careme.android.R;
+import kz.careme.android.modules.ChangeBehaviorListener;
 
 /**
  * A simple {@link Fragment} subclass.

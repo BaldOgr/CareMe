@@ -12,8 +12,9 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import kz.careme.android.BaseFragment;
 import kz.careme.android.R;
+import kz.careme.android.modules.chat.ChatActivity;
+import kz.careme.android.modules.chat.ChatFragment;
 import kz.careme.android.modules.kids.MyKidsFragment;
 import kz.careme.android.modules.login.ChooseLoginActivity;
 import kz.careme.android.modules.more.MoreFragment;
@@ -92,8 +93,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                     break;
 
                 case ChatFragment.TAG:
-                    fragment = ChatFragment.newInstance(this);
-                    transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
+                    startActivity(new Intent(this, ChatActivity.class));
                     break;
 
                 default:

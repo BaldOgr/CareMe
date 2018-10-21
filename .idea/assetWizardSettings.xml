@@ -84,7 +84,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Users/Daniyar/Programming/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_done_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Users/Daniyar/Programming/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_insert_emoticon_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -96,8 +96,11 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_functionlight" />
-                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\CareMe AppDesign\Assets\FunctionLight.svg" />
+                            <entry key="height" value="26" />
+                            <entry key="outputName" value="ic_microphone" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\Microphone.svg" />
+                            <entry key="width" value="26" />
                           </map>
                         </option>
                       </PersistentState>
