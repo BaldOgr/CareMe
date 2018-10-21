@@ -62,6 +62,11 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
         startActivity(new Intent(getContext(), PullABellActivity.class));
     }
 
+    @OnClick(R.id.button_microphone)
+    public void onSoundAroundPhoneClick() {
+        startActivity(new Intent(getContext(), SoundAroundPhoneActivity.class));
+    }
+
 
     @Override
     public void onGlobalLayout() {

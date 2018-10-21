@@ -33,9 +33,10 @@
         <activity android:name=".modules.login.login.LoginActivity" />
         <activity android:name=".modules.account_type.ChooseAccountTypeActivity" />
         <activity android:name=".modules.account_type.WriteCodeActivity" />
-        <activity android:name=".modules.child_info.ChildInfoActivity"></activity>
+        <activity android:name=".modules.child_info.ChildInfoActivity" />
         <activity android:name=".modules.chat.ChatActivity" />
-        <activity android:name=".modules.more.PullABellActivity"></activity>
+        <activity android:name=".modules.more.PullABellActivity" />
+        <activity android:name=".modules.more.SoundAroundPhoneActivity"></activity>
     </application>
 
 </manifest>

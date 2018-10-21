@@ -2,30 +2,23 @@ package kz.careme.android.modules.more;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.modules.BaseActivity;
 
-public class PullABellActivity extends BaseActivity {
+public class SoundAroundPhoneActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pull_abell);
+        setContentView(R.layout.activity_sound_around_phone);
 
         ButterKnife.bind(this);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
-    }
-
-    @OnClick(R.id.button_send_signal)
-    public void onButtonClick() {
-        Toast.makeText(this, "Sending signal", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -37,4 +30,5 @@ public class PullABellActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

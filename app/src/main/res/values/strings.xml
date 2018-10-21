@@ -30,4 +30,6 @@
     <string name="second_name">Фамилия</string>
     <string name="text_send_signal">Отправить громкий сигнал ребенку Если ваш ребенок не слышить ваш звонок</string>
     <string name="button_send_signal">Отправить сигнал</string>
+    <string name="button_record_sound">Записать звук</string>
+    <string name="text_record_sound">Записать звук вокруг телефона Контролируйте окружение вашего ребенка</string>
 </resources>
