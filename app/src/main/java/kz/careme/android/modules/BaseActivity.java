@@ -20,4 +20,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         profiler = ((CareMeApp) getApplicationContext()).getProfilerComponent().getProfiler();
         Log.d(this.getClass().getSimpleName(), profiler.getName());
     }
+
+    protected void initializeActionBar(boolean enableHomeButton, String title) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(enableHomeButton);
+        getSupportActionBar().setDisplayShowHomeEnabled(enableHomeButton);
+        getSupportActionBar().setTitle(title);
+    }
 }

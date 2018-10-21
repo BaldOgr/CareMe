@@ -35,6 +35,7 @@ public class WriteCodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_code);
         ButterKnife.bind(this);
+        initializeActionBar(true, "");
         int mAccountType = getIntent().getIntExtra(ACCOUNT_TYPE, 1);
         switch (mAccountType) {
             case Const.TYPE_PARENT:

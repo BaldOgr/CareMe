@@ -36,4 +36,8 @@
     <string name="support">Тех. поддержка</string>
     <string name="call">Позвонить</string>
     <string name="message_call_support">Позвоните колл центру Задавайте свои вопросы и получайте совет</string>
+    <string name="press_again_for_exit">Нажмите еще раз, чтобы выйти</string>
+    <string name="place_name">Название места:</string>
+    <string name="text_place_address">Адрес места:</string>
+    <string name="seekbar_value">%1$d м радиус</string>
 </resources>

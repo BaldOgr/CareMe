@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.modules.ChangeBehaviorListener;
-import kz.careme.android.modules.SupportActivity;
+import kz.careme.android.modules.more.places.PlacesFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,7 +55,7 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_more, container, false);
         ButterKnife.bind(this, view);
-        mHeaderImage.setImageDrawable(getContext().getDrawable(R.drawable.ic_functionlight));
+        mHeaderImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_functionlight));
         mHeaderText.setText(R.string.more_functions);
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         return view;
@@ -72,7 +73,17 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
 
     @OnClick(R.id.button_places)
     public void onPlacesButtonClick() {
-
+        if (getActivity() == null) return;
+        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(PlacesFragment.TAG);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        if (fragment == null) {
+            fragment = PlacesFragment.newInstance(mChangeBehaviorListener);
+            transaction.add(R.id.bottom_sheet_behavior_content, fragment, PlacesFragment.TAG);
+        }
+        transaction.show(fragment)
+                .addToBackStack(null)
+                .hide(this)
+                .commit();
     }
 
     @OnClick(R.id.button_support)

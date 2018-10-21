@@ -34,10 +34,11 @@
         <activity android:name=".modules.account_type.ChooseAccountTypeActivity" />
         <activity android:name=".modules.account_type.WriteCodeActivity" />
         <activity android:name=".modules.child_info.ChildInfoActivity" />
-        <activity android:name=".modules.chat.ChatActivity" />
+        <activity android:name=".modules.chat.ChatActivity" android:theme="@style/AppTheme.Material"/>
         <activity android:name=".modules.more.PullABellActivity" />
         <activity android:name=".modules.more.SoundAroundPhoneActivity" />
-        <activity android:name=".modules.SupportActivity"></activity>
+        <activity android:name=".modules.more.SupportActivity" />
+        <activity android:name=".modules.more.places.AddPlaceActivity"></activity>
     </application>
 
 </manifest>

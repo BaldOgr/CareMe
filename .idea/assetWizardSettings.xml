@@ -96,11 +96,11 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="179" />
-                            <entry key="outputName" value="ic_support" />
+                            <entry key="height" value="45" />
+                            <entry key="outputName" value="ic_map_marker" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\support.svg" />
-                            <entry key="width" value="175" />
+                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\map_marker.svg" />
+                            <entry key="width" value="36" />
                           </map>
                         </option>
                       </PersistentState>

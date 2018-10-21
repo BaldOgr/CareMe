@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +19,7 @@ import kz.careme.android.modules.chat.ChatFragment;
 import kz.careme.android.modules.kids.MyKidsFragment;
 import kz.careme.android.modules.login.ChooseLoginActivity;
 import kz.careme.android.modules.more.MoreFragment;
+import kz.careme.android.modules.more.places.PlacesFragment;
 import kz.careme.android.modules.settings.SettingsFragment;
 import kz.careme.android.modules.subscribe.SubscribeFragment;
 
@@ -29,6 +31,8 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     private FragmentManager mFragmentManager;
     private Fragment mCurrentFragment;
     private BottomSheetBehavior mBottomSheetBehavior;
+    private Toast toast;
+    private long time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +71,19 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         });
         mBottomNavigationView.setSelectedItemId(R.id.action_my_kids);
 
+        toast = Toast.makeText(this, R.string.press_again_for_exit, Toast.LENGTH_SHORT);
+
     }
 
     private void showFragment(String tag) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         Fragment fragment = mFragmentManager.findFragmentByTag(tag);
+        {
+            Fragment fragment1 = mFragmentManager.findFragmentByTag(PlacesFragment.TAG);
+            if (fragment1 != null && fragment1.isVisible()) {
+                mCurrentFragment = fragment1;
+            }
+        }
         if (mCurrentFragment == fragment && fragment != null) {
             return;
         }
@@ -93,7 +105,8 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                     break;
 
                 case ChatFragment.TAG:
-                    startActivity(new Intent(this, ChatActivity.class));
+                    fragment = ChatFragment.newInstance(this);
+                    transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
                     break;
 
                 default:
@@ -109,6 +122,20 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                 .show(fragment)
                 .commit();
         mCurrentFragment = fragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mFragmentManager.getBackStackEntryCount() > 0) {
+            mFragmentManager.popBackStack();
+            return;
+        }
+        if (System.currentTimeMillis() - time <= 500) {
+            super.onBackPressed();
+        } else {
+            time = System.currentTimeMillis();
+            toast.show();
+        }
     }
 
     @Override

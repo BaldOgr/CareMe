@@ -30,6 +30,8 @@ public class ChildInfoActivity extends BaseActivity {
         setContentView(R.layout.activity_child_info);
         ButterKnife.bind(this);
 
+        initializeActionBar(true, "");
+
     }
 
 

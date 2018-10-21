@@ -38,6 +38,7 @@ public class ChatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
+        initializeActionBar(true, "");
 
         for (int i = 0; i < 10; i++) {
             Chip chip = new Chip(this);

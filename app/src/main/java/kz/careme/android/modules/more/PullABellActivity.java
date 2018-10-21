@@ -18,9 +18,7 @@ public class PullABellActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        initializeActionBar(true, "");
     }
 
     @OnClick(R.id.button_send_signal)

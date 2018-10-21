@@ -16,9 +16,7 @@ public class SoundAroundPhoneActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("");
+        initializeActionBar(true, "");
     }
 
     @Override

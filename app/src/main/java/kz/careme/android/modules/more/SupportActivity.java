@@ -1,4 +1,4 @@
-package kz.careme.android.modules;
+package kz.careme.android.modules.more;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,14 +8,17 @@ import android.os.Bundle;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
+import kz.careme.android.modules.BaseActivity;
 
-public class SupportActivity extends AppCompatActivity {
+public class SupportActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_support);
         ButterKnife.bind(this);
+
+        initializeActionBar(true, "");
     }
 
     @OnClick(R.id.button_call_support)
