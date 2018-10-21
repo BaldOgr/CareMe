@@ -96,11 +96,11 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="45" />
-                            <entry key="outputName" value="ic_map_marker" />
+                            <entry key="height" value="60" />
+                            <entry key="outputName" value="ic_chat" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\map_marker.svg" />
-                            <entry key="width" value="36" />
+                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\chat.svg" />
+                            <entry key="width" value="60" />
                           </map>
                         </option>
                       </PersistentState>

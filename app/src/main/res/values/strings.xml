@@ -40,4 +40,6 @@
     <string name="place_name">Название места:</string>
     <string name="text_place_address">Адрес места:</string>
     <string name="seekbar_value">%1$d м радиус</string>
+    <string name="send_alarm_signal">Подать сигнал тревоги</string>
+    <string name="press_this_button">нажми эту кнопку, если ты в опасности</string>
 </resources>
