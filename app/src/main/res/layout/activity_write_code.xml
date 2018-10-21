@@ -13,7 +13,7 @@
         android:layout_margin="24dp"
         android:text="@string/text_sync_parent_phone_with_child"
         android:textAlignment="center"
-        android:textColor="@color/textColor"
+        android:textColor="@color/darkGrey"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_margin="24dp"
         android:text="@string/text_enter_child_code"
         android:textAlignment="center"
-        android:textColor="@color/textColor"
+        android:textColor="@color/darkGrey"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/first_message" />
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/textColor"
+            android:textColor="@color/darkGrey"
             android:textSize="20sp"
             android:theme="@style/TextLabel" />
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/textColor"
+            android:textColor="@color/darkGrey"
             android:textSize="20sp"
             android:theme="@style/TextLabel" />
 
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/textColor"
+            android:textColor="@color/darkGrey"
             android:textSize="20sp"
             android:theme="@style/TextLabel" />
 
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:maxLength="1"
-            android:textColor="@color/textColor"
+            android:textColor="@color/darkGrey"
             android:textSize="20sp"
             android:theme="@style/TextLabel" />
     </LinearLayout>

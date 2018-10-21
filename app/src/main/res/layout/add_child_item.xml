@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/add_kid"
-        android:textColor="@color/textColor"
+        android:textColor="@color/darkGrey"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/image"
         app:layout_constraintStart_toEndOf="@id/image"

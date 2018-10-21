@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/my_child"
-            android:textColor="@color/textColor"
+            android:textColor="@color/darkGrey"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@id/bottom_sheet_header_image"

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/chat"
-        android:textColor="@color/textColor"
+        android:textColor="@color/darkGrey"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/image"
         app:layout_constraintTop_toTopOf="@+id/image" />
