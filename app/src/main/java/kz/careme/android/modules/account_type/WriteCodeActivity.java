@@ -10,11 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.modules.BaseActivity;
+import kz.careme.android.modules.ChildMainActivity;
 import kz.careme.android.modules.MainActivity;
 
 import static kz.careme.android.model.Const.ACCOUNT_TYPE;
@@ -45,6 +49,12 @@ public class WriteCodeActivity extends BaseActivity {
             case Const.TYPE_CHILD:
                 changeTextToChild();
                 generateCode();
+                new Timer("asd", false).schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(WriteCodeActivity.this, ChildMainActivity.class));
+                    }
+                }, 3000);
                 break;
         }
     }
