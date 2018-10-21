@@ -16,9 +16,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import kz.careme.android.BaseFragment;
 import kz.careme.android.R;
 import kz.careme.android.modules.ChangeBehaviorListener;
+import kz.careme.android.modules.SupportActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +34,9 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
 
     @BindView(R.id.buttons_root)
     LinearLayout mLinearLayout;
+
+    @BindView(R.id.bottom_sheet_header)
+    View mHeader;
 
     private ChangeBehaviorListener mChangeBehaviorListener;
 
@@ -67,11 +70,20 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
         startActivity(new Intent(getContext(), SoundAroundPhoneActivity.class));
     }
 
+    @OnClick(R.id.button_places)
+    public void onPlacesButtonClick() {
+
+    }
+
+    @OnClick(R.id.button_support)
+    public void onSupportButtonClick() {
+        startActivity(new Intent(getContext(), SupportActivity.class));
+    }
 
     @Override
     public void onGlobalLayout() {
         if (isVisible()) {
-            mChangeBehaviorListener.changeBehaviorPeekSize(getView().getHeight());
+            mChangeBehaviorListener.changeBehaviorPeekSize(mHeader.getHeight() + mLinearLayout.getHeight());
         }
     }
 

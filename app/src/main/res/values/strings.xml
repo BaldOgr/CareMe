@@ -32,4 +32,8 @@
     <string name="button_send_signal">Отправить сигнал</string>
     <string name="button_record_sound">Записать звук</string>
     <string name="text_record_sound">Записать звук вокруг телефона Контролируйте окружение вашего ребенка</string>
+    <string name="places">Места</string>
+    <string name="support">Тех. поддержка</string>
+    <string name="call">Позвонить</string>
+    <string name="message_call_support">Позвоните колл центру Задавайте свои вопросы и получайте совет</string>
 </resources>
