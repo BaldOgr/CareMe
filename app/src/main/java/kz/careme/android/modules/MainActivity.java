@@ -59,8 +59,8 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                         showFragment(MoreFragment.TAG);
                         break;
                     case R.id.action_chat:
-                        showFragment(ChatFragment.TAG);
-                        break;
+                        startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                        return false;
                 }
                 return true;
             }

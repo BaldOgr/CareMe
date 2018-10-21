@@ -24,6 +24,9 @@ public class SubscribeFragment extends Fragment implements ViewTreeObserver.OnGl
     @BindView(R.id.bottom_sheet_text)
     TextView mHeaderText;
 
+    @BindView(R.id.header)
+    View mHeader;
+
     private ChangeBehaviorListener mChangeBehaviorListener;
 
     public SubscribeFragment() {
@@ -55,7 +58,7 @@ public class SubscribeFragment extends Fragment implements ViewTreeObserver.OnGl
     @Override
     public void onGlobalLayout() {
         if (isVisible()) {
-            mChangeBehaviorListener.changeBehaviorPeekSize(getView().getHeight());
+            mChangeBehaviorListener.changeBehaviorPeekSize(mHeader.getHeight());
         }
     }
 }
