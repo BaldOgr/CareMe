@@ -3,9 +3,11 @@ package kz.careme.android.modules.preloader;
 import android.content.Intent;
 import android.os.Bundle;
 
+import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.login.ChooseLoginActivity;
+import kz.careme.android.modules.service.MyService;
 
 public class PreloaderActivity extends BaseActivity {
 
@@ -26,5 +28,7 @@ public class PreloaderActivity extends BaseActivity {
                 finish();
             }
         }).start();
+
+        startService(new Intent(getApplicationContext(), MyService.class));
     }
 }

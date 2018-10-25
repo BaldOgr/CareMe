@@ -63,7 +63,6 @@ public class AddPlaceActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done:
-                profiler.getPlaces().add(generatePlace());
                 finish();
                 break;
             case R.id.home:
@@ -77,7 +76,6 @@ public class AddPlaceActivity extends BaseActivity {
         place.setAddress(mPlaceAddress.getText().toString());
         place.setName(mPlaceName.getText().toString());
         place.setSafeRadius(mSeekbar.getProgress());
-        place.setId(profiler.getPlaces().size());
         return place;
     }
 }

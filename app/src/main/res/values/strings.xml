@@ -42,4 +42,6 @@
     <string name="seekbar_value">%1$d м радиус</string>
     <string name="send_alarm_signal">Подать сигнал тревоги</string>
     <string name="press_this_button">нажми эту кнопку, если ты в опасности</string>
+    <string name="login_error">Incorrect Login or Password</string>
+    <string name="loading">Loading</string>
 </resources>

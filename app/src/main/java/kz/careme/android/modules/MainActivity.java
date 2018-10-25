@@ -38,11 +38,6 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (profiler.getName() == null || profiler.getName().isEmpty()) {
-            startActivity(new Intent(this, ChooseLoginActivity.class));
-            finish();
-            return;
-        }
         ButterKnife.bind(this);
         mFragmentManager = getSupportFragmentManager();
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_behavior));

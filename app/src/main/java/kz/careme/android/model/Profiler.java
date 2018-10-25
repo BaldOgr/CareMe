@@ -7,29 +7,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class Profiler {
-    private int id;
-    private String name;
+    private Account account;
     private List<Place> places;
 
     @Inject
     public Profiler() {
         places = new ArrayList<>();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<Place> getPlaces() {
@@ -38,5 +21,13 @@ public class Profiler {
 
     public void setPlaces(List<Place> places) {
         this.places.addAll(places);
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
