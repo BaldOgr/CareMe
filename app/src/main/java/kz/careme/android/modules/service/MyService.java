@@ -2,31 +2,41 @@ package kz.careme.android.modules.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 
 import kz.careme.android.CareMeApp;
-import kz.careme.android.model.websocket.WebSocketClient;
-import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 
 public class MyService extends Service {
-    WebSocket client;
-    OkHttpClient okHttpClient;
+    WebSocket webSocket;
+    MyBinder binder = new MyBinder();
 
     public MyService() {
+        webSocket = CareMeApp.getCareMeComponent().getWebSocketClient();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return binder;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (client == null)
-            client = ((CareMeApp) getApplication()).getProfilerComponent().getWebSocketClient();
-        if (okHttpClient == null)
-            okHttpClient = ((CareMeApp) getApplication()).getProfilerComponent().getOkHttpClient();
+        if (webSocket == null)
+            webSocket = CareMeApp.getCareMeComponent().getWebSocketClient();
+
         return START_STICKY;
+    }
+
+    public void sendMessage(String message) {
+        webSocket.send(message);
+    }
+
+    public class MyBinder extends Binder {
+        public MyService getService() {
+            return MyService.this;
+        }
+
     }
 }

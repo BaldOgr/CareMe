@@ -1,28 +1,38 @@
 package kz.careme.android.model;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.Log;
 
 import javax.inject.Inject;
 
-import kz.careme.android.model.websocket.WebSocketClient;
-import kz.careme.android.modules.BasePresenter;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
+import kz.careme.android.modules.service.MyService;
 
 public class CallService {
-    private WebSocket webSocket;
-    private WebSocketClient webSocketClient;
+
+    private MyService myService;
 
     @Inject
-    public CallService(WebSocket webSocket, WebSocketClient webSocketListener) {
-        this.webSocket = webSocket;
-        this.webSocketClient = webSocketListener;
+    public CallService(Context context) {
+        context.bindService(new Intent(context, MyService.class), new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                myService = ((MyService.MyBinder) service).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        }, 0);
     }
 
-    public void call(String message, BasePresenter callback) {
-        Log.d(CallService.class.getSimpleName(), "Calling:" + message);
-        webSocketClient.addCallback(callback);
-        webSocket.send(message);
+    public void call(String message) {
+        Log.d("CallService", "Calling: " + message);
+        myService.sendMessage(message);
     }
 
 }

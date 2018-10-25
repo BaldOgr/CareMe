@@ -9,37 +9,32 @@ import kz.careme.android.model.ErrorMessage;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.modules.BasePresenter;
 
-public class RegisterPresenter extends BasePresenter {
-    private RegisterView registerView;
+public class RegisterPresenter extends BasePresenter<RegisterView> {
     private String email;
     private String password;
 
-    public RegisterPresenter(Context context, RegisterView registerView) {
-        super(context);
-        this.registerView = registerView;
-    }
 
-    @Override
+//    @Override
     public void onMessage(String text) {
         ErrorMessage errorMessage = new Gson().fromJson(text, ErrorMessage.class);
-        registerView.dismissDialog();
+        getViewState().dismissDialog();
         if (!errorMessage.getError().isEmpty()) {
-            registerView.dismissDialog();
-            registerView.showError(errorMessage.getError());
+            getViewState().dismissDialog();
+            getViewState().showError(errorMessage.getError());
             return;
         }
         Account account = new Account();
         account.setEmail(email);
         account.setPassword(password);
         getProfiler().setAccount(account);
-        registerView.nextActivity();
+        getViewState().nextActivity();
     }
 
     public void reg(String email, String password) {
         ActionRegister register = new ActionRegister();
         register.setEmail(email);
         register.setPassword(password);
-        getCallService().call(register.toString(), this);
+        getCallService().call(register.toString());
         this.email = email;
         this.password = password;
     }

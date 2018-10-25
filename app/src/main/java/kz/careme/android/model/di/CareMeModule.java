@@ -1,5 +1,9 @@
 package kz.careme.android.model.di;
 
+import android.content.Context;
+
+import com.squareup.otto.Bus;
+
 import dagger.Module;
 import dagger.Provides;
 import kz.careme.android.model.CallService;
@@ -10,7 +14,9 @@ import okhttp3.Request;
 import okhttp3.WebSocket;
 
 @Module
-class ProfileModule {
+public class CareMeModule {
+    private Context context;
+
     @Provides
     @SingletonScope
     Profiler getProfiler() {
@@ -37,9 +43,23 @@ class ProfileModule {
     }
 
     @Provides
-    @SingletonScope
-    CallService getCallService(WebSocket webSocket, WebSocketClient webSocketClient) {
-        return new CallService(webSocket, webSocketClient);
+    Context getContext() {
+        return context;
     }
 
+    @Provides
+    @SingletonScope
+    CallService getCallService(Context context) {
+        return new CallService(context);
+    }
+
+    @Provides
+    @SingletonScope
+    Bus getBus() {
+        return new Bus();
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }

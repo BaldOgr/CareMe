@@ -10,6 +10,16 @@ public class Account {
     @SerializedName("password")
     private String password;
 
+    private int accountType;
+
+    public int getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
+    }
+
     public String getSid() {
         return sid;
     }

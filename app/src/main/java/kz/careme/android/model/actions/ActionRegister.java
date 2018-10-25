@@ -3,13 +3,14 @@ package kz.careme.android.model.actions;
 import com.google.gson.annotations.SerializedName;
 
 public class ActionRegister extends BaseAction{
+    public static final String ACTION = "reg";
     @SerializedName("email")
     private String email;
     @SerializedName("password")
     private String password;
 
     public ActionRegister() {
-        action = "reg";
+        action = ACTION;
     }
 
     public String getAction() {

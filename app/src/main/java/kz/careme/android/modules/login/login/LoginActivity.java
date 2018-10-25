@@ -1,5 +1,6 @@
 package kz.careme.android.modules.login.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
@@ -11,9 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
+import kz.careme.android.model.Account;
+import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.account_type.ChooseAccountTypeActivity;
@@ -32,16 +37,15 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     @BindView(R.id.edit_text_password)
     TextInputEditText mEditTextPassword;
 
-    private LoginPresenter presenter;
+    @InjectPresenter
+    LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        presenter = new LoginPresenter(this);
+        initializeActionBar(true, "");
         mEditTextEmail.addTextChangedListener(this);
         mEditTextPassword.addTextChangedListener(this);
     }
@@ -93,6 +97,15 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
             }
         });
 
+    }
+
+    @Override
+    public void saveAccount(Account account) {
+        getSharedPreferences("CareMe", Context.MODE_PRIVATE)
+                .edit()
+                .putString(Const.EMAIL, account.getEmail())
+                .putString(Const.PASSWORD, account.getPassword())
+                .apply();
     }
 
     @Override

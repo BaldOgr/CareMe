@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
@@ -33,7 +35,8 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @BindView(R.id.edit_text_password)
     TextInputEditText mEditTextPassword;
 
-    private RegisterPresenter presenter;
+    @InjectPresenter
+    RegisterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +62,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
                 mLayoutEmail.setError(null);
             }
         });
-
-        presenter = new RegisterPresenter(this, this);
     }
 
     @Override

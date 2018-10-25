@@ -74,7 +74,7 @@ public class PlacesFragment extends Fragment implements ViewTreeObserver.OnGloba
                 startActivity(new Intent(getContext(), AddPlaceActivity.class));
             }
         });
-        mProfiler = ((CareMeApp) getContext().getApplicationContext()).getProfilerComponent().getProfiler();
+        mProfiler = CareMeApp.getCareMeComponent().getProfiler();
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new PlacesAdapter();

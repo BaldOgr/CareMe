@@ -3,9 +3,42 @@ package kz.careme.android.model.actions;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-public abstract class BaseAction {
+public class BaseAction {
     @SerializedName("action")
     protected String action;
+
+    @SerializedName("error")
+    private String error;
+
+    @SerializedName("code")
+    private int code;
+
+    public BaseAction() {
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 
     @Override
     public String toString() {
