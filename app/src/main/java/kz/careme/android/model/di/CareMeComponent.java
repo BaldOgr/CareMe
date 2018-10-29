@@ -5,6 +5,7 @@ import com.squareup.otto.Bus;
 import dagger.Component;
 import kz.careme.android.model.CallService;
 import kz.careme.android.model.Profiler;
+import kz.careme.android.model.websocket.WebSocketClient;
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
 
@@ -16,4 +17,6 @@ public interface CareMeComponent {
     OkHttpClient getOkHttpClient();
     CallService getCallService();
     Bus getBus();
+
+    void setWebSocketClient(WebSocket client);
 }

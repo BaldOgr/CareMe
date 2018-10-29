@@ -1,5 +1,7 @@
 package kz.careme.android.model.actions;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,9 +14,6 @@ public class BaseAction {
 
     @SerializedName("code")
     private int code;
-
-    public BaseAction() {
-    }
 
     public String getError() {
         return error;
@@ -40,6 +39,7 @@ public class BaseAction {
         this.code = code;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return new Gson().toJson(this);

@@ -105,6 +105,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
                 .edit()
                 .putString(Const.EMAIL, account.getEmail())
                 .putString(Const.PASSWORD, account.getPassword())
+                .putInt(Const.ACCOUNT_TYPE, account.getAccountType())
                 .apply();
     }
 

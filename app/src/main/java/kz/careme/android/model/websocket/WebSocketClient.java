@@ -5,9 +5,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
@@ -17,8 +14,9 @@ import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.BaseAction;
-import kz.careme.android.model.event.AccountEvent;
-import kz.careme.android.modules.BasePresenter;
+import kz.careme.android.model.event.AuthEvent;
+import kz.careme.android.model.event.RegEvent;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -42,15 +40,14 @@ public class WebSocketClient extends WebSocketListener {
     public void onMessage(WebSocket webSocket, String text) {
         Log.d("WebSocketClient", "Response: " + text);
         BaseAction action = new Gson().fromJson(text, BaseAction.class);
+//        action.setAction(ActionAuth.ACTION);
         switch (action.getAction()) {
             case ActionAuth.ACTION:
-                bus.post(new AccountEvent(new Gson().fromJson(text, Account.class), action));
-                break;
             case ActionAuthKid.ACTION:
-                bus.post(new Gson().fromJson(text, Account.class));
+                bus.post(new AuthEvent(new Gson().fromJson(text, ActionAuth.class)));
                 break;
             case ActionRegister.ACTION:
-                bus.post(new Gson().fromJson(text, ActionRegister.class));
+                bus.post(new RegEvent(new Gson().fromJson(text, ActionRegister.class)));
                 break;
         }
     }

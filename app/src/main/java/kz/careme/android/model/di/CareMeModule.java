@@ -3,6 +3,7 @@ package kz.careme.android.model.di;
 import android.content.Context;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,7 +16,6 @@ import okhttp3.WebSocket;
 
 @Module
 public class CareMeModule {
-    private Context context;
 
     @Provides
     @SingletonScope
@@ -43,23 +43,14 @@ public class CareMeModule {
     }
 
     @Provides
-    Context getContext() {
-        return context;
-    }
-
-    @Provides
     @SingletonScope
-    CallService getCallService(Context context) {
-        return new CallService(context);
+    CallService getCallService() {
+        return new CallService();
     }
 
     @Provides
     @SingletonScope
     Bus getBus() {
-        return new Bus();
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
+        return new Bus(ThreadEnforcer.ANY);
     }
 }

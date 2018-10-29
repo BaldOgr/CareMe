@@ -107,5 +107,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @Override
     public void nextActivity() {
         startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

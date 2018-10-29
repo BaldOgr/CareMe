@@ -11,6 +11,9 @@ public class ActionAuth extends BaseAction{
     @SerializedName("password")
     private String password;
 
+    @SerializedName("sid")
+    private String sid;
+
     public ActionAuth() {
         action = ACTION;
     }
@@ -29,5 +32,13 @@ public class ActionAuth extends BaseAction{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 }

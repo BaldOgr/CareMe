@@ -1,11 +1,9 @@
 package kz.careme.android.model;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -16,22 +14,26 @@ public class CallService {
     private MyService myService;
 
     @Inject
-    public CallService(Context context) {
-        context.bindService(new Intent(context, MyService.class), new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                myService = ((MyService.MyBinder) service).getService();
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-        }, 0);
+    public CallService() {
     }
 
-    public void call(String message) {
+    public void setMyService(MyService myService) {
+        Log.d("CallService", "Service set!");
+        this.myService = myService;
+    }
+
+    public void call(final String message) {
         Log.d("CallService", "Calling: " + message);
+        if (myService == null) {
+
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    call(message);
+                }
+            }, 500);
+            return;
+        }
         myService.sendMessage(message);
     }
 
