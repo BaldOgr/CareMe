@@ -12,6 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +24,7 @@ import butterknife.ButterKnife;
 import kz.careme.android.R;
 import kz.careme.android.modules.ChangeBehaviorListener;
 
-public class MyKidsFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener {
+public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObserver.OnGlobalLayoutListener, MyKidsView {
     public static final String TAG = "MyKidsFragment";
 
     @BindView(R.id.recyclerView)
@@ -32,6 +36,8 @@ public class MyKidsFragment extends Fragment implements ViewTreeObserver.OnGloba
     private KidsAdapter adapter;
     private ChangeBehaviorListener mChangeBehaviorListener;
 
+    @InjectPresenter
+    MyKidsPresenter presenter;
 
     public MyKidsFragment() {
     }
@@ -57,6 +63,7 @@ public class MyKidsFragment extends Fragment implements ViewTreeObserver.OnGloba
         adapter = new KidsAdapter();
 //        adapter.setKidsList(getKids());
         mRecyclerView.setAdapter(adapter);
+        presenter.getKids();
         return view;
     }
 

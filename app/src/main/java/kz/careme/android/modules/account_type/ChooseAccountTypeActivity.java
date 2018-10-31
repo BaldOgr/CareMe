@@ -9,6 +9,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.modules.BaseActivity;
+import kz.careme.android.modules.login.ChooseLoginActivity;
 
 import static kz.careme.android.model.Const.ACCOUNT_TYPE;
 import static kz.careme.android.model.Const.TYPE_CHILD;
@@ -34,7 +35,7 @@ public class ChooseAccountTypeActivity extends BaseActivity {
     }
 
     private void startWriteCodeActivity(Intent intent) {
-        startActivity(intent.setComponent(new ComponentName(this, WriteCodeActivity.class)));
+        startActivity(intent.setComponent(new ComponentName(this, ChooseLoginActivity.class)));
     }
 
 }

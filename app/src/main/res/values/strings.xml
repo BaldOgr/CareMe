@@ -44,4 +44,7 @@
     <string name="press_this_button">нажми эту кнопку, если ты в опасности</string>
     <string name="login_error">Incorrect Login or Password</string>
     <string name="loading">Loading</string>
+    <string name="skip">Пропустить</string>
+    <string name="register_kid">Зарегистрировать ребенка</string>
+    <string name="ok">ОК</string>
 </resources>

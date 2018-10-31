@@ -3,6 +3,7 @@ package kz.careme.android.modules;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -26,10 +27,17 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("Activity", this.getClass().getSimpleName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, MyService.class));
+        } else {
+            startService(new Intent(this, MyService.class));
+        }
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 myService = ((MyService.MyBinder) service).getService();
+                CareMeApp.getCareMeComponent().getCallService().setMyService(myService);
             }
 
             @Override

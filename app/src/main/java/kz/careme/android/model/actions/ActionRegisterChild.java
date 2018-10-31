@@ -2,18 +2,14 @@ package kz.careme.android.model.actions;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ActionRegister extends BaseAction{
-    public static final String ACTION = "reg";
+public class ActionRegisterChild extends BaseAction{
+    public static final String ACTION = "reg_kid";
     @SerializedName("email")
     private String email;
     @SerializedName("password")
     private String password;
-    @SerializedName("sid")
-    private String sid;
-    @SerializedName("user_id")
-    private int userId;
 
-    public ActionRegister() {
+    public ActionRegisterChild() {
         action = ACTION;
     }
 
@@ -35,21 +31,5 @@ public class ActionRegister extends BaseAction{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 }

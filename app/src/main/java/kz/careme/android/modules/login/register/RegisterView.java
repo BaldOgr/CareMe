@@ -7,4 +7,6 @@ public interface RegisterView extends MvpView {
     void dismissDialog();
     void showError(String message);
     void nextActivity();
+
+    void startWriteCodeActivity(int userId);
 }

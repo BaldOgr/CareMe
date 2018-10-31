@@ -4,21 +4,21 @@ import android.content.Intent;
 import android.support.annotation.UiThread;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
+import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
+import kz.careme.android.modules.account_type.WriteCodeActivity;
 import kz.careme.android.modules.login.login.LoginActivity;
 
 @UiThread
@@ -38,6 +38,9 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @InjectPresenter
     RegisterPresenter presenter;
 
+    private int mAccountType;
+    private boolean mRegisterKid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
         ButterKnife.bind(this);
 
         initializeActionBar(true, "");
+
+        String action = getIntent().getStringExtra(Const.ACTION);
+        mAccountType = getIntent().getIntExtra(Const.ACCOUNT_TYPE, Const.TYPE_PARENT);
+        mRegisterKid = Const.ACTION_REGISTER_KID.equals(action);
 
         mEditTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,7 +82,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
         switch (item.getItemId()) {
             case R.id.done:
                 DialogUtil.showDialog(this, getString(R.string.loading));
-                presenter.reg(mEditTextEmail.getText().toString(), mEditTextPassword.getText().toString());
+                presenter.reg(mEditTextEmail.getText().toString(), mEditTextPassword.getText().toString(), mAccountType, mRegisterKid);
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -106,7 +113,15 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
     @Override
     public void nextActivity() {
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, LoginActivity.class).putExtra(Const.ACTION_AUTH, true));
+        finish();
+    }
+
+    @Override
+    public void startWriteCodeActivity(int userId) {
+        startActivity(new Intent(this, WriteCodeActivity.class)
+                .putExtra(Const.ACCOUNT_TYPE, Const.TYPE_PARENT)
+                .putExtra(Const.KID_ID, userId));
         finish();
     }
 }

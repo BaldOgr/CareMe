@@ -14,11 +14,9 @@ import kz.careme.android.model.actions.ActionAuth;
 import okhttp3.WebSocket;
 
 public class MyService extends Service {
-    WebSocket webSocket;
     MyBinder binder = new MyBinder();
 
     public MyService() {
-        webSocket = CareMeApp.getCareMeComponent().getWebSocketClient();
         CareMeApp.getCareMeComponent().getBus().register(this);
     }
 
@@ -29,14 +27,12 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (webSocket == null)
-            webSocket = CareMeApp.getCareMeComponent().getWebSocketClient();
-
+        
         return START_STICKY;
     }
 
     public void sendMessage(String message) {
-        webSocket.send(message);
+        CareMeApp.getCareMeComponent().getWebSocketClient().send(message);
     }
 
     @Subscribe

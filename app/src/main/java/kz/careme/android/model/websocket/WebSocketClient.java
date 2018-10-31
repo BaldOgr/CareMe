@@ -5,18 +5,25 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import kz.careme.android.CareMeApp;
-import kz.careme.android.model.Account;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
+import kz.careme.android.model.actions.ActionGenerateCode;
+import kz.careme.android.model.actions.ActionKidList;
 import kz.careme.android.model.actions.ActionRegister;
+import kz.careme.android.model.actions.ActionRegisterChild;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.event.AuthEvent;
+import kz.careme.android.model.event.GenerateKeyEvent;
+import kz.careme.android.model.event.KidListEvent;
 import kz.careme.android.model.event.RegEvent;
-import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -32,13 +39,13 @@ public class WebSocketClient extends WebSocketListener {
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
-        Log.d("WebSocketClient", "WebSocket Opened!");
+        Log.d("CallService", "WebSocket Opened!");
 
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        Log.d("WebSocketClient", "Response: " + text);
+        Log.d("CallService", "Response: " + text);
         BaseAction action = new Gson().fromJson(text, BaseAction.class);
 //        action.setAction(ActionAuth.ACTION);
         switch (action.getAction()) {
@@ -46,8 +53,15 @@ public class WebSocketClient extends WebSocketListener {
             case ActionAuthKid.ACTION:
                 bus.post(new AuthEvent(new Gson().fromJson(text, ActionAuth.class)));
                 break;
+            case ActionRegisterChild.ACTION:
             case ActionRegister.ACTION:
                 bus.post(new RegEvent(new Gson().fromJson(text, ActionRegister.class)));
+                break;
+            case ActionGenerateCode.ACTION:
+                bus.post(new GenerateKeyEvent(new Gson().fromJson(text, ActionGenerateCode.class)));
+                break;
+            case ActionKidList.ACTION:
+                bus.post(new KidListEvent(new Gson().fromJson(text, ActionKidList.class)));
                 break;
         }
     }
@@ -63,8 +77,17 @@ public class WebSocketClient extends WebSocketListener {
     }
 
     @Override
-    public void onFailure(WebSocket webSocket, Throwable t, @Nullable Response response) {
+    public void onFailure(final WebSocket webSocket, Throwable t, @Nullable Response response) {
         super.onFailure(webSocket, t, response);
+        new Timer(false).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                WebSocket webSocket1 = CareMeApp.getCareMeComponent().getOkHttpClient().newWebSocket(webSocket.request().newBuilder().build(), WebSocketClient.this);
+                CareMeApp.getCareMeComponent().setWebSocketClient(webSocket1);
+                Log.d("WebSocketClient", "Reconnected!");
+            }
+        }, 500);
         Log.e("WebSocketClient", "Error!!!", t);
+        Log.d("WebSocketClient", "Trying to reconnect...");
     }
 }

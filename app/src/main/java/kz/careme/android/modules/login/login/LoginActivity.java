@@ -14,16 +14,23 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
 import kz.careme.android.model.Account;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.account_type.ChooseAccountTypeActivity;
+import kz.careme.android.modules.kids.ChooseRegisterChildActivity;
 
 public class LoginActivity extends BaseActivity implements LoginView, TextWatcher {
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @BindView(R.id.layout_email)
     TextInputLayout mLayoutEmail;
@@ -40,14 +47,22 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     @InjectPresenter
     LoginPresenter presenter;
 
+    private int mAccountType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         ButterKnife.bind(this);
         initializeActionBar(true, "");
+        if (getIntent().getBooleanExtra(Const.ACTION_AUTH, false)) {
+            Account account = CareMeApp.getCareMeComponent().getProfiler().getAccount();
+            presenter.auth(account.getEmail(), account.getPassword());
+            DialogUtil.showDialog(this, "Loading");
+        }
         mEditTextEmail.addTextChangedListener(this);
         mEditTextPassword.addTextChangedListener(this);
+        mAccountType = getIntent().getIntExtra(Const.ACCOUNT_TYPE, Const.TYPE_PARENT);
     }
 
     @Override
@@ -61,13 +76,34 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         switch (item.getItemId()) {
             case R.id.done:
                 DialogUtil.showDialog(this, "Loading");
-                presenter.auth(mEditTextEmail.getText().toString(), mEditTextPassword.getText().toString());
+                String email = mEditTextEmail.getText().toString();
+                String password = mEditTextPassword.getText().toString();
+                if (!checkFields(email, password)) break;
+                if (mAccountType == Const.TYPE_PARENT) {
+                    presenter.auth(email, password);
+                } else {
+                    presenter.authKid(email, password);
+                }
                 break;
             case android.R.id.home:
                 onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean checkFields(String email, String password) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(email);
+        boolean check = true;
+        if (!matcher.find()) {
+            mLayoutEmail.setError("Введите корректный email");
+            check = false;
+        }
+        if (password.length() <= 5) {
+            mLayoutPassword.setError("Пароль должен содержать не менее 6 символов");
+            check = false;
+        }
+        return check;
     }
 
     @Override
@@ -78,7 +114,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     @Override
     public void startActivity() {
-        startActivity(new Intent(this, ChooseAccountTypeActivity.class));
+        startActivity(new Intent(this, ChooseRegisterChildActivity.class));
     }
 
     @UiThread

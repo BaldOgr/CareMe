@@ -16,6 +16,7 @@ import kz.careme.android.model.Const;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.ChildMainActivity;
 import kz.careme.android.modules.MainActivity;
+import kz.careme.android.modules.account_type.ChooseAccountTypeActivity;
 import kz.careme.android.modules.login.ChooseLoginActivity;
 import kz.careme.android.modules.service.MyService;
 
@@ -29,24 +30,11 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preloader);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, MyService.class));
-        } else {
-            startService(new Intent(this, MyService.class));
-        }
+    }
 
-        bindService(new Intent(this, MyService.class), new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                myService = ((MyService.MyBinder) service).getService();
-                CareMeApp.getCareMeComponent().getCallService().setMyService(myService);
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-        }, 0);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         SharedPreferences preferences = getSharedPreferences(Const.SHARED_PREFERENCES, MODE_PRIVATE);
         String email = preferences.getString(Const.EMAIL, "");
@@ -60,15 +48,15 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
                 preloaderPresenter.authKid(email, password);
             }
         } else {
-            startActivity(new Intent(this, ChooseLoginActivity.class));
+            startActivity(new Intent(this, ChooseAccountTypeActivity.class));
             preloaderPresenter.unsubscribe();
             finish();
         }
     }
 
     @Override
-    public void startLoginActivity() {
-        startActivity(new Intent(this, ChooseLoginActivity.class));
+    public void startChooseAccountTypeActivity() {
+        startActivity(new Intent(this, ChooseAccountTypeActivity.class));
         finish();
         preloaderPresenter.unsubscribe();
     }

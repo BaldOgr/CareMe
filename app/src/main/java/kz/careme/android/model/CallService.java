@@ -1,5 +1,10 @@
 package kz.careme.android.model;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.Log;
 
 import java.util.Timer;
