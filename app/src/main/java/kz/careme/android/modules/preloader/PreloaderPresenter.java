@@ -18,7 +18,7 @@ public class PreloaderPresenter extends BasePresenter<PreloaderView> {
 
     @Subscribe
     public void onLogin(AuthEvent authEvent) {
-        if (authEvent.getAction().getCode() != 0) {
+        if (authEvent.getAction().getError() != null && !authEvent.getAction().getError().isEmpty()) {
             getViewState().startChooseAccountTypeActivity();
             return;
         }

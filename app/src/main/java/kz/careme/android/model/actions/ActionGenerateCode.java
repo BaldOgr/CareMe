@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class ActionGenerateCode extends BaseAction {
     public static final String ACTION = "generate_code";
 
-    @SerializedName("sid")
+    @SerializedName("session_id")
     private String sid;
 
     @SerializedName("kid_id")
@@ -34,12 +34,10 @@ public class ActionGenerateCode extends BaseAction {
         this.kidId = kidId;
     }
 
-    @Override
     public int getCode() {
         return code;
     }
 
-    @Override
     public void setCode(int code) {
         this.code = code;
     }

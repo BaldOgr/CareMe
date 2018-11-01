@@ -42,4 +42,7 @@ public class CallService {
         myService.sendMessage(message);
     }
 
+    public MyService getService() {
+        return myService;
+    }
 }

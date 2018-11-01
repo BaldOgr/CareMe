@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,10 +23,11 @@ import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.ChildMainActivity;
+import kz.careme.android.modules.MainActivity;
 
 import static kz.careme.android.model.Const.ACCOUNT_TYPE;
 
-public class WriteCodeActivity extends BaseActivity implements WriteCodeView{
+public class WriteCodeActivity extends BaseActivity implements WriteCodeView {
 
     @BindView(R.id.first_message)
     TextView mFirstMessage;
@@ -44,7 +47,7 @@ public class WriteCodeActivity extends BaseActivity implements WriteCodeView{
         setContentView(R.layout.activity_write_code);
         ButterKnife.bind(this);
         initializeActionBar(true, "");
-        int mAccountType = getIntent().getIntExtra(ACCOUNT_TYPE, 1);
+        int mAccountType = getIntent().getIntExtra(ACCOUNT_TYPE, Const.TYPE_CHILD);
         switch (mAccountType) {
             case Const.TYPE_CHILD:
                 changeTextToChild();
@@ -58,12 +61,31 @@ public class WriteCodeActivity extends BaseActivity implements WriteCodeView{
         }
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.done:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void changeTextToChild() {
         mFirstMessage.setText(R.string.text_sync_child_phone_with_parent);
         mSecondMessage.setText(R.string.text_show_child_code);
     }
 
-    @SuppressLint("SetTextI18n")
     private void generateCode(int kidId) {
         presenter.getParentCode(kidId);
     }
@@ -121,13 +143,18 @@ public class WriteCodeActivity extends BaseActivity implements WriteCodeView{
     }
 
     @Override
-    public void setCode(int code) {
-        String codeStr = String.valueOf(code);
-        for (int i = 0; i < 4; i++) {
-            ((EditText) mCodeLayout.getChildAt(i)).setText(codeStr.charAt(i));
-            mCodeLayout.getChildAt(i).setEnabled(false);
-        }
-        dismissDialog();
+    public void setCode(final int code) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String codeStr = String.valueOf(code);
+                for (int i = 0; i < 4; i++) {
+                    ((EditText) mCodeLayout.getChildAt(i)).setText(String.valueOf(codeStr.charAt(i)));
+                    mCodeLayout.getChildAt(i).setEnabled(false);
+                }
+                dismissDialog();
+            }
+        });
     }
 
     @Override
@@ -142,7 +169,8 @@ public class WriteCodeActivity extends BaseActivity implements WriteCodeView{
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();;
+                        dialog.dismiss();
+                        ;
                     }
                 }).show();
     }

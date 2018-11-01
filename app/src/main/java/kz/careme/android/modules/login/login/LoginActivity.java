@@ -26,6 +26,7 @@ import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.account_type.ChooseAccountTypeActivity;
+import kz.careme.android.modules.account_type.WriteCodeActivity;
 import kz.careme.android.modules.kids.ChooseRegisterChildActivity;
 
 public class LoginActivity extends BaseActivity implements LoginView, TextWatcher {
@@ -114,7 +115,11 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     @Override
     public void startActivity() {
-        startActivity(new Intent(this, ChooseRegisterChildActivity.class));
+        if (mAccountType == Const.TYPE_PARENT) {
+            startActivity(new Intent(this, ChooseRegisterChildActivity.class));
+        } else {
+            startActivity(new Intent(this, WriteCodeActivity.class).putExtra(Const.ACCOUNT_TYPE, Const.TYPE_CHILD));
+        }
     }
 
     @UiThread

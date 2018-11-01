@@ -12,8 +12,6 @@ public class BaseAction {
     @SerializedName("error")
     private String error;
 
-    @SerializedName("code")
-    private int code;
 
     public String getError() {
         return error;
@@ -29,14 +27,6 @@ public class BaseAction {
 
     public void setAction(String action) {
         this.action = action;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
     }
 
     @NonNull

@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import kz.careme.android.CareMeApp;
+import kz.careme.android.model.actions.ActionActivateCode;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
 import kz.careme.android.model.actions.ActionGenerateCode;
@@ -21,6 +22,8 @@ import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.event.AuthEvent;
+import kz.careme.android.model.event.CodeActivatedEvent;
+import kz.careme.android.model.event.CodeGeneratedEvent;
 import kz.careme.android.model.event.GenerateKeyEvent;
 import kz.careme.android.model.event.KidListEvent;
 import kz.careme.android.model.event.RegEvent;
@@ -53,13 +56,20 @@ public class WebSocketClient extends WebSocketListener {
             case ActionAuthKid.ACTION:
                 bus.post(new AuthEvent(new Gson().fromJson(text, ActionAuth.class)));
                 break;
+
             case ActionRegisterChild.ACTION:
             case ActionRegister.ACTION:
                 bus.post(new RegEvent(new Gson().fromJson(text, ActionRegister.class)));
                 break;
+
             case ActionGenerateCode.ACTION:
-                bus.post(new GenerateKeyEvent(new Gson().fromJson(text, ActionGenerateCode.class)));
+                bus.post(new CodeGeneratedEvent(new Gson().fromJson(text, ActionGenerateCode.class)));
                 break;
+
+            case ActionActivateCode.ACTION:
+                bus.post(new CodeActivatedEvent(new Gson().fromJson(text, ActionActivateCode.class)));
+                break;
+
             case ActionKidList.ACTION:
                 bus.post(new KidListEvent(new Gson().fromJson(text, ActionKidList.class)));
                 break;

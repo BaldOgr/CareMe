@@ -20,9 +20,9 @@ public class WriteCodePresenter extends BasePresenter<WriteCodeView> {
 
     @Subscribe
     public void onCodeActivated(CodeActivatedEvent codeActivatedEvent) {
-        if (codeActivatedEvent.getActionActivateCode().getError() != null || !codeActivatedEvent.getActionActivateCode().getError().isEmpty()) {
+        getViewState().dismissDialog();
+        if (codeActivatedEvent.getActionActivateCode().getError() != null && !codeActivatedEvent.getActionActivateCode().getError().isEmpty()) {
             getViewState().showError(codeActivatedEvent.getActionActivateCode().getError());
-            getViewState().dismissDialog();
             return;
         }
         getViewState().onCodeActivated(codeActivatedEvent.getActionActivateCode().getParentId(),
@@ -39,5 +39,6 @@ public class WriteCodePresenter extends BasePresenter<WriteCodeView> {
     public void activateCode(String code) {
         ActionActivateCode actionActivateCode = new ActionActivateCode();
         actionActivateCode.setCode(Integer.parseInt(code));
+        getCallService().call(actionActivateCode.toString());
     }
 }

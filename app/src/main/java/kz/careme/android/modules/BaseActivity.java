@@ -33,19 +33,21 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         } else {
             startService(new Intent(this, MyService.class));
         }
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                myService = ((MyService.MyBinder) service).getService();
-                CareMeApp.getCareMeComponent().getCallService().setMyService(myService);
-            }
+        if (CareMeApp.getCareMeComponent().getCallService().getService() == null) {
+            serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    myService = ((MyService.MyBinder) service).getService();
+                    CareMeApp.getCareMeComponent().getCallService().setMyService(myService);
+                }
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
 
-            }
-        };
-        bindService(new Intent(this, MyService.class), serviceConnection, BIND_AUTO_CREATE);
+                }
+            };
+            bindService(new Intent(this, MyService.class), serviceConnection, BIND_AUTO_CREATE);
+        }
     }
 
     protected void initializeActionBar(boolean enableHomeButton, String title) {

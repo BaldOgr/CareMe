@@ -21,7 +21,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     @Subscribe
     public void onLogin(AuthEvent actionAuth) {
         getViewState().closeDialog();
-        if (actionAuth.getAction().getCode() != 0) {
+        if (actionAuth.getAction().getError() != null && !actionAuth.getAction().getError().isEmpty()) {
             getViewState().showIncorrectLogin();
             return;
         }

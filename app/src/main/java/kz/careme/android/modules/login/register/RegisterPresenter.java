@@ -20,8 +20,8 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
 
     @Subscribe
     public void onReg(RegEvent regEvent) {
+        getViewState().dismissDialog();
         if (regEvent.getActionRegister().getError() != null && !regEvent.getActionRegister().getError().isEmpty()) {
-            getViewState().dismissDialog();
             getViewState().showError(regEvent.getActionRegister().getError());
             return;
         }
