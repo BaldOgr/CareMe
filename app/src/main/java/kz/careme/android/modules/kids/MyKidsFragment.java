@@ -22,6 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
+import kz.careme.android.model.Kid;
 import kz.careme.android.modules.ChangeBehaviorListener;
 
 public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObserver.OnGlobalLayoutListener, MyKidsView {
@@ -84,5 +85,10 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
         if (isVisible()) {
             mChangeBehaviorListener.changeBehaviorPeekSize(mHeaderView.getHeight() + mRecyclerView.getChildAt(0).getHeight());
         }
+    }
+
+    @Override
+    public void onDataLoaded(List<Kid> kids) {
+
     }
 }

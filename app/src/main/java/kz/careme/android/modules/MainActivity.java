@@ -11,6 +11,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.yandex.mapkit.Animation;
+import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.mapview.MapView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
@@ -28,6 +34,11 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
 
+    @BindView(R.id.map)
+    MapView mapView;
+
+    private final Point TARGET_LOCATION = new Point(59.945933, 30.320045);
+
     private FragmentManager mFragmentManager;
     private Fragment mCurrentFragment;
     private BottomSheetBehavior mBottomSheetBehavior;
@@ -36,9 +47,15 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        MapKitFactory.initialize(this);
         setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        mapView.getMap().move(
+                new CameraPosition(TARGET_LOCATION, 14.0f, 0.0f, 0.0f),
+                new Animation(Animation.Type.SMOOTH, 5),
+                null);
         mFragmentManager = getSupportFragmentManager();
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_behavior));
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,6 +85,20 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
 
         toast = Toast.makeText(this, R.string.press_again_for_exit, Toast.LENGTH_SHORT);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MapKitFactory.getInstance().onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mapView.onStop();
+        MapKitFactory.getInstance().onStop();
+        super.onStop();
     }
 
     private void showFragment(String tag) {

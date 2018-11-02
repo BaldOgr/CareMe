@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -71,7 +73,11 @@ public class WebSocketClient extends WebSocketListener {
                 break;
 
             case ActionKidList.ACTION:
-                bus.post(new KidListEvent(new Gson().fromJson(text, ActionKidList.class)));
+                try {
+                    bus.post(new KidListEvent(text));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }

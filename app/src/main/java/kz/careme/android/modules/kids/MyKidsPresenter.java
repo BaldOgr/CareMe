@@ -12,7 +12,7 @@ public class MyKidsPresenter extends BasePresenter<MyKidsView> {
 
     @Subscribe
     public void onKidsListLoaded(KidListEvent event) {
-        event.getActionKidList();
+        getViewState().onDataLoaded(event.getActionKidList().getKids());
     }
 
     public void getKids() {
