@@ -59,6 +59,6 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(serviceConnection);
+        if (serviceConnection != null) unbindService(serviceConnection);
     }
 }
