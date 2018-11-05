@@ -13,11 +13,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
+import kz.careme.android.model.Kid;
 
 public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public static final int VIEW_HOLDER_CHILD = 0;
-    public static final int VIEW_HOLDER_ADD = 1;
-    private List<Kids> kidsList;
+    private static final int VIEW_HOLDER_CHILD = 0;
+    private static final int VIEW_HOLDER_ADD = 1;
+    private List<Kid> kidsList;
 
     @NonNull
     @Override
@@ -34,8 +35,7 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof ChildHolder) {
-            ((ChildHolder) viewHolder).childName.setText(kidsList.get(i).getName());
-            ((ChildHolder) viewHolder).lastDataUpdate.setText(kidsList.get(i).getImage());
+            ((ChildHolder) viewHolder).childName.setText(kidsList.get(i).getName() + " " + kidsList.get(i).getLastname());
         }
     }
 
@@ -49,7 +49,7 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return kidsList == null ? 1 : kidsList.size() + 1;
     }
 
-    public void setKidsList(List<Kids> kidsList) {
+    public void setKidsList(List<Kid> kidsList) {
         this.kidsList = kidsList;
     }
 

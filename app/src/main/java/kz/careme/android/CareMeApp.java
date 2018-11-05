@@ -14,7 +14,7 @@ public class CareMeApp extends Application {
     public void onCreate() {
         super.onCreate();
         CareMeComponent = DaggerCareMeComponent.builder().build();
-        MapKitFactory.setApiKey("AJwEzlsBAAAAVbI9FQIAtNVfr1lKD_MYsfpcQfi19IZ6g_sAAAAAAAAAAABApF6cJiihWBLEMCnkbrefktp72g==");
+        MapKitFactory.setApiKey("be6291e7-21f3-4246-897a-53727fdec2c2");
 
     }
 

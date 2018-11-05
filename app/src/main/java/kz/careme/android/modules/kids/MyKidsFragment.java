@@ -3,6 +3,7 @@ package kz.careme.android.modules.kids;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,23 +63,11 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new KidsAdapter();
-//        adapter.setKidsList(getKids());
         mRecyclerView.setAdapter(adapter);
         presenter.getKids();
         return view;
     }
 
-    private List<Kids> getKids() {
-        ArrayList<Kids> kids = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            Kids kids1 = new Kids();
-            kids1.setName("Name " + i);
-            kids1.setBattery("" + i);
-            kids1.setImage("asdasdwqe" + i);
-            kids.add(kids1);
-        }
-        return kids;
-    }
 
     @Override
     public void onGlobalLayout() {
@@ -87,8 +76,18 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
         }
     }
 
+    @UiThread
     @Override
-    public void onDataLoaded(List<Kid> kids) {
+    public void onDataLoaded(final List<Kid> kids) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.setKidsList(kids);
+                    adapter.notifyDataSetChanged();
+                }
+            });
 
+        }
     }
 }

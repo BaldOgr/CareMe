@@ -35,6 +35,7 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
     @Override
     protected void onResume() {
         super.onResume();
+        preloaderPresenter.register();
 
         SharedPreferences preferences = getSharedPreferences(Const.SHARED_PREFERENCES, MODE_PRIVATE);
         String email = preferences.getString(Const.EMAIL, "");

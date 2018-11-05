@@ -52,7 +52,11 @@ public class PreloaderPresenter extends BasePresenter<PreloaderView> {
         accountType = Const.TYPE_CHILD;
     }
 
+    public void register() {
+//        CareMeApp.getCareMeComponent().getBus().register(this);
+    }
+
     public void unsubscribe() {
-        CareMeApp.getCareMeComponent().getBus().unregister(this);
+//        CareMeApp.getCareMeComponent().getBus().unregister(this);
     }
 }

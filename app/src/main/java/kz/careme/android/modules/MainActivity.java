@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                         startActivity(new Intent(MainActivity.this, ChatActivity.class));
                         return false;
                 }
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 return true;
             }
         });
