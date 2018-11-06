@@ -12,6 +12,8 @@ import java.util.TimerTask;
 
 import javax.inject.Inject;
 
+import kz.careme.android.model.actions.ActionSendMessage;
+import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.modules.service.MyService;
 
 public class CallService {
@@ -44,5 +46,9 @@ public class CallService {
 
     public MyService getService() {
         return myService;
+    }
+
+    public void call(BaseAction sendMessage) {
+        call(sendMessage.toString());
     }
 }

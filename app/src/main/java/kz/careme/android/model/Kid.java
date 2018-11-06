@@ -23,6 +23,8 @@ public class Kid {
     private Double longitude;
     @SerializedName("batteryLevel")
     private String batteryLevel;
+    @SerializedName("session_id")
+    private String sessionId;
     @SerializedName("batteryState")
     private String batteryState;
     @SerializedName("course")
@@ -162,5 +164,13 @@ public class Kid {
 
     public void setActive(String active) {
         this.active = active;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }

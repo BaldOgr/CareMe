@@ -19,6 +19,7 @@ import kz.careme.android.model.actions.ActionActivateCode;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
 import kz.careme.android.model.actions.ActionGenerateCode;
+import kz.careme.android.model.actions.ActionGetMessage;
 import kz.careme.android.model.actions.ActionKidList;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
@@ -28,6 +29,7 @@ import kz.careme.android.model.event.CodeActivatedEvent;
 import kz.careme.android.model.event.CodeGeneratedEvent;
 import kz.careme.android.model.event.GenerateKeyEvent;
 import kz.careme.android.model.event.KidListEvent;
+import kz.careme.android.model.event.MessageLoadedEvent;
 import kz.careme.android.model.event.RegEvent;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -70,6 +72,10 @@ public class WebSocketClient extends WebSocketListener {
 
             case ActionActivateCode.ACTION:
                 bus.post(new CodeActivatedEvent(new Gson().fromJson(text, ActionActivateCode.class)));
+                break;
+            case ActionGetMessage
+                        .ACTION:
+                bus.post(new MessageLoadedEvent());
                 break;
 
             case ActionKidList.ACTION:

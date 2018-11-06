@@ -17,14 +17,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.gson.Gson;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
+import kz.careme.android.model.Kid;
 import kz.careme.android.modules.BaseActivity;
 
-public class ChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity implements ChatView {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -44,7 +48,10 @@ public class ChatActivity extends BaseActivity {
     @BindView(R.id.send_message)
     ImageView mSendMessage;
 
-    private int kidId;
+    @InjectPresenter
+    ChatPresenter presenter;
+
+    private Kid kid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +60,9 @@ public class ChatActivity extends BaseActivity {
         ButterKnife.bind(this);
         initializeActionBar(true, "");
 
-        kidId = getIntent().getIntExtra(Const.KID_ID, -1);
-        if (kidId == -1) {
+        String kidStr = getIntent().getStringExtra(Const.KID);
+        kid = new Gson().fromJson(kidStr, Kid.class);
+        if (kid.getSessionId() == null) {
             Log.e("ChatActivity", "Kid id can not be -1");
             finish();
         }
@@ -107,12 +115,14 @@ public class ChatActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-
+        presenter.getMessage(kid);
     }
 
     @OnClick(R.id.send_message)
     public void onSendMessageClick() {
         Toast.makeText(this, "On SendMessage Click1", Toast.LENGTH_SHORT).show();
+        String message = mMessage.getText().toString();
+        presenter.sendMessage(kid, message);
     }
 
     @OnClick(R.id.sound_record)

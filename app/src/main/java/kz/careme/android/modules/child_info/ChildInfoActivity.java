@@ -79,7 +79,7 @@ public class ChildInfoActivity extends BaseActivity {
 
     @OnClick(R.id.button_chat)
     public void onChatClick() {
-        startActivity(new Intent(this, ChatActivity.class).putExtra(Const.KID_ID, kid.getId()));
+        startActivity(new Intent(this, ChatActivity.class).putExtra(Const.KID, new Gson().toJson(kid)));
     }
 
     @OnClick(R.id.button_send_signal)
