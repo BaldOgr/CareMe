@@ -14,4 +14,5 @@ public class Const {
     public static final String KID_ID = "kid_id";
     public static final String PARENT_ID = "parent_id";
     public static final String CHILD_ID = "child_id";
+    public static final String KID = "kid";
 }

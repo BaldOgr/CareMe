@@ -8,15 +8,20 @@ import android.support.design.resources.TextAppearance;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
+import kz.careme.android.model.Const;
 import kz.careme.android.modules.BaseActivity;
 
 public class ChatActivity extends BaseActivity {
@@ -33,6 +38,14 @@ public class ChatActivity extends BaseActivity {
     @BindView(R.id.chips)
     ChipGroup chipGroup;
 
+    @BindView(R.id.sound_record)
+    ImageView mRecordSound;
+
+    @BindView(R.id.send_message)
+    ImageView mSendMessage;
+
+    private int kidId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +53,71 @@ public class ChatActivity extends BaseActivity {
         ButterKnife.bind(this);
         initializeActionBar(true, "");
 
+        kidId = getIntent().getIntExtra(Const.KID_ID, -1);
+        if (kidId == -1) {
+            Log.e("ChatActivity", "Kid id can not be -1");
+            finish();
+        }
+
         for (int i = 0; i < 10; i++) {
             Chip chip = new Chip(this);
             chip.setText("asdadsad");
             chipGroup.addView(chip, i, new ChipGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
+        mMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    mRecordSound.setVisibility(View.GONE);
+                    mSendMessage.setVisibility(View.VISIBLE);
+                    mRecordSound.animate()
+                            .scaleX(0)
+                            .scaleY(0)
+                            .setDuration(100)
+                            .start();
+                    mSendMessage.animate()
+                            .scaleX(1)
+                            .scaleY(1)
+                            .setDuration(100)
+                            .start();
+                } else {
+                    mRecordSound.setVisibility(View.VISIBLE);
+                    mSendMessage.setVisibility(View.GONE);
+                    mRecordSound.animate()
+                            .scaleX(1)
+                            .scaleY(1)
+                            .setDuration(100)
+                            .start();
+                    mSendMessage.animate()
+                            .scaleX(0)
+                            .scaleY(0)
+                            .setDuration(100)
+                            .start();
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    @OnClick(R.id.send_message)
+    public void onSendMessageClick() {
+        Toast.makeText(this, "On SendMessage Click1", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.sound_record)
+    public void onRecordSoundClick() {
+        Toast.makeText(this, "On RecordSound Click1", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.expand_chips)

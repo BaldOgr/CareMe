@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,6 +21,7 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_HOLDER_CHILD = 0;
     private static final int VIEW_HOLDER_ADD = 1;
     private List<Kid> kidsList;
+    private OnKidClick onKidClick;
 
     @NonNull
     @Override
@@ -33,12 +36,23 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         if (viewHolder instanceof ChildHolder) {
-            ((ChildHolder) viewHolder).childName.setText(kidsList.get(i).getName() + " " + kidsList.get(i).getLastname());
+            final Kid kid = kidsList.get(i);
+            ((ChildHolder) viewHolder).root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onKidClick.onClick(kidsList.get(viewHolder.getAdapterPosition()));
+                }
+            });
+            ((ChildHolder) viewHolder).childName.setText(kid.getName() + " " + kid.getLastname());
+            ((ChildHolder) viewHolder).battery.setText(kid.getBatteryLevel());
+            if (kid.getAvatar() != null && !kid.getAvatar().isEmpty())
+                Picasso.get()
+                        .load(kid.getAvatar())
+                        .into(((ChildHolder) viewHolder).image);
         }
     }
-
     @Override
     public int getItemViewType(int position) {
         return kidsList == null || position >= kidsList.size() || kidsList.get(position) == null ? VIEW_HOLDER_ADD : VIEW_HOLDER_CHILD;
@@ -53,7 +67,14 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.kidsList = kidsList;
     }
 
+    public void setOnKidClick(OnKidClick onKidClick) {
+        this.onKidClick = onKidClick;
+    }
+
     class ChildHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.root)
+        View root;
 
         @BindView(R.id.image)
         ImageView image;

@@ -83,7 +83,6 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
             }
         });
         mBottomNavigationView.setSelectedItemId(R.id.action_my_kids);
-
         toast = Toast.makeText(this, R.string.press_again_for_exit, Toast.LENGTH_SHORT);
 
     }

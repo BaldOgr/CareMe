@@ -1,5 +1,7 @@
 package kz.careme.android.modules.kids;
 
+import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,15 +18,19 @@ import android.view.ViewTreeObserver;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kz.careme.android.R;
+import kz.careme.android.model.Const;
 import kz.careme.android.model.Kid;
 import kz.careme.android.modules.ChangeBehaviorListener;
+import kz.careme.android.modules.child_info.ChildInfoActivity;
 
 public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObserver.OnGlobalLayoutListener, MyKidsView {
     public static final String TAG = "MyKidsFragment";
@@ -37,6 +43,7 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
 
     private KidsAdapter adapter;
     private ChangeBehaviorListener mChangeBehaviorListener;
+    private boolean loaded = false;
 
     @InjectPresenter
     MyKidsPresenter presenter;
@@ -64,6 +71,12 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new KidsAdapter();
         mRecyclerView.setAdapter(adapter);
+        adapter.setOnKidClick(new OnKidClick() {
+            @Override
+            public void onClick(Kid kid) {
+                startActivity(new Intent(getContext(), ChildInfoActivity.class).putExtra(Const.KID, new Gson().toJson(kid)));
+            }
+        });
         presenter.getKids();
         return view;
     }
@@ -83,11 +96,37 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    loaded = true;
                     adapter.setKidsList(kids);
                     adapter.notifyDataSetChanged();
                 }
             });
 
         }
+    }
+
+    @OnClick(R.id.reload)
+    public void onReloadClick(View v) {
+        loaded = false;
+        presenter.getKids();
+        showLoadingAnimation(v);
+    }
+
+    private void showLoadingAnimation(final View v) {
+//        v.animate()
+//                .rotation(360)
+//                .setDuration(1000)
+//                .setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                    @Override
+//                    public void onAnimationUpdate(ValueAnimator animation) {
+//                        if (!loaded && !animation.isRunning())
+//                            v.animate()
+//                                    .rotation(360)
+//                                    .setDuration(1000)
+//                            .setUpdateListener(this)
+//                            .start();
+//                    }
+//                })
+//                .start();
     }
 }
