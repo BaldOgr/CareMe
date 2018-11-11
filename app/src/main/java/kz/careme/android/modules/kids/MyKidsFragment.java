@@ -19,6 +19,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.gson.Gson;
+import com.yandex.mapkit.geometry.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.Kid;
 import kz.careme.android.modules.ChangeBehaviorListener;
+import kz.careme.android.modules.MapActivityView;
 import kz.careme.android.modules.child_info.ChildInfoActivity;
 
 public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObserver.OnGlobalLayoutListener, MyKidsView {
@@ -43,6 +45,7 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
 
     private KidsAdapter adapter;
     private ChangeBehaviorListener mChangeBehaviorListener;
+    private MapActivityView mapActivityView;
     private boolean loaded = false;
 
     @InjectPresenter
@@ -51,9 +54,10 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
     public MyKidsFragment() {
     }
 
-    public static MyKidsFragment newInstance(ChangeBehaviorListener mBottomSheetBehavior) {
+    public static MyKidsFragment newInstance(ChangeBehaviorListener mBottomSheetBehavior, MapActivityView mapActivityView) {
         MyKidsFragment fragment = new MyKidsFragment();
         fragment.mChangeBehaviorListener = mBottomSheetBehavior;
+        fragment.mapActivityView = mapActivityView;
         return fragment;
     }
 
@@ -99,6 +103,10 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
                     loaded = true;
                     adapter.setKidsList(kids);
                     adapter.notifyDataSetChanged();
+                    for (Kid kid : kids) {
+                        if (kid.getLatitude() != null)
+                            mapActivityView.setMarker(new Point(kid.getLatitude(), kid.getLongitude()), Float.parseFloat(kid.getAccuracy()));
+                    }
                 }
             });
 

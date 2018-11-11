@@ -1,16 +1,15 @@
 package kz.careme.android.modules.login.login;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
-import kz.careme.android.CareMeApp;
 import kz.careme.android.model.Account;
 import kz.careme.android.model.Const;
-import kz.careme.android.model.ErrorMessage;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
+import kz.careme.android.model.actions.CheckCodeKidAction;
 import kz.careme.android.model.event.AuthEvent;
+import kz.careme.android.model.event.CheckCodeKidEvent;
 import kz.careme.android.modules.BasePresenter;
 
 @InjectViewState
@@ -32,8 +31,27 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         account.setAccountType(accountType);
         getProfiler().setAccount(account);
         getViewState().saveAccount(account);
-        getViewState().startActivity();
+        if (accountType == Const.TYPE_CHILD) {
+            checkActivation(account.getSid());
+            return;
+        }
+        getViewState().startWriteCodeActivity();
 //        CareMeApp.getCareMeComponent().getBus().unregister(this);
+    }
+
+    @Subscribe
+    public void onCheckCode(CheckCodeKidEvent event){
+        if (event.getMessage() == null || event.getMessage().isEmpty()) {
+            getViewState().startChildMainActivity(event.getParentId(), event.getChildId());
+            return;
+        }
+        getViewState().startWriteCodeActivity();
+    }
+
+    private void checkActivation(String sessionId) {
+        CheckCodeKidAction action = new CheckCodeKidAction();
+        action.setSid(sessionId);
+        getCallService().call(action);
     }
 
     public void auth(String email, String password) {

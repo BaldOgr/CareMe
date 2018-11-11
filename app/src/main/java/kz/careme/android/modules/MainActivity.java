@@ -1,8 +1,14 @@
 package kz.careme.android.modules;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
@@ -11,11 +17,22 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.map.Callback;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.IconStyle;
+import com.yandex.mapkit.map.MapObject;
+import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.MapObjectDragListener;
+import com.yandex.mapkit.map.MapObjectTapListener;
+import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.runtime.image.ImageProvider;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +46,7 @@ import kz.careme.android.modules.more.places.PlacesFragment;
 import kz.careme.android.modules.settings.SettingsFragment;
 import kz.careme.android.modules.subscribe.SubscribeFragment;
 
-public class MainActivity extends BaseActivity implements ChangeBehaviorListener {
+public class MainActivity extends BaseActivity implements ChangeBehaviorListener, MapActivityView {
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
@@ -44,6 +61,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     private BottomSheetBehavior mBottomSheetBehavior;
     private Toast toast;
     private long time;
+    private Bitmap bitmap = drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,36 +70,33 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-        mapView.getMap().move(
-                new CameraPosition(TARGET_LOCATION, 14.0f, 0.0f, 0.0f),
-                new Animation(Animation.Type.SMOOTH, 5),
-                null);
         mFragmentManager = getSupportFragmentManager();
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_behavior));
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.action_my_kids:
-                        showFragment(MyKidsFragment.TAG);
-                        break;
-                    case R.id.action_settings:
-                        showFragment(SettingsFragment.TAG);
-                        break;
-                    case R.id.action_subscribe:
-                        showFragment(SubscribeFragment.TAG);
-                        break;
-                    case R.id.action_more:
-                        showFragment(MoreFragment.TAG);
-                        break;
-                    case R.id.action_chat:
-                        startActivity(new Intent(MainActivity.this, ChatActivity.class));
-                        return false;
-                }
-                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                return true;
-            }
-        });
+        mBottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.action_my_kids:
+                                showFragment(MyKidsFragment.TAG);
+                                break;
+                            case R.id.action_settings:
+                                showFragment(SettingsFragment.TAG);
+                                break;
+                            case R.id.action_subscribe:
+                                showFragment(SubscribeFragment.TAG);
+                                break;
+                            case R.id.action_more:
+                                showFragment(MoreFragment.TAG);
+                                break;
+                            case R.id.action_chat:
+                                startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                                return false;
+                        }
+                        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        return true;
+                    }
+                });
         mBottomNavigationView.setSelectedItemId(R.id.action_my_kids);
         toast = Toast.makeText(this, R.string.press_again_for_exit, Toast.LENGTH_SHORT);
 
@@ -99,6 +114,20 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         mapView.onStop();
         MapKitFactory.getInstance().onStop();
         super.onStop();
+    }
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     private void showFragment(String tag) {
@@ -136,7 +165,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                     break;
 
                 default:
-                    fragment = MyKidsFragment.newInstance(this);
+                    fragment = MyKidsFragment.newInstance(this, this);
                     transaction.add(R.id.bottom_sheet_behavior_content, fragment, tag);
                     break;
             }
@@ -167,5 +196,20 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     @Override
     public void changeBehaviorPeekSize(int size) {
         mBottomSheetBehavior.setPeekHeight(size);
+    }
+
+    @Override
+    @UiThread
+    public void setMarker(Point point, float opacity) {
+        PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(bitmap));
+        placemarkMapObject.setOpacity(opacity);
+    }
+
+    @Override
+    @UiThread
+    public void setMarker(Point point, float opacity, MapObjectTapListener listener) {
+        PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(bitmap));
+        placemarkMapObject.addTapListener(listener);
+        placemarkMapObject.setOpacity(opacity);
     }
 }

@@ -24,7 +24,9 @@ import kz.careme.android.model.actions.ActionKidList;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
 import kz.careme.android.model.actions.BaseAction;
+import kz.careme.android.model.actions.CheckCodeKidAction;
 import kz.careme.android.model.event.AuthEvent;
+import kz.careme.android.model.event.CheckCodeKidEvent;
 import kz.careme.android.model.event.CodeActivatedEvent;
 import kz.careme.android.model.event.CodeGeneratedEvent;
 import kz.careme.android.model.event.GenerateKeyEvent;
@@ -84,6 +86,9 @@ public class WebSocketClient extends WebSocketListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                break;
+            case CheckCodeKidAction.ACTION:
+                bus.post(new Gson().fromJson(text, CheckCodeKidEvent.class));
                 break;
         }
     }

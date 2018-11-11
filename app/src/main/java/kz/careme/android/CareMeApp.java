@@ -2,6 +2,7 @@ package kz.careme.android;
 
 import android.app.Application;
 
+import com.squareup.picasso.Picasso;
 import com.yandex.mapkit.MapKitFactory;
 
 import kz.careme.android.model.di.CareMeComponent;
@@ -15,7 +16,7 @@ public class CareMeApp extends Application {
         super.onCreate();
         CareMeComponent = DaggerCareMeComponent.builder().build();
         MapKitFactory.setApiKey("be6291e7-21f3-4246-897a-53727fdec2c2");
-
+        Picasso.setSingletonInstance(new Picasso.Builder(this).indicatorsEnabled(true).build());
     }
 
     public static CareMeComponent getCareMeComponent() {

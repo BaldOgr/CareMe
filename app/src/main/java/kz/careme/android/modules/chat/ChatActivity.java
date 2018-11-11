@@ -122,6 +122,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
     public void onSendMessageClick() {
         Toast.makeText(this, "On SendMessage Click1", Toast.LENGTH_SHORT).show();
         String message = mMessage.getText().toString();
+        mMessage.setText("");
         presenter.sendMessage(kid, message);
     }
 

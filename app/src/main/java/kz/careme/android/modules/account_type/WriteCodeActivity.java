@@ -71,7 +71,7 @@ public class WriteCodeActivity extends BaseActivity implements WriteCodeView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.done:
-                startActivity(new Intent(this, MainActivity.class));
+//                startActivity(new Intent(this, MainActivity.class));
                 break;
 
             case android.R.id.home:
