@@ -23,6 +23,7 @@ import kz.careme.android.model.actions.ActionGetMessage;
 import kz.careme.android.model.actions.ActionKidList;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
+import kz.careme.android.model.actions.ActionSendMessage;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.actions.CheckCodeKidAction;
 import kz.careme.android.model.event.AuthEvent;
@@ -56,7 +57,6 @@ public class WebSocketClient extends WebSocketListener {
     public void onMessage(WebSocket webSocket, String text) {
         Log.d("CallService", "Response: " + text);
         BaseAction action = new Gson().fromJson(text, BaseAction.class);
-//        action.setAction(ActionAuth.ACTION);
         switch (action.getAction()) {
             case ActionAuth.ACTION:
             case ActionAuthKid.ACTION:
@@ -75,9 +75,12 @@ public class WebSocketClient extends WebSocketListener {
             case ActionActivateCode.ACTION:
                 bus.post(new CodeActivatedEvent(new Gson().fromJson(text, ActionActivateCode.class)));
                 break;
-            case ActionGetMessage
-                        .ACTION:
-                bus.post(new MessageLoadedEvent());
+            case ActionGetMessage.ACTION:
+                try {
+                    bus.post(new MessageLoadedEvent(text));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case ActionKidList.ACTION:
@@ -89,6 +92,9 @@ public class WebSocketClient extends WebSocketListener {
                 break;
             case CheckCodeKidAction.ACTION:
                 bus.post(new Gson().fromJson(text, CheckCodeKidEvent.class));
+                break;
+            case ActionSendMessage.ACTION:
+                bus.post(new Gson().fromJson(text, MessageLoadedEvent.class));
                 break;
         }
     }

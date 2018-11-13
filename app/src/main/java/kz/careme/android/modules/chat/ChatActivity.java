@@ -1,11 +1,7 @@
 package kz.careme.android.modules.chat;
 
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
-import android.support.design.resources.TextAppearance;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -20,12 +16,16 @@ import android.widget.Toast;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.gson.Gson;
 
+import java.util.List;
+import java.util.Set;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.Kid;
+import kz.careme.android.model.Message;
 import kz.careme.android.modules.BaseActivity;
 
 public class ChatActivity extends BaseActivity implements ChatView {
@@ -52,6 +52,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
     ChatPresenter presenter;
 
     private Kid kid;
+    private ChatAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +68,15 @@ public class ChatActivity extends BaseActivity implements ChatView {
             finish();
         }
 
-        for (int i = 0; i < 10; i++) {
-            Chip chip = new Chip(this);
-            chip.setText("asdadsad");
-            chipGroup.addView(chip, i, new ChipGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        Set<String> stringSet = getSharedPreferences(Const.SHARED_PREFERENCES, MODE_PRIVATE)
+                .getStringSet(Const.CHIPS, null);
+
+        if (stringSet != null) {
+            for (String s : stringSet) {
+                Chip chip = new Chip(this);
+                chip.setText(s);
+                chipGroup.addView(chip, new ChipGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
         }
 
         mMessage.addTextChangedListener(new TextWatcher() {
@@ -116,6 +122,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
             }
         });
         presenter.getMessage(kid);
+        adapter = new ChatAdapter();
     }
 
     @OnClick(R.id.send_message)
@@ -129,6 +136,35 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @OnClick(R.id.sound_record)
     public void onRecordSoundClick() {
         Toast.makeText(this, "On RecordSound Click1", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void messageAdded() {
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            Message message = adapter.getMessages().get(i);
+            if (message.isLoading()) {
+                message.setLoading(true);
+                final int finalI = i;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyItemChanged(finalI);
+                    }
+                });
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void messageLoaded(List<Message> messages) {
+        adapter.setMessages(messages);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @OnClick(R.id.expand_chips)

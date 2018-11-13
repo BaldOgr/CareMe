@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     private BottomSheetBehavior mBottomSheetBehavior;
     private Toast toast;
     private long time;
-    private Bitmap bitmap = drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker));
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
+        bitmap =  drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker));
         mFragmentManager = getSupportFragmentManager();
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_behavior));
         mBottomNavigationView.setOnNavigationItemSelectedListener(

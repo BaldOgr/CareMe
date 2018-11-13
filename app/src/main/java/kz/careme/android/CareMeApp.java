@@ -14,12 +14,14 @@ public class CareMeApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CareMeComponent = DaggerCareMeComponent.builder().build();
         MapKitFactory.setApiKey("be6291e7-21f3-4246-897a-53727fdec2c2");
         Picasso.setSingletonInstance(new Picasso.Builder(this).indicatorsEnabled(true).build());
     }
 
     public static CareMeComponent getCareMeComponent() {
+        if (CareMeComponent == null) {
+            CareMeComponent = DaggerCareMeComponent.builder().build();
+        }
         return CareMeComponent;
     }
 }
