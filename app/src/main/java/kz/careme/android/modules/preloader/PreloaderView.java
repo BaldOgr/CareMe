@@ -7,5 +7,7 @@ public interface PreloaderView extends MvpView {
 
     void startMainActivity();
 
-    void startChildMainActivity();
+    void startChildMainActivity(int parentId, int childId);
+
+    void startWriteCodeActivity();
 }

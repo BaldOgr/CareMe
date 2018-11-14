@@ -9,7 +9,7 @@ public class CheckCodeKidEvent {
     private String code;
     @SerializedName("child_id")
     private int childId;
-    @SerializedName("parent_Id")
+    @SerializedName("parent_id")
     private int parentId;
     @SerializedName("msg")
     private String message;

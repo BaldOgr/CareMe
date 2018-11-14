@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class ActionAuth extends BaseAction{
     public static final String ACTION = "auth";
 
+    @SerializedName("id")
+    private int id;
     @SerializedName("email")
     private String email;
 
@@ -40,5 +42,13 @@ public class ActionAuth extends BaseAction{
 
     public void setSid(String sid) {
         this.sid = sid;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -17,13 +18,13 @@ import kz.careme.android.R;
 import kz.careme.android.model.Message;
 
 public class ChatAdapter extends RecyclerView.Adapter {
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         RecyclerView.ViewHolder viewHolder;
-        if (getItemViewType(i) == CareMeApp.getCareMeComponent().getProfiler().getAccount().getAccountType()) {
+        if (getItemViewType(i) != CareMeApp.getCareMeComponent().getProfiler().getAccount().getAccountType()) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.message_from_me, viewGroup, false);
             viewHolder = new FromMe(view);
         } else {
@@ -35,27 +36,29 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-        Message message = getMessages().get(i);
+        Message message = messages.get(i);
         if (viewHolder instanceof FromMe) {
             ((FromMe) viewHolder).textView.setText(message.getMessage());
-            ((FromMe) viewHolder).loading.setVisibility(message.isLoading() ? View.GONE : View.VISIBLE);
+            ((FromMe) viewHolder).loading.setVisibility(message.isLoading() ? View.VISIBLE : View.GONE);
         } else if (viewHolder instanceof FromAnother) {
             ((FromAnother) viewHolder).textView.setText(message.getMessage());
         }
     }
 
+
+
     @Override
     public int getItemCount() {
-        return getMessages() == null ? 0 : getMessages().size();
+        return messages == null ? 0 : messages.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return getMessages().get(position).getType();
+        return messages.get(position).getType();
     }
 
     public void setMessages(List<Message> messages) {
-        this.messages = messages;
+        this.messages.addAll(messages);
     }
 
     public List<Message> getMessages() {

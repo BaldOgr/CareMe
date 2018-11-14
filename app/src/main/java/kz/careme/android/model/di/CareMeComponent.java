@@ -13,10 +13,7 @@ import okhttp3.WebSocket;
 @SingletonScope
 public interface CareMeComponent {
     Profiler getProfiler();
-    WebSocket getWebSocketClient();
     OkHttpClient getOkHttpClient();
     CallService getCallService();
     Bus getBus();
-
-    void setWebSocketClient(WebSocket client);
 }

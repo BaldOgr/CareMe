@@ -2,30 +2,34 @@ package kz.careme.android.model.actions;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ActionSendMessage extends BaseAction{
+public class ActionSendMessage extends BaseAction {
     public static final String ACTION = "send_message";
 
-    @SerializedName("session_id")
-    private String sessionId;
-    @SerializedName("kid_session_id")
-    private String kidSessionId;
+    @SerializedName("sender_id")
+    private int senderId;
+    @SerializedName("receiver_id")
+    private int receiverId;
     @SerializedName("message")
     private String message;
 
-    public String getSessionId() {
-        return sessionId;
+    public ActionSendMessage() {
+        setAction(ACTION);
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public int getSenderId() {
+        return senderId;
     }
 
-    public String getKidSessionId() {
-        return kidSessionId;
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
     }
 
-    public void setKidSessionId(String kidSessionId) {
-        this.kidSessionId = kidSessionId;
+    public int getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(int receiverId) {
+        this.receiverId = receiverId;
     }
 
     public void setMessage(String message) {

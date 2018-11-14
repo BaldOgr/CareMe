@@ -26,6 +26,7 @@ import kz.careme.android.model.actions.ActionRegisterChild;
 import kz.careme.android.model.actions.ActionSendMessage;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.actions.CheckCodeKidAction;
+import kz.careme.android.model.di.CareMeComponent;
 import kz.careme.android.model.event.AuthEvent;
 import kz.careme.android.model.event.CheckCodeKidEvent;
 import kz.careme.android.model.event.CodeActivatedEvent;
@@ -34,6 +35,7 @@ import kz.careme.android.model.event.GenerateKeyEvent;
 import kz.careme.android.model.event.KidListEvent;
 import kz.careme.android.model.event.MessageLoadedEvent;
 import kz.careme.android.model.event.RegEvent;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -56,6 +58,9 @@ public class WebSocketClient extends WebSocketListener {
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         Log.d("CallService", "Response: " + text);
+        if (text.isEmpty()) {
+            return;
+        }
         BaseAction action = new Gson().fromJson(text, BaseAction.class);
         switch (action.getAction()) {
             case ActionAuth.ACTION:
@@ -116,7 +121,7 @@ public class WebSocketClient extends WebSocketListener {
             @Override
             public void run() {
                 WebSocket webSocket1 = CareMeApp.getCareMeComponent().getOkHttpClient().newWebSocket(webSocket.request().newBuilder().build(), WebSocketClient.this);
-                CareMeApp.getCareMeComponent().setWebSocketClient(webSocket1);
+//                CareMeApp.getCareMeComponent().setWebSocketClient(webSocket1);
                 Log.d("WebSocketClient", "Reconnected!");
             }
         }, 500);

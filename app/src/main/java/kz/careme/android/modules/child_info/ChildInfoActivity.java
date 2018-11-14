@@ -66,7 +66,9 @@ public class ChildInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.action_edit:
-                startActivity(new Intent(this, EditChildInfoActivity.class).putExtra(Const.KID, new Gson().toJson(kid)));
+                startActivity(new Intent(this, EditChildInfoActivity.class)
+                        .putExtra(Const.KID, new Gson().toJson(kid))
+                );
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -74,12 +76,17 @@ public class ChildInfoActivity extends BaseActivity {
 
     @OnClick(R.id.button_a_to_b)
     public void onAToBClick() {
-        startActivity(new Intent(this, PullABellActivity.class).putExtra(Const.KID_ID, kid.getId()));
+        startActivity(new Intent(this, PullABellActivity.class)
+                .putExtra(Const.KID_ID, kid.getId())
+        );
     }
 
     @OnClick(R.id.button_chat)
     public void onChatClick() {
-        startActivity(new Intent(this, ChatActivity.class).putExtra(Const.KID, new Gson().toJson(kid)));
+        startActivity(new Intent(this, ChatActivity.class)
+                .putExtra(Const.KID, new Gson().toJson(kid))
+                .putExtra(Const.ACCOUNT_TYPE, Const.TYPE_PARENT)
+        );
     }
 
     @OnClick(R.id.button_send_signal)

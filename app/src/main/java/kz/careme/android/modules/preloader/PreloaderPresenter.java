@@ -8,7 +8,9 @@ import kz.careme.android.model.Account;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
+import kz.careme.android.model.actions.CheckCodeKidAction;
 import kz.careme.android.model.event.AuthEvent;
+import kz.careme.android.model.event.CheckCodeKidEvent;
 import kz.careme.android.modules.BasePresenter;
 
 @InjectViewState
@@ -28,12 +30,26 @@ public class PreloaderPresenter extends BasePresenter<PreloaderView> {
         account.setPassword(authEvent.getAction().getPassword());
         account.setSid(authEvent.getAction().getSid());
         account.setAccountType(accountType);
+        account.setId(authEvent.getAction().getId());
         getProfiler().setAccount(account);
         if (accountType == Const.TYPE_PARENT) {
             getViewState().startMainActivity();
         } else {
-            getViewState().startChildMainActivity();
+            checkActivation(account.getSid());
         }
+    }
+
+    @Subscribe
+    public void onCheckCode(CheckCodeKidEvent event){
+        if (event.getMessage() == null || event.getMessage().isEmpty()) {
+//            ActionGetParentId actionGetParentId = new ActionGetParentId();
+//            actionGetParentId.setKidSessionId(getProfiler().getAccount().getSid());
+//            getCallService().call(actionGetParentId);
+            getProfiler().getAccount().setParentId(event.getParentId());
+            getViewState().startChildMainActivity(event.getParentId(), event.getChildId());
+            return;
+        }
+        getViewState().startWriteCodeActivity();
     }
 
     public void auth(String email, String password) {
@@ -51,6 +67,13 @@ public class PreloaderPresenter extends BasePresenter<PreloaderView> {
         getCallService().call(actionAuth.toString());
         accountType = Const.TYPE_CHILD;
     }
+
+    private void checkActivation(String sessionId) {
+        CheckCodeKidAction action = new CheckCodeKidAction();
+        action.setSid(sessionId);
+        getCallService().call(action);
+    }
+
 
     public void register() {
 //        CareMeApp.getCareMeComponent().getBus().register(this);

@@ -10,4 +10,6 @@ public interface ChatView extends MvpView {
     void messageLoaded(List<Message> messages);
 
     void messageAdded();
+
+    void addMessage(Message message);
 }

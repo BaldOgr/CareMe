@@ -10,6 +10,7 @@ import kz.careme.android.model.actions.ActionAuthKid;
 import kz.careme.android.model.actions.CheckCodeKidAction;
 import kz.careme.android.model.event.AuthEvent;
 import kz.careme.android.model.event.CheckCodeKidEvent;
+import kz.careme.android.model.event.GetParentIdEvent;
 import kz.careme.android.modules.BasePresenter;
 
 @InjectViewState
@@ -29,6 +30,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         account.setPassword(actionAuth.getAction().getPassword());
         account.setSid(actionAuth.getAction().getSid());
         account.setAccountType(accountType);
+        account.setId(actionAuth.getAction().getId());
         getProfiler().setAccount(account);
         getViewState().saveAccount(account);
         if (accountType == Const.TYPE_CHILD) {
@@ -42,10 +44,19 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     @Subscribe
     public void onCheckCode(CheckCodeKidEvent event){
         if (event.getMessage() == null || event.getMessage().isEmpty()) {
+//            ActionGetParentId actionGetParentId = new ActionGetParentId();
+//            actionGetParentId.setKidSessionId(getProfiler().getAccount().getSid());
+//            getCallService().call(actionGetParentId);
+            getProfiler().getAccount().setParentId(event.getParentId());
             getViewState().startChildMainActivity(event.getParentId(), event.getChildId());
             return;
         }
         getViewState().startWriteCodeActivity();
+    }
+
+    @Subscribe
+    public void onGetParentId(GetParentIdEvent event) {
+        getProfiler().getAccount().setParentId(event.getParentId());
     }
 
     private void checkActivation(String sessionId) {

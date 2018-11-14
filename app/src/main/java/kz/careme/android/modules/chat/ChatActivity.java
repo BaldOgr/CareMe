@@ -3,10 +3,12 @@ package kz.careme.android.modules.chat;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -53,20 +55,35 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     private Kid kid;
     private ChatAdapter adapter;
+    private int accountType;
+    private int receiverId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
         ButterKnife.bind(this);
         initializeActionBar(true, "");
 
-        String kidStr = getIntent().getStringExtra(Const.KID);
-        kid = new Gson().fromJson(kidStr, Kid.class);
-        if (kid.getSessionId() == null) {
-            Log.e("ChatActivity", "Kid id can not be -1");
-            finish();
+        adapter = new ChatAdapter();
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        accountType = getIntent().getIntExtra(Const.ACCOUNT_TYPE, Const.TYPE_PARENT);
+
+        if (accountType == Const.TYPE_PARENT) {
+            String kidStr = getIntent().getStringExtra(Const.KID);
+            kid = new Gson().fromJson(kidStr, Kid.class);
+            if (kid.getSessionId() == null) {
+                Log.e("ChatActivity", "Kid id can not be -1");
+                finish();
+            }
+            receiverId = kid.getId();
+        } else {
+            receiverId = getIntent().getIntExtra(Const.PARENT_ID, -1);
         }
+        presenter.getMessage(receiverId);
 
         Set<String> stringSet = getSharedPreferences(Const.SHARED_PREFERENCES, MODE_PRIVATE)
                 .getStringSet(Const.CHIPS, null);
@@ -78,6 +95,9 @@ public class ChatActivity extends BaseActivity implements ChatView {
                 chipGroup.addView(chip, new ChipGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
         }
+        Chip chip = new Chip(this);
+        chip.setText("+");
+        chipGroup.addView(chip, new ChipGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         mMessage.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,8 +141,6 @@ public class ChatActivity extends BaseActivity implements ChatView {
             public void afterTextChanged(Editable s) {
             }
         });
-        presenter.getMessage(kid);
-        adapter = new ChatAdapter();
     }
 
     @OnClick(R.id.send_message)
@@ -130,7 +148,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
         Toast.makeText(this, "On SendMessage Click1", Toast.LENGTH_SHORT).show();
         String message = mMessage.getText().toString();
         mMessage.setText("");
-        presenter.sendMessage(kid, message);
+        presenter.sendMessage(receiverId, message);
     }
 
     @OnClick(R.id.sound_record)
@@ -143,7 +161,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
         for (int i = 0; i < adapter.getItemCount(); i++) {
             Message message = adapter.getMessages().get(i);
             if (message.isLoading()) {
-                message.setLoading(true);
+                message.setLoading(false);
                 final int finalI = i;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -163,18 +181,37 @@ public class ChatActivity extends BaseActivity implements ChatView {
             @Override
             public void run() {
                 adapter.notifyDataSetChanged();
+                mRecyclerView.getLayoutManager().scrollToPosition(adapter.getItemCount() - 1);
             }
         });
     }
 
-    @OnClick(R.id.expand_chips)
-    public void onExpandButtonClick(View v) {
-        if (chipGroup.isSingleSelection()) {
-            v.animate().rotation(180).setDuration(150).start();
-            chipGroup.setSingleSelection(false);
-        } else {
-            v.animate().rotation(0).setDuration(150).start();
-            chipGroup.setSingleSelection(true);
+    @Override
+    public void addMessage(Message message) {
+        adapter.getMessages().add(message);
+        adapter.notifyItemInserted(adapter.getItemCount());
+        mRecyclerView.getLayoutManager().scrollToPosition(adapter.getItemCount() - 1);
+
+    }
+
+//    @OnClick(R.id.expand_chips)
+//    public void onExpandButtonClick(View v) {
+//        if (chipGroup.isSingleSelection()) {
+//            v.animate().rotation(180).setDuration(150).start();
+//            chipGroup.setSingleSelection(false);
+//        } else {
+//            v.animate().rotation(0).setDuration(150).start();
+//            chipGroup.setSingleSelection(true);
+//        }
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 }

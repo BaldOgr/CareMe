@@ -22,12 +22,16 @@ import android.widget.RemoteViews;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
 import kz.careme.android.model.Account;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionSendGeo;
+import kz.careme.android.model.di.CareMeModule;
 
 public class MyService extends Service {
     MyBinder binder = new MyBinder();
@@ -88,7 +92,7 @@ public class MyService extends Service {
                     sendGeo.setAccuracy(location.getAccuracy());
                     sendGeo.setTime(location.getTime());
                     sendGeo.setSessionId(account.getSid());
-                    sendMessage(sendGeo.toString());
+                    CareMeApp.getCareMeComponent().getCallService().call(sendGeo);
                 }
 
                 @Override
@@ -126,10 +130,6 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         return START_STICKY;
-    }
-
-    public void sendMessage(String message) {
-        CareMeApp.getCareMeComponent().getWebSocketClient().send(message);
     }
 
     @Subscribe

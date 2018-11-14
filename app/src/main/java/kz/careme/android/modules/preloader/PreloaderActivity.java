@@ -2,18 +2,11 @@ package kz.careme.android.modules.preloader;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
@@ -21,15 +14,13 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.util.ArrayList;
 
-import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.ChildMainActivity;
 import kz.careme.android.modules.MainActivity;
 import kz.careme.android.modules.account_type.ChooseAccountTypeActivity;
-import kz.careme.android.modules.login.ChooseLoginActivity;
-import kz.careme.android.modules.service.MyService;
+import kz.careme.android.modules.account_type.WriteCodeActivity;
 
 public class PreloaderActivity extends BaseActivity implements PreloaderView {
 
@@ -150,7 +141,12 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
     }
 
     @Override
-    public void startChildMainActivity() {
+    public void startChildMainActivity(int parentId, int childId) {
+        getSharedPreferences("CareMe", MODE_PRIVATE)
+                .edit()
+                .putInt(Const.PARENT_ID, parentId)
+                .putInt(Const.CHILD_ID, childId)
+                .apply();
         if (!mCheckedPermission) {
             mAuth = true;
             mActivityToStart = ChildMainActivity.class;
@@ -159,5 +155,10 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
         startActivity(new Intent(this, ChildMainActivity.class));
         finish();
         preloaderPresenter.unsubscribe();
+    }
+
+    @Override
+    public void startWriteCodeActivity() {
+        startActivity(new Intent(this, WriteCodeActivity.class).putExtra(Const.ACCOUNT_TYPE, Const.TYPE_CHILD));
     }
 }
