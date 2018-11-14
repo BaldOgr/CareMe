@@ -42,7 +42,7 @@ public class CallService {
                 public void run() {
                     call(message);
                 }
-            }, 5000L);
+            }, 1000L);
         }
     }
 

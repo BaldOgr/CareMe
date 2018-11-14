@@ -18,6 +18,7 @@ import kz.careme.android.CareMeApp;
 import kz.careme.android.model.actions.ActionActivateCode;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
+import kz.careme.android.model.actions.ActionEditKid;
 import kz.careme.android.model.actions.ActionGenerateCode;
 import kz.careme.android.model.actions.ActionGetMessage;
 import kz.careme.android.model.actions.ActionKidList;
@@ -32,6 +33,7 @@ import kz.careme.android.model.event.CheckCodeKidEvent;
 import kz.careme.android.model.event.CodeActivatedEvent;
 import kz.careme.android.model.event.CodeGeneratedEvent;
 import kz.careme.android.model.event.GenerateKeyEvent;
+import kz.careme.android.model.event.KidEditedEvent;
 import kz.careme.android.model.event.KidListEvent;
 import kz.careme.android.model.event.MessageLoadedEvent;
 import kz.careme.android.model.event.RegEvent;
@@ -101,6 +103,9 @@ public class WebSocketClient extends WebSocketListener {
             case ActionSendMessage.ACTION:
                 bus.post(new Gson().fromJson(text, MessageLoadedEvent.class));
                 break;
+            case ActionEditKid.ACTION:
+                bus.post(new Gson().fromJson(text, KidEditedEvent.class));
+                break;
         }
     }
 
@@ -117,15 +122,5 @@ public class WebSocketClient extends WebSocketListener {
     @Override
     public void onFailure(final WebSocket webSocket, Throwable t, @Nullable Response response) {
         super.onFailure(webSocket, t, response);
-        new Timer(false).schedule(new TimerTask() {
-            @Override
-            public void run() {
-                WebSocket webSocket1 = CareMeApp.getCareMeComponent().getOkHttpClient().newWebSocket(webSocket.request().newBuilder().build(), WebSocketClient.this);
-//                CareMeApp.getCareMeComponent().setWebSocketClient(webSocket1);
-                Log.d("WebSocketClient", "Reconnected!");
-            }
-        }, 500);
-        Log.e("WebSocketClient", "Error!!!", t);
-        Log.d("WebSocketClient", "Trying to reconnect...");
     }
 }

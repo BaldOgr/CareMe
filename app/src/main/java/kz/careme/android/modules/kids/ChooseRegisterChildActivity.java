@@ -1,7 +1,6 @@
 package kz.careme.android.modules.kids;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import butterknife.ButterKnife;
@@ -9,7 +8,7 @@ import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.modules.BaseActivity;
-import kz.careme.android.modules.MainActivity;
+import kz.careme.android.modules.parent_main.MainActivity;
 import kz.careme.android.modules.login.register.RegisterActivity;
 
 public class ChooseRegisterChildActivity extends BaseActivity {

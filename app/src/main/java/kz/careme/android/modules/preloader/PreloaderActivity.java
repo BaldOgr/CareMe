@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.modules.BaseActivity;
-import kz.careme.android.modules.ChildMainActivity;
-import kz.careme.android.modules.MainActivity;
+import kz.careme.android.modules.child_main.ChildMainActivity;
+import kz.careme.android.modules.parent_main.MainActivity;
 import kz.careme.android.modules.account_type.ChooseAccountTypeActivity;
 import kz.careme.android.modules.account_type.WriteCodeActivity;
 

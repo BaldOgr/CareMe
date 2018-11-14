@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
-import kz.careme.android.modules.ChangeBehaviorListener;
+import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 import kz.careme.android.modules.more.places.PlacesFragment;
 
 /**

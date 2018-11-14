@@ -23,7 +23,7 @@ public class CareMeModule {
     @Provides
     @SingletonScope
     OkHttpClient getOkHttpClient() {
-        return new OkHttpClient.Builder().connectTimeout(5, TimeUnit.SECONDS).build();
+        return new OkHttpClient.Builder().connectTimeout(1, TimeUnit.SECONDS).build();
     }
 
     @Provides

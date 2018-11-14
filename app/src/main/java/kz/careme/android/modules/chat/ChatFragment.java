@@ -13,7 +13,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
-import kz.careme.android.modules.ChangeBehaviorListener;
+import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 
 /**
  * A simple {@link Fragment} subclass.

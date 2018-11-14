@@ -49,4 +49,6 @@
     <string name="ok">ОК</string>
     <string name="edit">Изменить</string>
     <string name="request_permissions">Для работы приложения необходимо дать разрешение</string>
+    <string name="name">Имя</string>
+    <string name="error_repeat_later">Произошла ошибка, повторите позже</string>
 </resources>

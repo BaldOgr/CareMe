@@ -11,9 +11,8 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import kz.careme.android.BaseFragment;
 import kz.careme.android.R;
-import kz.careme.android.modules.ChangeBehaviorListener;
+import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 
 public class SubscribeFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener {
 

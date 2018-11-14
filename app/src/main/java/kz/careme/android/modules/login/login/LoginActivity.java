@@ -10,7 +10,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
@@ -25,8 +24,7 @@ import kz.careme.android.model.Account;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
-import kz.careme.android.modules.ChildMainActivity;
-import kz.careme.android.modules.account_type.ChooseAccountTypeActivity;
+import kz.careme.android.modules.child_main.ChildMainActivity;
 import kz.careme.android.modules.account_type.WriteCodeActivity;
 import kz.careme.android.modules.kids.ChooseRegisterChildActivity;
 

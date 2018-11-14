@@ -1,4 +1,4 @@
-package kz.careme.android.modules;
+package kz.careme.android.modules.parent_main;
 
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.MapObjectTapListener;

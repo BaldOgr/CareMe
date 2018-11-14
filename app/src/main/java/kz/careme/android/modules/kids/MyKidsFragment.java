@@ -1,13 +1,8 @@
 package kz.careme.android.modules.kids;
 
-import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +11,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.gson.Gson;
 import com.yandex.mapkit.geometry.Point;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,8 +23,8 @@ import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.Kid;
-import kz.careme.android.modules.ChangeBehaviorListener;
-import kz.careme.android.modules.MapActivityView;
+import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
+import kz.careme.android.modules.parent_main.MapActivityView;
 import kz.careme.android.modules.child_info.ChildInfoActivity;
 
 public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObserver.OnGlobalLayoutListener, MyKidsView {

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 public class Profiler {
     private Account account;
     private List<Place> places;
+    private List<Kid> kids;
 
     @Inject
     public Profiler() {
@@ -29,5 +30,13 @@ public class Profiler {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public List<Kid> getKids() {
+        return kids;
+    }
+
+    public void setKids(List<Kid> kids) {
+        this.kids = kids;
     }
 }

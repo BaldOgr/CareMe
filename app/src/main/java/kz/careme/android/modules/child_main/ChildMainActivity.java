@@ -1,18 +1,22 @@
-package kz.careme.android.modules;
+package kz.careme.android.modules.child_main;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.modules.chat.ChatActivity;
-import kz.careme.android.modules.chat.ChatFragment;
 
-public class ChildMainActivity extends AppCompatActivity {
+public class ChildMainActivity extends AppCompatActivity implements ChildMainActivityView {
+
+    @InjectPresenter
+    ChildMainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

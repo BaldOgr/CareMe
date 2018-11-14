@@ -1,8 +1,7 @@
-package kz.careme.android.modules;
+package kz.careme.android.modules.parent_main;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -17,30 +16,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
-import com.yandex.mapkit.map.Callback;
-import com.yandex.mapkit.map.CameraPosition;
-import com.yandex.mapkit.map.IconStyle;
-import com.yandex.mapkit.map.MapObject;
-import com.yandex.mapkit.map.MapObjectCollection;
-import com.yandex.mapkit.map.MapObjectDragListener;
 import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.R;
+import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.chat.ChatActivity;
 import kz.careme.android.modules.chat.ChatFragment;
 import kz.careme.android.modules.kids.MyKidsFragment;
-import kz.careme.android.modules.login.ChooseLoginActivity;
 import kz.careme.android.modules.more.MoreFragment;
 import kz.careme.android.modules.more.places.PlacesFragment;
 import kz.careme.android.modules.settings.SettingsFragment;
@@ -53,8 +42,6 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
 
     @BindView(R.id.map)
     MapView mapView;
-
-    private final Point TARGET_LOCATION = new Point(59.945933, 30.320045);
 
     private FragmentManager mFragmentManager;
     private Fragment mCurrentFragment;
@@ -117,7 +104,6 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     }
 
     public static Bitmap drawableToBitmap (Drawable drawable) {
-
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable)drawable).getBitmap();
         }

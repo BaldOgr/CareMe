@@ -1,10 +1,8 @@
 package kz.careme.android.modules.account_type;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,8 +20,7 @@ import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
-import kz.careme.android.modules.ChildMainActivity;
-import kz.careme.android.modules.MainActivity;
+import kz.careme.android.modules.child_main.ChildMainActivity;
 
 import static kz.careme.android.model.Const.ACCOUNT_TYPE;
 

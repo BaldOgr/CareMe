@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
 import kz.careme.android.model.Profiler;
-import kz.careme.android.modules.ChangeBehaviorListener;
+import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 
 /**
  * A simple {@link Fragment} subclass.
