@@ -9,13 +9,13 @@ public class ActionListenSound extends BaseAction {
     private String sid;
 
     @SerializedName("kid_id")
-    private String kidId;
+    private int kidId;
 
     public ActionListenSound() {
         setAction(ACTION);
     }
 
-    public ActionListenSound(String sid, String kidId) {
+    public ActionListenSound(String sid, int kidId) {
         this();
         this.sid = sid;
         this.kidId = kidId;
@@ -29,11 +29,11 @@ public class ActionListenSound extends BaseAction {
         this.sid = sid;
     }
 
-    public String getKidId() {
+    public int getKidId() {
         return kidId;
     }
 
-    public void setKidId(String kidId) {
+    public void setKidId(int kidId) {
         this.kidId = kidId;
     }
 }
