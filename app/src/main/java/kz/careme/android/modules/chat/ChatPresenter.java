@@ -3,8 +3,8 @@ package kz.careme.android.modules.chat;
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 
 import kz.careme.android.model.Const;
 import kz.careme.android.model.Message;
@@ -22,7 +22,12 @@ public class ChatPresenter extends BasePresenter<ChatView> {
         if ("Added".equals(event.getMessage())) {
             getViewState().messageAdded();
         } else if (event.getMessages() != null) {
-            Collections.reverse(event.getMessages());
+            Collections.sort(event.getMessages(), new Comparator<Message>() {
+                @Override
+                public int compare(Message o1, Message o2) {
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
             getViewState().messageLoaded(event.getMessages());
         }
     }
