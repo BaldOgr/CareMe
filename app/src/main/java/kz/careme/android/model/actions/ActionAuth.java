@@ -15,6 +15,8 @@ public class ActionAuth extends BaseAction{
 
     @SerializedName("sid")
     private String sid;
+    @SerializedName("role")
+    private int role;
 
     public ActionAuth() {
         action = ACTION;
@@ -50,5 +52,13 @@ public class ActionAuth extends BaseAction{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }

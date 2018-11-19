@@ -31,6 +31,7 @@ public class PreloaderPresenter extends BasePresenter<PreloaderView> {
         account.setSid(authEvent.getAction().getSid());
         account.setAccountType(accountType);
         account.setId(authEvent.getAction().getId());
+        account.setRole(authEvent.getAction().getRole());
         getProfiler().setAccount(account);
         if (accountType == Const.TYPE_PARENT) {
             getViewState().startMainActivity();

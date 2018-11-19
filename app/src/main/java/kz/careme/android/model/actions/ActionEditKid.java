@@ -14,11 +14,15 @@ public class ActionEditKid extends BaseAction{
     @SerializedName("lastname")
     private String lastname;
 
+    @SerializedName("session_id")
+    private String sid;
+
     public ActionEditKid() {
         setAction(ACTION);
     }
 
     public ActionEditKid(int kidId, String name, String lastname) {
+        setAction(ACTION);
         this.kidId = kidId;
         this.name = name;
         this.lastname = lastname;
@@ -46,5 +50,13 @@ public class ActionEditKid extends BaseAction{
 
     public void setKidId(int kidId) {
         this.kidId = kidId;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 }

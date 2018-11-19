@@ -19,6 +19,7 @@ import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -32,6 +33,7 @@ import kz.careme.android.model.Const;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionSendGeo;
 import kz.careme.android.model.di.CareMeModule;
+import kz.careme.android.model.event.ListenSoundEvent;
 
 public class MyService extends Service {
     MyBinder binder = new MyBinder();
@@ -119,6 +121,14 @@ public class MyService extends Service {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.createNotificationChannel(channel);
         return channel.getId();
+    }
+
+
+    @Subscribe
+    public void listenSound(ListenSoundEvent event) {
+        if (CareMeApp.getCareMeComponent().getProfiler().getAccount().getRole() == Const.TYPE_CHILD) {
+            Toast.makeText(this, "ListenSound Event!", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

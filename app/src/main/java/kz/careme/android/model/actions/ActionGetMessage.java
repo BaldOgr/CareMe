@@ -5,28 +5,28 @@ import com.google.gson.annotations.SerializedName;
 public class ActionGetMessage extends BaseAction{
     public static final String ACTION = "get_message";
 
-    @SerializedName("sender_id")
-    private int senderId;
-    @SerializedName("receiver_id")
-    private int receiverId;
+    @SerializedName("kid_id")
+    private int kidId;
+    @SerializedName("parent_id")
+    private int parentId;
 
     public ActionGetMessage() {
         setAction(ACTION);
     }
 
-    public int getSenderId() {
-        return senderId;
+    public int getKidId() {
+        return kidId;
     }
 
-    public void setSenderId(int senderId) {
-        this.senderId = senderId;
+    public void setKidId(int kidId) {
+        this.kidId = kidId;
     }
 
-    public int getReceiverId() {
-        return receiverId;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setReceiverId(int receiverId) {
-        this.receiverId = receiverId;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 }

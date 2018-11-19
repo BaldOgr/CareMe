@@ -11,6 +11,8 @@ public class Account {
     private String email;
     @SerializedName("password")
     private String password;
+    @SerializedName("role")
+    private int role;
 
     private int accountType;
     private int parentId;
@@ -61,5 +63,13 @@ public class Account {
 
     public int getParentId() {
         return parentId;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }

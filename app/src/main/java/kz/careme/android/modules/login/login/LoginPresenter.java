@@ -3,6 +3,9 @@ package kz.careme.android.modules.login.login;
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import kz.careme.android.model.Account;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.actions.ActionAuth;
@@ -25,16 +28,23 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             getViewState().showIncorrectLogin();
             return;
         }
-        Account account = new Account();
+        final Account account = new Account();
         account.setEmail(actionAuth.getAction().getEmail());
         account.setPassword(actionAuth.getAction().getPassword());
         account.setSid(actionAuth.getAction().getSid());
         account.setAccountType(accountType);
         account.setId(actionAuth.getAction().getId());
+        account.setRole(actionAuth.getAction().getRole());
         getProfiler().setAccount(account);
         getViewState().saveAccount(account);
         if (accountType == Const.TYPE_CHILD) {
-            checkActivation(account.getSid());
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    checkActivation(account.getSid());
+                }
+            }, 500L);
+
             return;
         }
         getViewState().startWriteCodeActivity();
@@ -42,7 +52,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     }
 
     @Subscribe
-    public void onCheckCode(CheckCodeKidEvent event){
+    public void onCheckCode(CheckCodeKidEvent event) {
         if (event.getMessage() == null || event.getMessage().isEmpty()) {
 //            ActionGetParentId actionGetParentId = new ActionGetParentId();
 //            actionGetParentId.setKidSessionId(getProfiler().getAccount().getSid());

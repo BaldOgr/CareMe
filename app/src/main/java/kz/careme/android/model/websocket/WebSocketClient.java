@@ -7,10 +7,6 @@ import com.squareup.otto.Bus;
 
 import org.json.JSONException;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
@@ -22,22 +18,21 @@ import kz.careme.android.model.actions.ActionEditKid;
 import kz.careme.android.model.actions.ActionGenerateCode;
 import kz.careme.android.model.actions.ActionGetMessage;
 import kz.careme.android.model.actions.ActionKidList;
+import kz.careme.android.model.actions.ActionListenSound;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
 import kz.careme.android.model.actions.ActionSendMessage;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.actions.CheckCodeKidAction;
-import kz.careme.android.model.di.CareMeComponent;
 import kz.careme.android.model.event.AuthEvent;
 import kz.careme.android.model.event.CheckCodeKidEvent;
 import kz.careme.android.model.event.CodeActivatedEvent;
 import kz.careme.android.model.event.CodeGeneratedEvent;
-import kz.careme.android.model.event.GenerateKeyEvent;
 import kz.careme.android.model.event.KidEditedEvent;
 import kz.careme.android.model.event.KidListEvent;
+import kz.careme.android.model.event.ListenSoundEvent;
 import kz.careme.android.model.event.MessageLoadedEvent;
 import kz.careme.android.model.event.RegEvent;
-import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -106,6 +101,9 @@ public class WebSocketClient extends WebSocketListener {
             case ActionEditKid.ACTION:
                 bus.post(new Gson().fromJson(text, KidEditedEvent.class));
                 break;
+            case ActionListenSound.ACTION:
+                bus.post(new Gson().fromJson(text, ListenSoundEvent.class));
+
         }
     }
 

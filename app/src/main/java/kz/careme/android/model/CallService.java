@@ -35,7 +35,9 @@ public class CallService {
 
     public void call(final String message) {
         Log.d("CallService", "Calling: " + message);
-        if (!webSocket.send(message)) {
+        boolean sended = webSocket.send(message);
+        Log.d("CallService", "Is sended: " + sended);
+        if (!sended) {
             reconnect();
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -51,11 +53,15 @@ public class CallService {
     }
 
     public void call(BaseAction sendMessage) {
+        if (sendMessage.getAction() == null || sendMessage.getAction().isEmpty())
+            throw new IllegalArgumentException("Action cannot be null or empty!");
         call(sendMessage.toString());
     }
 
     public void reconnect() {
+        Log.d("CallService", "Reconnecting...");
         Request request = new Request.Builder().url("ws://195.93.152.96:11210").build();
         webSocket = CareMeApp.getCareMeComponent().getOkHttpClient().newWebSocket(request, webSocketClient);
+        Log.d("CallService", "Reconnected!");
     }
 }

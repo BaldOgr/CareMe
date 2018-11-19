@@ -10,9 +10,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/chips_layout"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp" />
+        android:layout_above="@id/chips_layout" />
 
     <View
         android:id="@+id/devider_up"

@@ -189,7 +189,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @Override
     public void addMessage(Message message) {
         adapter.getMessages().add(message);
-        adapter.notifyItemInserted(adapter.getItemCount());
+        adapter.notifyItemInserted(adapter.getItemCount() - 1);
         mRecyclerView.getLayoutManager().scrollToPosition(adapter.getItemCount() - 1);
 
     }
