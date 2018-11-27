@@ -51,4 +51,7 @@
     <string name="request_permissions">Для работы приложения необходимо дать разрешение</string>
     <string name="name">Имя</string>
     <string name="error_repeat_later">Произошла ошибка, повторите позже</string>
+    <string name="need_to_set_place_name">Необходимо дать название для места!</string>
+    <string name="something_went_wrong">Что-то пошло не так...</string>
+    <string name="place_saved">Безопасное место добавлено!</string>
 </resources>

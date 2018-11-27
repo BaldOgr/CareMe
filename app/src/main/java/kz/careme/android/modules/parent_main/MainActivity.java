@@ -187,8 +187,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     @Override
     @UiThread
     public void setMarker(Point point, float opacity) {
-        PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(bitmap));
-        placemarkMapObject.setOpacity(opacity);
+        mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(bitmap));
     }
 
     @Override
@@ -196,6 +195,5 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     public void setMarker(Point point, float opacity, MapObjectTapListener listener) {
         PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(bitmap));
         placemarkMapObject.addTapListener(listener);
-        placemarkMapObject.setOpacity(opacity);
     }
 }

@@ -21,6 +21,7 @@ import kz.careme.android.model.actions.ActionKidList;
 import kz.careme.android.model.actions.ActionListenSound;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
+import kz.careme.android.model.actions.ActionSavePlace;
 import kz.careme.android.model.actions.ActionSendMessage;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.actions.CheckCodeKidAction;
@@ -32,6 +33,7 @@ import kz.careme.android.model.event.KidEditedEvent;
 import kz.careme.android.model.event.KidListEvent;
 import kz.careme.android.model.event.ListenSoundEvent;
 import kz.careme.android.model.event.MessageLoadedEvent;
+import kz.careme.android.model.event.PlaceAddedEvent;
 import kz.careme.android.model.event.RegEvent;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -103,6 +105,8 @@ public class WebSocketClient extends WebSocketListener {
                 break;
             case ActionListenSound.ACTION:
                 bus.post(new Gson().fromJson(text, ListenSoundEvent.class));
+            case ActionSavePlace.ACTION:
+                bus.post(new Gson().fromJson(text, PlaceAddedEvent.class));
 
         }
     }

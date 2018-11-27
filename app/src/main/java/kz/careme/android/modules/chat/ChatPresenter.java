@@ -32,10 +32,6 @@ public class ChatPresenter extends BasePresenter<ChatView> {
         }
     }
 
-    @Subscribe
-    public void onMessageAdded(MessageAddedEvent event) {
-    }
-
     public void getMessage(int receiverId) {
         ActionGetMessage getMessage = new ActionGetMessage();
         if (getProfiler().getAccount().getAccountType() == Const.TYPE_PARENT) {
