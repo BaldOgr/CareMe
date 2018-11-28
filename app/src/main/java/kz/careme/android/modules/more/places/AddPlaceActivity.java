@@ -74,7 +74,7 @@ public class AddPlaceActivity extends BaseActivity implements AddPlaceView {
 //        mapView.getMap().getUserLocationLayer().setEnabled(true);
 //        mapView.getMap().getUserLocationLayer().setAutoZoomEnabled(true);
 
-        kidId = getIntent().getIntExtra(Const.KID_ID, -1);
+        kidId = getIntent().getIntExtra(Const.KID_ID, 1);
         if (kidId == -1) {
             throw new IllegalArgumentException("KidId cannot be -1");
         }
@@ -218,14 +218,24 @@ public class AddPlaceActivity extends BaseActivity implements AddPlaceView {
 
     @Override
     public void onSuccess() {
-        DialogUtil.closeDialog(this);
-        Toast.makeText(this, R.string.place_saved, Toast.LENGTH_SHORT).show();
-        finish();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DialogUtil.closeDialog(AddPlaceActivity.this);
+                Toast.makeText(AddPlaceActivity.this, R.string.place_saved, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
     @Override
     public void onFailure() {
-        DialogUtil.closeDialog(this);
-        Toast.makeText(this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DialogUtil.closeDialog(AddPlaceActivity.this);
+                Toast.makeText(AddPlaceActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

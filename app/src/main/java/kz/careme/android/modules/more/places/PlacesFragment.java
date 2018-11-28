@@ -14,17 +14,24 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
+import kz.careme.android.model.Place;
 import kz.careme.android.model.Profiler;
 import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlacesFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener {
+public class PlacesFragment extends MvpAppCompatFragment implements ViewTreeObserver.OnGlobalLayoutListener, PlacesView {
     public static final String TAG = "PlacesFragment";
 
 
@@ -45,6 +52,9 @@ public class PlacesFragment extends Fragment implements ViewTreeObserver.OnGloba
     View mHeader;
 
     Profiler mProfiler;
+
+    @InjectPresenter
+    PlacesPresenter presenter;
 
     private PlacesAdapter mAdapter;
 
@@ -93,5 +103,10 @@ public class PlacesFragment extends Fragment implements ViewTreeObserver.OnGloba
             mChangeBehaviorListener.changeBehaviorPeekSize(height);
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPlacesLoaded(List<Place> places) {
+        mAdapter.setPlaces(places);
     }
 }
