@@ -37,7 +37,9 @@
         </activity>
         <activity android:name=".modules.login.register.RegisterActivity" />
         <activity android:name=".modules.login.login.LoginActivity" />
-        <activity android:name=".modules.account_type.ChooseAccountTypeActivity" />
+        <activity
+            android:name=".modules.account_type.ChooseAccountTypeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".modules.account_type.WriteCodeActivity" />
         <activity android:name=".modules.child_info.ChildInfoActivity" />
         <activity
@@ -65,7 +67,8 @@
             android:exported="true" />
 
         <activity android:name=".modules.kids.ChooseRegisterChildActivity" />
-        <activity android:name=".modules.kids.EditChildInfoActivity"></activity>
+        <activity android:name=".modules.kids.EditChildInfoActivity" />
+        <activity android:name=".modules.child_main.PullABellChildActivity"></activity>
     </application>
 
 </manifest>

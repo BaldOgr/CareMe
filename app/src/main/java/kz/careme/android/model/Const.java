@@ -16,4 +16,6 @@ public class Const {
     public static final String CHILD_ID = "child_id";
     public static final String KID = "kid";
     public static final String CHIPS = "chips";
+    public static final String KID_SESSION_ID = "kid_session_id";
+    public static final String ACTION_DISABLE_ALARM = "disable_alarm";
 }

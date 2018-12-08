@@ -34,7 +34,9 @@ import kz.careme.android.model.event.KidListEvent;
 import kz.careme.android.model.event.ListenSoundEvent;
 import kz.careme.android.model.event.MessageLoadedEvent;
 import kz.careme.android.model.event.PlaceAddedEvent;
+import kz.careme.android.model.event.PullABellEvent;
 import kz.careme.android.model.event.RegEvent;
+import kz.careme.android.modules.more.ActionPullABell;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -107,6 +109,8 @@ public class WebSocketClient extends WebSocketListener {
                 bus.post(new Gson().fromJson(text, ListenSoundEvent.class));
             case ActionSavePlace.ACTION:
                 bus.post(new Gson().fromJson(text, PlaceAddedEvent.class));
+            case ActionPullABell.ACTION:
+                bus.post(new Gson().fromJson(text, PullABellEvent.class));
 
         }
     }

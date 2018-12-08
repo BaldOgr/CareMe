@@ -91,7 +91,7 @@ public class ChildInfoActivity extends BaseActivity {
 
     @OnClick(R.id.button_send_signal)
     public void onSendSignalClick() {
-        startActivity(new Intent(this, PullABellActivity.class).putExtra(Const.KID_ID, kid.getId()));
+        startActivity(new Intent(this, PullABellActivity.class).putExtra(Const.KID_SESSION_ID, kid.getSessionId()));
     }
 
     @OnClick(R.id.button_microphone)

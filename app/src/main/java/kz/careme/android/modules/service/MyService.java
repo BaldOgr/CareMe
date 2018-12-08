@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +13,16 @@ import android.graphics.Canvas;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -34,12 +39,16 @@ import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionSendGeo;
 import kz.careme.android.model.di.CareMeModule;
 import kz.careme.android.model.event.ListenSoundEvent;
+import kz.careme.android.model.event.PullABellEvent;
+import kz.careme.android.modules.child_main.PullABellChildActivity;
 
 public class MyService extends Service {
     MyBinder binder = new MyBinder();
     private Notification notification;
     private LocationManager locationManager;
-
+    private Ringtone r;
+    private Notification alarmNotification;
+    private NotificationManager mNotificationManager;
     public MyService() {
         CareMeApp.getCareMeComponent().getBus().register(this);
     }
@@ -131,6 +140,48 @@ public class MyService extends Service {
         }
     }
 
+    @Subscribe
+    public void pullABell(PullABellEvent event) {
+        if (CareMeApp.getCareMeComponent().getProfiler().getAccount().getRole() == Const.TYPE_CHILD) {
+            String channelId = "";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                channelId = createNotificationChanel("my_service", "CareMeApp", NotificationManager.IMPORTANCE_HIGH);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                alarmNotification = new NotificationCompat.Builder(this, channelId)
+                        .setLocalOnly(true)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                        .setCategory(Notification.CATEGORY_SERVICE)
+                        .setContentIntent(PendingIntent.getService(this,
+                                1,
+                                new Intent(this, MyService.class).setAction(Const.ACTION_DISABLE_ALARM),
+                                0))
+                        .build();
+            } else {
+                alarmNotification = new NotificationCompat.Builder(this, channelId)
+                        .setLocalOnly(true)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setCategory(Notification.CATEGORY_SERVICE)
+                        .setContentIntent(PendingIntent.getService(this,
+                                1,
+                                new Intent(this, MyService.class).setAction(Const.ACTION_DISABLE_ALARM),
+                                0))
+                        .build();
+            }
+            try {
+                Uri notify = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                r = RingtoneManager.getRingtone(getApplicationContext(), notify);
+                r.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(101, alarmNotification);
+        }
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -138,7 +189,10 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        if (Const.ACTION_DISABLE_ALARM.equalsIgnoreCase(intent.getAction())) {
+            r.stop();
+            mNotificationManager.cancel(101);
+        }
         return START_STICKY;
     }
 
