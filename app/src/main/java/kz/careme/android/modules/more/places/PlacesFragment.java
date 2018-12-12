@@ -109,4 +109,15 @@ public class PlacesFragment extends MvpAppCompatFragment implements ViewTreeObse
     public void onPlacesLoaded(List<Place> places) {
         mAdapter.setPlaces(places);
     }
+
+    @Override
+    public void onPLaceAdded(Place place) {
+        mAdapter.getPlaces().add(place);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyItemInserted(mAdapter.getItemCount());
+            }
+        });
+    }
 }

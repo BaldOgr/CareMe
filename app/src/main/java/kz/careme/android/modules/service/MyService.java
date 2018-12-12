@@ -6,8 +6,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.location.Location;
@@ -49,6 +51,14 @@ public class MyService extends Service {
     private Ringtone r;
     private Notification alarmNotification;
     private NotificationManager mNotificationManager;
+    private int batteryLevel = -1;
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            batteryLevel = intent.getIntExtra("level", -1);
+        }
+    };
+
     public MyService() {
         CareMeApp.getCareMeComponent().getBus().register(this);
     }
@@ -89,11 +99,17 @@ public class MyService extends Service {
                 return;
             }
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            this.registerReceiver(mBatInfoReceiver,
+                    new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 100, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     Account account = CareMeApp.getCareMeComponent().getProfiler().getAccount();
                     if (account == null || account.getSid().isEmpty()) {
+                        return;
+                    }
+                    if (account.getRole() == Const.TYPE_PARENT) {
+                        locationManager.removeUpdates(this);
                         return;
                     }
                     ActionSendGeo sendGeo = new ActionSendGeo();
@@ -103,6 +119,9 @@ public class MyService extends Service {
                     sendGeo.setAccuracy(location.getAccuracy());
                     sendGeo.setTime(location.getTime());
                     sendGeo.setSessionId(account.getSid());
+                    if (batteryLevel != -1) {
+                        sendGeo.setBatteryLevel(String.valueOf(batteryLevel));
+                    }
                     CareMeApp.getCareMeComponent().getCallService().call(sendGeo);
                 }
 

@@ -2,11 +2,13 @@ package kz.careme.android.model;
 
 public class Place {
     private int id;
-    private float posX;
-    private float posY;
-    private int safeRadius;
-    private String name;
+    private double latitude;
+    private double longitude;
+    private int radius;
+    private String title;
     private String address;
+    private int type;
+    private int kidId;
 
     public int getId() {
         return id;
@@ -16,36 +18,44 @@ public class Place {
         this.id = id;
     }
 
-    public float getPosX() {
-        return posX;
+    public int getKidId() {
+        return kidId;
     }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
+    public void setKidId(int kidId) {
+        this.kidId = kidId;
     }
 
-    public float getPosY() {
-        return posY;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public int getSafeRadius() {
-        return safeRadius;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public void setSafeRadius(int safeRadius) {
-        this.safeRadius = safeRadius;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setPosY(float posY) {
-        this.posY = posY;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
-    public String getName() {
-        return name;
+    public int getRadius() {
+        return radius;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAddress() {
@@ -54,5 +64,13 @@ public class Place {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

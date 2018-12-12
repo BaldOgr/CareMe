@@ -45,8 +45,8 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     onKidClick.onClick(kidsList.get(viewHolder.getAdapterPosition()));
                 }
             });
-            ((ChildHolder) viewHolder).childName.setText(kid.getName() + " " + kid.getLastname());
-            ((ChildHolder) viewHolder).battery.setText(kid.getBatteryLevel());
+            ((ChildHolder) viewHolder).childName.setText(String.format("%s %s", kid.getName(), kid.getLastname()));
+            ((ChildHolder) viewHolder).battery.setText(String.format("%s%%", kid.getBatteryLevel()));
             if (kid.getAvatar() != null && !kid.getAvatar().isEmpty())
                 Picasso.get()
                         .load(kid.getAvatar())

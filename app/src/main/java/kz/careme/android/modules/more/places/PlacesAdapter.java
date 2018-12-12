@@ -28,7 +28,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.address.setText(places.get(i).getAddress());
-        viewHolder.name.setText(places.get(i).getName());
+        viewHolder.name.setText(places.get(i).getTitle());
     }
 
     @Override
@@ -38,6 +38,10 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.ViewHolder
 
     public void setPlaces(List<Place> places) {
         this.places = places;
+    }
+
+    public List<Place> getPlaces() {
+        return places;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

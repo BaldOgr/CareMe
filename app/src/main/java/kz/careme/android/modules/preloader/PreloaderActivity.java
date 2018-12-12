@@ -2,6 +2,7 @@ package kz.careme.android.modules.preloader;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.arch.core.executor.TaskExecutor;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
@@ -59,11 +62,13 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.RECORD_AUDIO
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.ACCESS_FINE_LOCATION
             };
             int count = permissions.length;
             for (int i = 0; i < permissions.length; i++) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])
+                        && ActivityCompat.checkSelfPermission(this, permissions[i]) == PackageManager.PERMISSION_GRANTED) {
                     permissions[i] = null;
                     count--;
                 }
@@ -99,13 +104,7 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String[] strings = new String[permissionsToRequest.size()];
-                                for (int i = 0; i < permissionsToRequest.size(); i++) {
-                                    strings[i] = permissionsToRequest.get(i);
-                                }
-                                ActivityCompat.requestPermissions(PreloaderActivity.this,
-                                        strings,
-                                        REQUEST_PERMISSIONS);
+                                finish();
                             }
                         })
                         .setCancelable(false)
@@ -121,6 +120,12 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
         if (!mCheckedPermission) {
             mAuth = true;
             mActivityToStart = ChooseAccountTypeActivity.class;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    startChooseAccountTypeActivity();
+                }
+            }, 1000L);
             return;
         }
         startActivity(new Intent(this, ChooseAccountTypeActivity.class));
@@ -133,6 +138,12 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
         if (!mCheckedPermission) {
             mAuth = true;
             mActivityToStart = MainActivity.class;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    startMainActivity();
+                }
+            }, 1000L);
             return;
         }
         startActivity(new Intent(this, MainActivity.class));
@@ -141,7 +152,7 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
     }
 
     @Override
-    public void startChildMainActivity(int parentId, int childId) {
+    public void startChildMainActivity(final int parentId, final int childId) {
         getSharedPreferences("CareMe", MODE_PRIVATE)
                 .edit()
                 .putInt(Const.PARENT_ID, parentId)
@@ -150,6 +161,12 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
         if (!mCheckedPermission) {
             mAuth = true;
             mActivityToStart = ChildMainActivity.class;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    startChildMainActivity(parentId, childId);
+                }
+            }, 1000L);
             return;
         }
         startActivity(new Intent(this, ChildMainActivity.class));
