@@ -1,5 +1,7 @@
 package kz.careme.android.modules.parent_main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,8 +16,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.MapObjectTapListener;
@@ -25,7 +29,10 @@ import com.yandex.runtime.image.ImageProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
+import kz.careme.android.model.Const;
+import kz.careme.android.model.Kid;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.chat.ChatActivity;
 import kz.careme.android.modules.chat.ChatFragment;
@@ -56,7 +63,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        bitmap =  drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker));
+        bitmap = drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker));
         mFragmentManager = getSupportFragmentManager();
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_behavior));
         mBottomNavigationView.setOnNavigationItemSelectedListener(
@@ -77,7 +84,19 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                                 showFragment(MoreFragment.TAG);
                                 break;
                             case R.id.action_chat:
-                                startActivity(new Intent(MainActivity.this, ChatActivity.class));
+                                final ArrayAdapter<Kid> kidArrayAdapter = new ArrayAdapter<>(MainActivity.this,
+                                        android.R.layout.simple_list_item_1, CareMeApp.getCareMeComponent().getProfiler().getKids());
+
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                startActivity(new Intent(MainActivity.this, ChatActivity.class)
+                                                        .putExtra(Const.KID, new Gson().toJson(kidArrayAdapter.getItem(which)))
+                                                );
+                                            }
+                                        })
+                                        .show();
                                 return false;
                         }
                         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -103,9 +122,9 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         super.onStop();
     }
 
-    public static Bitmap drawableToBitmap (Drawable drawable) {
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable)drawable).getBitmap();
+            return ((BitmapDrawable) drawable).getBitmap();
         }
 
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

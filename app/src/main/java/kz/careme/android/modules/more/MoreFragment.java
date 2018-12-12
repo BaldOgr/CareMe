@@ -1,6 +1,8 @@
 package kz.careme.android.modules.more;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,16 +12,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
+import kz.careme.android.model.Const;
+import kz.careme.android.model.Kid;
+import kz.careme.android.modules.chat.ChatActivity;
 import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 import kz.careme.android.modules.more.places.PlacesFragment;
+import kz.careme.android.modules.parent_main.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +50,8 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
     @BindView(R.id.bottom_sheet_header)
     View mHeader;
 
+    private ArrayAdapter<Kid> kidArrayAdapter;
+
     private ChangeBehaviorListener mChangeBehaviorListener;
 
     public MoreFragment() {
@@ -57,18 +70,54 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
         ButterKnife.bind(this, view);
         mHeaderImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_functionlight));
         mHeaderText.setText(R.string.more_functions);
+        kidArrayAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_list_item_1, CareMeApp.getCareMeComponent().getProfiler().getKids());
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         return view;
     }
 
     @OnClick(R.id.button_send_signal)
     public void onSendSignalClick() {
-        startActivity(new Intent(getContext(), PullABellActivity.class));
+        new AlertDialog.Builder(getContext())
+                .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(getContext(), PullABellActivity.class)
+                                .putExtra(Const.KID_SESSION_ID, kidArrayAdapter.getItem(which).getSessionId()));
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.button_microphone)
     public void onSoundAroundPhoneClick() {
-        startActivity(new Intent(getContext(), SoundAroundPhoneActivity.class));
+        new AlertDialog.Builder(getContext())
+                .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(getContext(), SoundAroundPhoneActivity.class)
+                                .putExtra(Const.KID_ID, kidArrayAdapter.getItem(which).getId()));
+                    }
+                })
+                .show();
+    }
+
+    @OnClick(R.id.button_a_to_b)
+    public void onAToBClick() {
+        Toast.makeText(getContext(), "В разработке", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.button_chat)
+    public void onChatButtonClick() {
+        new AlertDialog.Builder(getContext())
+                .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(getContext(), ChatActivity.class)
+                                .putExtra(Const.KID, new Gson().toJson(kidArrayAdapter.getItem(which))));
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.button_places)

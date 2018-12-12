@@ -173,4 +173,9 @@ public class Kid {
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
+
+    @Override
+    public String toString() {
+        return getName() + " " + getLastname();
+    }
 }
