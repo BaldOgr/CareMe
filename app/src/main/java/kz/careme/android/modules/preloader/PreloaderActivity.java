@@ -60,10 +60,9 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
+            String[] permissions = new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.ACCESS_FINE_LOCATION
             };
             int count = permissions.length;
             for (int i = 0; i < permissions.length; i++) {
@@ -109,8 +108,11 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
                         })
                         .setCancelable(false)
                         .show();
-            } else if (mAuth) {
-                startActivity(new Intent(this, mActivityToStart));
+            } else {
+                mCheckedPermission = true;
+                if (mAuth) {
+                    startActivity(new Intent(this, mActivityToStart));
+                }
             }
         }
     }
