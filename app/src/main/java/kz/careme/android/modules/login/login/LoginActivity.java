@@ -78,7 +78,8 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
                 DialogUtil.showDialog(this, "Loading");
                 String email = mEditTextEmail.getText().toString();
                 String password = mEditTextPassword.getText().toString();
-                if (!checkFields(email, password)) break;
+                if (!checkFields(email, password))
+                    return super.onOptionsItemSelected(item);
                 if (mAccountType == Const.TYPE_PARENT) {
                     presenter.auth(email, password);
                 } else {
@@ -93,17 +94,16 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     }
 
     private boolean checkFields(String email, String password) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(email);
-        boolean check = true;
-        if (!matcher.find()) {
-            mLayoutEmail.setError("Введите корректный email");
-            check = false;
-        }
-        if (password.length() <= 5) {
-            mLayoutPassword.setError("Пароль должен содержать не менее 6 символов");
-            check = false;
-        }
-        return check;
+//        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+//        if (!matcher.find()) {
+//            mLayoutEmail.setError("Введите корректный email");
+//            return false;
+//        }
+//        if (password.length() <= 5) {
+//            mLayoutPassword.setError("Пароль должен содержать не менее 6 символов");
+//            return false;
+//        }
+        return true;
     }
 
     @Override
