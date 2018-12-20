@@ -22,6 +22,26 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_HOLDER_ADD = 1;
     private List<Kid> kidsList;
     private OnKidClick onKidClick;
+    private OnAddChildClick onAddChildClick;
+    private boolean showAddKidAction = true;
+
+    public KidsAdapter() {
+    }
+
+    public KidsAdapter(OnKidClick onKidClick) {
+        this.onKidClick = onKidClick;
+    }
+
+    public KidsAdapter(List<Kid> kidsList, OnKidClick onKidClick) {
+        this.kidsList = kidsList;
+        this.onKidClick = onKidClick;
+    }
+
+    public KidsAdapter(List<Kid> kidsList, OnKidClick onKidClick, boolean showAddKidAction) {
+        this.kidsList = kidsList;
+        this.onKidClick = onKidClick;
+        this.showAddKidAction = showAddKidAction;
+    }
 
     @NonNull
     @Override
@@ -51,16 +71,34 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Picasso.get()
                         .load(kid.getAvatar())
                         .into(((ChildHolder) viewHolder).image);
+        } else if (viewHolder instanceof AddChildHolder){
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAddChildClick.onClick();
+                }
+            });
         }
     }
     @Override
     public int getItemViewType(int position) {
-        return kidsList == null || position >= kidsList.size() || kidsList.get(position) == null ? VIEW_HOLDER_ADD : VIEW_HOLDER_CHILD;
+        return (showAddKidAction &&
+                (kidsList == null || position >= kidsList.size() || kidsList.get(position) == null))
+                ? VIEW_HOLDER_ADD : VIEW_HOLDER_CHILD;
     }
 
     @Override
     public int getItemCount() {
-        return kidsList == null ? 1 : kidsList.size() + 1;
+        int i = showAddKidAction ? 0 : 1;
+        return kidsList == null ? 1 - i : kidsList.size() + 1 - i;
+    }
+
+    public void setShowAddKidAction(boolean showAddKidAction) {
+        this.showAddKidAction = showAddKidAction;
+    }
+
+    public void setOnAddChildClick(OnAddChildClick onAddChildClick) {
+        this.onAddChildClick = onAddChildClick;
     }
 
     public void setKidsList(List<Kid> kidsList) {
@@ -98,12 +136,6 @@ public class KidsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         AddChildHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
         }
     }
 }

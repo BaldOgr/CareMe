@@ -68,7 +68,8 @@
 
         <activity android:name=".modules.kids.ChooseRegisterChildActivity" />
         <activity android:name=".modules.kids.EditChildInfoActivity" />
-        <activity android:name=".modules.child_main.PullABellChildActivity"></activity>
+        <activity android:name=".modules.child_main.PullABellChildActivity" />
+        <activity android:name=".modules.chat.ChooseChatActivity"></activity>
     </application>
 
 </manifest>

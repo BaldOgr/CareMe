@@ -1,5 +1,7 @@
 package kz.careme.android.modules.chat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
 import android.os.Bundle;
@@ -57,6 +59,18 @@ public class ChatActivity extends BaseActivity implements ChatView {
     private ChatAdapter adapter;
     private int accountType;
     private int receiverId;
+
+    public static Intent getParentIntent(Context context, int accountType, Kid kid) {
+        return new Intent(context, ChatActivity.class)
+                .putExtra(Const.ACCOUNT_TYPE, accountType)
+                .putExtra(Const.KID, new Gson().toJson(kid));
+    }
+
+    public static Intent getChildIntent(Context context, int accountType, int receiverId) {
+        return new Intent(context, ChatActivity.class)
+                .putExtra(Const.ACCOUNT_TYPE, accountType)
+                .putExtra(Const.PARENT_ID, receiverId);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

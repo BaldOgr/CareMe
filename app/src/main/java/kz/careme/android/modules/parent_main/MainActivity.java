@@ -37,6 +37,7 @@ import kz.careme.android.model.Kid;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.chat.ChatActivity;
 import kz.careme.android.modules.chat.ChatFragment;
+import kz.careme.android.modules.chat.ChooseChatActivity;
 import kz.careme.android.modules.kids.MyKidsFragment;
 import kz.careme.android.modules.more.MoreFragment;
 import kz.careme.android.modules.more.places.PlacesFragment;
@@ -85,19 +86,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                                 showFragment(MoreFragment.TAG);
                                 break;
                             case R.id.action_chat:
-                                final ArrayAdapter<Kid> kidArrayAdapter = new ArrayAdapter<>(MainActivity.this,
-                                        android.R.layout.simple_list_item_1, CareMeApp.getCareMeComponent().getProfiler().getKids());
-
-                                new AlertDialog.Builder(MainActivity.this)
-                                        .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                startActivity(new Intent(MainActivity.this, ChatActivity.class)
-                                                        .putExtra(Const.KID, new Gson().toJson(kidArrayAdapter.getItem(which)))
-                                                );
-                                            }
-                                        })
-                                        .show();
+                                startActivity(new Intent(MainActivity.this, ChooseChatActivity.class));
                                 return false;
                         }
                         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

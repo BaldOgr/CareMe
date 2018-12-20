@@ -23,6 +23,7 @@ import butterknife.OnClick;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.Kid;
+import kz.careme.android.modules.login.register.RegisterActivity;
 import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 import kz.careme.android.modules.parent_main.MapActivityView;
 import kz.careme.android.modules.child_info.ChildInfoActivity;
@@ -67,6 +68,14 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new KidsAdapter();
+        adapter.setOnAddChildClick(new OnAddChildClick() {
+            @Override
+            public void onClick() {
+                startActivity(new Intent(getContext(), RegisterActivity.class)
+                        .putExtra(Const.ACTION, Const.ACTION_REGISTER_KID)
+                        .putExtra(Const.ACCOUNT_TYPE, Const.TYPE_CHILD));
+            }
+        });
         mRecyclerView.setAdapter(adapter);
         adapter.setOnKidClick(new OnKidClick() {
             @Override
