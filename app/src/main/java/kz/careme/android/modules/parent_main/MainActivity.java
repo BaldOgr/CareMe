@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
@@ -106,6 +107,10 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         mBottomNavigationView.setSelectedItemId(R.id.action_my_kids);
         toast = Toast.makeText(this, R.string.press_again_for_exit, Toast.LENGTH_SHORT);
 
+        CameraPosition cameraPosition = mapView.getMap().getCameraPosition();
+
+        mapView.getMap().move(new CameraPosition(cameraPosition.getTarget(), 15,
+                cameraPosition.getAzimuth(), cameraPosition.getTilt()));
     }
 
     @Override
