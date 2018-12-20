@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="top|center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/button_a_to_b"
@@ -34,7 +35,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="top|center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/button_chat"
