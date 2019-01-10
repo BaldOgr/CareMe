@@ -1,41 +1,53 @@
 package kz.careme.android.modules.parent_main;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.map.CameraPosition;
-import com.yandex.mapkit.map.MapObjectTapListener;
-import com.yandex.mapkit.map.PlacemarkMapObject;
+import com.yandex.mapkit.map.CompositeIcon;
+import com.yandex.mapkit.map.IconStyle;
+import com.yandex.mapkit.map.RotationType;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.mapkit.user_location.UserLocationLayer;
+import com.yandex.mapkit.user_location.UserLocationObjectListener;
+import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import kz.careme.android.CareMeApp;
+import butterknife.OnClick;
 import kz.careme.android.R;
-import kz.careme.android.model.Const;
-import kz.careme.android.model.Kid;
 import kz.careme.android.modules.BaseActivity;
-import kz.careme.android.modules.chat.ChatActivity;
 import kz.careme.android.modules.chat.ChatFragment;
 import kz.careme.android.modules.chat.ChooseChatActivity;
 import kz.careme.android.modules.kids.MyKidsFragment;
@@ -44,7 +56,7 @@ import kz.careme.android.modules.more.places.PlacesFragment;
 import kz.careme.android.modules.settings.SettingsFragment;
 import kz.careme.android.modules.subscribe.SubscribeFragment;
 
-public class MainActivity extends BaseActivity implements ChangeBehaviorListener, MapActivityView {
+public class MainActivity extends BaseActivity implements ChangeBehaviorListener, MapActivityView, UserLocationObjectListener {
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView mBottomNavigationView;
@@ -57,7 +69,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     private BottomSheetBehavior mBottomSheetBehavior;
     private Toast toast;
     private long time;
-    private Bitmap bitmap;
+    private UserLocationLayer userLocationLayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +77,11 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        bitmap = drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker));
+        mapView.getMap().getUserLocationLayer().setEnabled(true);
+        userLocationLayer = mapView.getMap().getUserLocationLayer();
+        userLocationLayer.setObjectListener(this);
+        userLocationLayer.setAutoZoomEnabled(false);
+
         mFragmentManager = getSupportFragmentManager();
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet_behavior));
         mBottomNavigationView.setOnNavigationItemSelectedListener(
@@ -114,6 +130,27 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         mapView.onStop();
         MapKitFactory.getInstance().onStop();
         super.onStop();
+    }
+
+    @OnClick(R.id.plus)
+    public void onPlusClick(View view) {
+        CameraPosition cameraPosition = mapView.getMap().getCameraPosition();
+        mapView.getMap().move(new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() + 1, cameraPosition.getAzimuth(), cameraPosition.getTilt()),
+                new Animation(Animation.Type.LINEAR, 0.1f), null);
+    }
+
+    @OnClick(R.id.minus)
+    public void onMinusClick(View view) {
+        CameraPosition cameraPosition = mapView.getMap().getCameraPosition();
+        mapView.getMap().move(
+                new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() - 1, cameraPosition.getAzimuth(), cameraPosition.getTilt()),
+                new Animation(Animation.Type.LINEAR, 0.1f), null);
+    }
+
+    @OnClick(R.id.user_location)
+    public void onUserLocationClick(View view) {
+        mapView.getMap().move(userLocationLayer.cameraPosition(),
+                new Animation(Animation.Type.LINEAR, 0.5f), null);
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
@@ -198,15 +235,72 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     }
 
     @Override
-    @UiThread
-    public void setMarker(Point point, float opacity) {
-        mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(bitmap));
+    public void setMarker(Point point, String avatar) {
+        try {
+            Bitmap avatarImg = Picasso.get().load(avatar).get();
+            avatarImg = getCroppedBitmap(avatarImg);
+            mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(avatarImg));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // convert to circle bitmap
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 
     @Override
-    @UiThread
-    public void setMarker(Point point, float opacity, MapObjectTapListener listener) {
-        PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(bitmap));
-        placemarkMapObject.addTapListener(listener);
+    public void onObjectAdded(UserLocationView userLocationView) {
+        userLocationLayer.setAnchor(
+                new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.5)),
+                new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.83)));
+
+        userLocationView.getPin().setIcon(ImageProvider.fromResource(
+                this, R.drawable.ic_map_marker));
+        CompositeIcon pinIcon = userLocationView.getPin().useCompositeIcon();
+
+        pinIcon.setIcon(
+                "icon",
+                ImageProvider.fromResource(this, R.drawable.ic_map_marker),
+                new IconStyle().setAnchor(new PointF(0f, 0f))
+                        .setRotationType(RotationType.ROTATE)
+                        .setZIndex(0f)
+                        .setScale(1f)
+        );
+
+        pinIcon.setIcon(
+                "pin",
+                ImageProvider.fromResource(this, R.drawable.ic_map_marker),
+                new IconStyle().setAnchor(new PointF(0.5f, 0.5f))
+                        .setRotationType(RotationType.ROTATE)
+                        .setZIndex(1f)
+        );
+
+        userLocationView.getAccuracyCircle().setFillColor(Color.TRANSPARENT);
+    }
+
+    @Override
+    public void onObjectRemoved(UserLocationView userLocationView) {
+
+    }
+
+    @Override
+    public void onObjectUpdated(UserLocationView userLocationView, ObjectEvent objectEvent) {
+
     }
 }
