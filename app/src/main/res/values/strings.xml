@@ -15,12 +15,9 @@
     <string name="text_sync_child_phone_with_parent">Чтобы увидеть ребёнка на карте, установите на его телефон приложение “Care me”</string>
     <string name="text_show_child_code">И введите этот код</string>
     <string name="my_child">Мои дети</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="subscribe">Подписка</string>
     <string name="settings">Настройки</string>
-    <string name="more_functions">Функции</string>
+    <string name="more_functions">Дополнительно</string>
     <string name="child_movement">Передвижение ребенка</string>
     <string name="chat">Чат</string>
     <string name="sound_around_phone">Звук вокруг телефона</string>
@@ -33,7 +30,7 @@
     <string name="button_record_sound">Записать звук</string>
     <string name="text_record_sound">Записать звук вокруг телефона Контролируйте окружение вашего ребенка</string>
     <string name="places">Места</string>
-    <string name="support">Тех. поддержка</string>
+    <string name="support">Горячая линия</string>
     <string name="call">Позвонить</string>
     <string name="message_call_support">Позвоните колл центру Задавайте свои вопросы и получайте совет</string>
     <string name="press_again_for_exit">Нажмите еще раз, чтобы выйти</string>
