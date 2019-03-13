@@ -1,5 +1,7 @@
 package kz.careme.android.modules.kids;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
@@ -9,6 +11,10 @@ import kz.careme.android.modules.BasePresenter;
 
 @InjectViewState
 public class EditChildInfoPresenter extends BasePresenter<EditChildInfoView> {
+
+    public EditChildInfoPresenter(Context context) {
+        super(context);
+    }
 
     @Subscribe
     public void onKidEdited(KidEditedEvent event) {

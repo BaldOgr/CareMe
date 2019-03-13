@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.MvpFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.util.List;
 
@@ -63,6 +64,11 @@ public class PlacesFragment extends MvpAppCompatFragment implements ViewTreeObse
     public PlacesFragment() {
     }
 
+    @ProvidePresenter
+    public PlacesPresenter getPresenter() {
+        return new PlacesPresenter(getContext());
+    }
+
     public static Fragment newInstance(ChangeBehaviorListener listener) {
         PlacesFragment fragment = new PlacesFragment();
         fragment.mChangeBehaviorListener = listener;
@@ -84,7 +90,7 @@ public class PlacesFragment extends MvpAppCompatFragment implements ViewTreeObse
                 startActivity(new Intent(getContext(), AddPlaceActivity.class));
             }
         });
-        mProfiler = CareMeApp.getCareMeComponent().getProfiler();
+        mProfiler = ((CareMeApp) getContext().getApplicationContext()).getCareMeComponent().getProfiler();
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new PlacesAdapter();

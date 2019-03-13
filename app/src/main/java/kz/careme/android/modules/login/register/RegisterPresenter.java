@@ -1,5 +1,7 @@
 package kz.careme.android.modules.login.register;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
@@ -17,6 +19,10 @@ public class RegisterPresenter extends BasePresenter<RegisterView> {
     private String password;
     private int accountType;
     private boolean registerKid;
+
+    public RegisterPresenter(Context context) {
+        super(context);
+    }
 
     @Subscribe
     public void onReg(RegEvent regEvent) {

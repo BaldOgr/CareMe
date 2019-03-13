@@ -1,5 +1,7 @@
 package kz.careme.android.modules.chat;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
@@ -16,6 +18,10 @@ import kz.careme.android.modules.BasePresenter;
 
 @InjectViewState
 public class ChatPresenter extends BasePresenter<ChatView> {
+
+    public ChatPresenter(Context context) {
+        super(context);
+    }
 
     @Subscribe
     public void onMessagesLoaded(MessageLoadedEvent event) {

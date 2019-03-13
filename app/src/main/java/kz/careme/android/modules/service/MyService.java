@@ -60,12 +60,13 @@ public class MyService extends Service {
     };
 
     public MyService() {
-        CareMeApp.getCareMeComponent().getBus().register(this);
+
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        ((CareMeApp) getApplicationContext()).getCareMeComponent().getBus().register(this);
 
         RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification);
         remoteViews.setTextViewText(R.id.textView, "CareMe");
@@ -76,14 +77,14 @@ public class MyService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             notification = new NotificationCompat.Builder(this, channelId)
                     .setLocalOnly(true)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setPriority(NotificationManager.IMPORTANCE_HIGH)
                     .setCategory(Notification.CATEGORY_SERVICE)
                     .build();
         } else {
             notification = new NotificationCompat.Builder(this, channelId)
                     .setLocalOnly(true)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_notification)
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setCategory(Notification.CATEGORY_SERVICE)
                     .build();
@@ -104,7 +105,7 @@ public class MyService extends Service {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 100, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    Account account = CareMeApp.getCareMeComponent().getProfiler().getAccount();
+                    Account account = ((CareMeApp) getApplicationContext()).getCareMeComponent().getProfiler().getAccount();
                     if (account == null || account.getSid().isEmpty()) {
                         return;
                     }
@@ -122,7 +123,7 @@ public class MyService extends Service {
                     if (batteryLevel != -1) {
                         sendGeo.setBatteryLevel(String.valueOf(batteryLevel));
                     }
-                    CareMeApp.getCareMeComponent().getCallService().call(sendGeo);
+                    ((CareMeApp) getApplicationContext()).getCareMeComponent().getCallService().call(sendGeo);
                 }
 
                 @Override
@@ -154,14 +155,14 @@ public class MyService extends Service {
 
     @Subscribe
     public void listenSound(ListenSoundEvent event) {
-        if (CareMeApp.getCareMeComponent().getProfiler().getAccount().getRole() == Const.TYPE_CHILD) {
+        if (((CareMeApp) getApplicationContext()).getCareMeComponent().getProfiler().getAccount().getRole() == Const.TYPE_CHILD) {
             Toast.makeText(this, "ListenSound Event!", Toast.LENGTH_LONG).show();
         }
     }
 
     @Subscribe
     public void pullABell(PullABellEvent event) {
-        if (CareMeApp.getCareMeComponent().getProfiler().getAccount().getRole() == Const.TYPE_CHILD) {
+        if (((CareMeApp) getApplicationContext()).getCareMeComponent().getProfiler().getAccount().getRole() == Const.TYPE_CHILD) {
             String channelId = "";
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 channelId = createNotificationChanel("my_service", "CareMeApp", NotificationManager.IMPORTANCE_HIGH);

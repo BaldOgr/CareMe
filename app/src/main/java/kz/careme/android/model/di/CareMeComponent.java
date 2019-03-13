@@ -1,7 +1,10 @@
 package kz.careme.android.model.di;
 
+import android.content.Context;
+
 import com.squareup.otto.Bus;
 
+import dagger.BindsInstance;
 import dagger.Component;
 import kz.careme.android.model.CallService;
 import kz.careme.android.model.Profiler;
@@ -16,4 +19,12 @@ public interface CareMeComponent {
     OkHttpClient getOkHttpClient();
     CallService getCallService();
     Bus getBus();
+
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        Builder context(Context context);
+        CareMeComponent build();
+    }
 }

@@ -235,15 +235,25 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     }
 
     @Override
-    public void setMarker(Point point, String avatar) {
-        try {
-            Bitmap avatarImg = Picasso.get().load(avatar).get();
-            avatarImg = getCroppedBitmap(avatarImg);
-            mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(avatarImg));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setMarker(final Point point, final String avatar) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (avatar != null && !avatar.isEmpty()) {
+                        Bitmap avatarImg = Picasso.get().load(avatar).get();
+                        avatarImg = getCroppedBitmap(avatarImg);
+                        mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(avatarImg));
+                    } else {
+                        mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromResource(MainActivity.this, R.drawable.ic_map_marker));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
     // convert to circle bitmap
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),

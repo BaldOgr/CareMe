@@ -18,8 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -27,10 +25,8 @@ import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.Kid;
-import kz.careme.android.modules.chat.ChatActivity;
-import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 import kz.careme.android.modules.more.places.PlacesFragment;
-import kz.careme.android.modules.parent_main.MainActivity;
+import kz.careme.android.modules.parent_main.ChangeBehaviorListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +40,7 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
     @BindView(R.id.bottom_sheet_text)
     TextView mHeaderText;
 
-    @BindView(R.id.buttons_root)
+    @BindView(R.id.root)
     LinearLayout mLinearLayout;
 
     @BindView(R.id.bottom_sheet_header)
@@ -71,7 +67,8 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
         mHeaderImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_functionlight));
         mHeaderText.setText(R.string.more_functions);
         kidArrayAdapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_list_item_1, CareMeApp.getCareMeComponent().getProfiler().getKids());
+                android.R.layout.simple_list_item_1,
+                ((CareMeApp) getContext().getApplicationContext()).getCareMeComponent().getProfiler().getKids());
         view.getViewTreeObserver().addOnGlobalLayoutListener(this);
         return view;
     }
@@ -82,6 +79,10 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
                 .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (kidArrayAdapter.getItem(which).getSessionId() == null || kidArrayAdapter.getItem(which).getSessionId().isEmpty()) {
+                            Toast.makeText(getContext(), R.string.error_kid_session_empty, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         startActivity(new Intent(getContext(), PullABellActivity.class)
                                 .putExtra(Const.KID_SESSION_ID, kidArrayAdapter.getItem(which).getSessionId()));
                     }
@@ -102,23 +103,23 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
                 .show();
     }
 
-    @OnClick(R.id.button_a_to_b)
-    public void onAToBClick() {
-        Toast.makeText(getContext(), "В разработке", Toast.LENGTH_SHORT).show();
-    }
+//    @OnClick(R.id.button_a_to_b)
+//    public void onAToBClick() {
+//        Toast.makeText(getContext(), "В разработке", Toast.LENGTH_SHORT).show();
+//    }
 
-    @OnClick(R.id.button_chat)
-    public void onChatButtonClick() {
-        new AlertDialog.Builder(getContext())
-                .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(getContext(), ChatActivity.class)
-                                .putExtra(Const.KID, new Gson().toJson(kidArrayAdapter.getItem(which))));
-                    }
-                })
-                .show();
-    }
+//    @OnClick(R.id.button_chat)
+//    public void onChatButtonClick() {
+//        new AlertDialog.Builder(getContext())
+//                .setAdapter(kidArrayAdapter, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        startActivity(new Intent(getContext(), ChatActivity.class)
+//                                .putExtra(Const.KID, new Gson().toJson(kidArrayAdapter.getItem(which))));
+//                    }
+//                })
+//                .show();
+//    }
 
     @OnClick(R.id.button_places)
     public void onPlacesButtonClick() {
@@ -143,7 +144,7 @@ public class MoreFragment extends Fragment implements ViewTreeObserver.OnGlobalL
     @Override
     public void onGlobalLayout() {
         if (isVisible()) {
-            mChangeBehaviorListener.changeBehaviorPeekSize(mHeader.getHeight() + mLinearLayout.getHeight());
+            mChangeBehaviorListener.changeBehaviorPeekSize(mLinearLayout.getHeight());
         }
     }
 

@@ -9,18 +9,19 @@ import kz.careme.android.model.di.CareMeComponent;
 import kz.careme.android.model.di.DaggerCareMeComponent;
 
 public class CareMeApp extends Application {
-    private static CareMeComponent CareMeComponent;
+    private CareMeComponent CareMeComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
         MapKitFactory.setApiKey("be6291e7-21f3-4246-897a-53727fdec2c2");
-        Picasso.setSingletonInstance(new Picasso.Builder(this).indicatorsEnabled(true).build());
+        Picasso.setSingletonInstance(new Picasso.Builder(this).indicatorsEnabled(BuildConfig.DEBUG).build());
+        CareMeComponent = DaggerCareMeComponent.builder().context(this).build();
     }
 
-    public static CareMeComponent getCareMeComponent() {
+    public CareMeComponent getCareMeComponent() {
         if (CareMeComponent == null) {
-            CareMeComponent = DaggerCareMeComponent.builder().build();
+            CareMeComponent = DaggerCareMeComponent.builder().context(this).build();
         }
         return CareMeComponent;
     }

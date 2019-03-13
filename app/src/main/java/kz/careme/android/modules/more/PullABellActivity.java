@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,6 +19,11 @@ public class PullABellActivity extends BaseActivity implements PullABellView {
     PullABellPresenter presenter;
 
     private String kidSessionId;
+
+    @ProvidePresenter
+    PullABellPresenter getPresenter() {
+        return new PullABellPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

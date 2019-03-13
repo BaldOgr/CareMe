@@ -33,12 +33,12 @@ public abstract class BaseActivity extends MvpAppCompatActivity {
         } else {
             startService(new Intent(this, MyService.class));
         }
-        if (CareMeApp.getCareMeComponent().getCallService().getService() == null) {
+        if (((CareMeApp) getApplicationContext()).getCareMeComponent().getCallService().getService() == null) {
             serviceConnection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     myService = ((MyService.MyBinder) service).getService();
-                    CareMeApp.getCareMeComponent().getCallService().setMyService(myService);
+                    ((CareMeApp) getApplicationContext()).getCareMeComponent().getCallService().setMyService(myService);
                 }
 
                 @Override

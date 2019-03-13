@@ -1,5 +1,7 @@
 package kz.careme.android.modules.account_type;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
@@ -11,6 +13,10 @@ import kz.careme.android.modules.BasePresenter;
 
 @InjectViewState
 public class WriteCodePresenter extends BasePresenter<WriteCodeView> {
+
+    public WriteCodePresenter(Context context) {
+        super(context);
+    }
 
     @Subscribe
     public void onCodeGenerated(CodeGeneratedEvent codeGeneratedEvent) {

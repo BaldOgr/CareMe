@@ -24,7 +24,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         RecyclerView.ViewHolder viewHolder;
-        if (i == CareMeApp.getCareMeComponent().getProfiler().getAccount().getRole()) {
+        if (i == ((CareMeApp) viewGroup.getContext().getApplicationContext()).getCareMeComponent().getProfiler().getAccount().getRole()) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.message_from_me, viewGroup, false);
             viewHolder = new FromMe(view);
         } else {
@@ -44,7 +44,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
             ((FromAnother) viewHolder).textView.setText(message.getMessage());
         }
     }
-
 
 
     @Override

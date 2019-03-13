@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -17,6 +18,11 @@ public class ChildMainActivity extends AppCompatActivity implements ChildMainAct
 
     @InjectPresenter
     ChildMainPresenter presenter;
+
+    @ProvidePresenter
+    public ChildMainPresenter getPresenter() {
+        return new ChildMainPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

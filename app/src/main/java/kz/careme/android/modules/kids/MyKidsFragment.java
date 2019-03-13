@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.gson.Gson;
 import com.yandex.mapkit.geometry.Point;
 
@@ -46,6 +47,11 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
     MyKidsPresenter presenter;
 
     public MyKidsFragment() {
+    }
+
+    @ProvidePresenter
+    MyKidsPresenter getPresenter() {
+        return new MyKidsPresenter(getContext());
     }
 
     public static MyKidsFragment newInstance(ChangeBehaviorListener mBottomSheetBehavior, MapActivityView mapActivityView) {

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -59,6 +60,11 @@ public class ChatActivity extends BaseActivity implements ChatView {
     private ChatAdapter adapter;
     private int accountType;
     private int receiverId;
+
+    @ProvidePresenter
+    public ChatPresenter getPresenter() {
+        return new ChatPresenter(this);
+    }
 
     public static Intent getParentIntent(Context context, int accountType, Kid kid) {
         return new Intent(context, ChatActivity.class)

@@ -1,5 +1,6 @@
 package kz.careme.android.model;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.util.Timer;
@@ -22,8 +23,8 @@ public class CallService {
     private WebSocketClient webSocketClient;
 
     @Inject
-    public CallService(OkHttpClient client) {
-        webSocketClient = new WebSocketClient();
+    public CallService(OkHttpClient client, Context context) {
+        webSocketClient = new WebSocketClient(context);
         Request request = new Request.Builder().url("ws://195.93.152.96:11210").build();
         webSocket = client.newWebSocket(request, webSocketClient);
     }
@@ -61,7 +62,7 @@ public class CallService {
     public void reconnect() {
         Log.d("CallService", "Reconnecting...");
         Request request = new Request.Builder().url("ws://195.93.152.96:11210").build();
-        webSocket = CareMeApp.getCareMeComponent().getOkHttpClient().newWebSocket(request, webSocketClient);
+        webSocket = ((CareMeApp) myService.getApplicationContext()).getCareMeComponent().getOkHttpClient().newWebSocket(request, webSocketClient);
         Log.d("CallService", "Reconnected!");
     }
 }

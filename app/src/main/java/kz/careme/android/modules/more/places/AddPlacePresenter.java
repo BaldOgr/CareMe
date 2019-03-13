@@ -1,5 +1,7 @@
 package kz.careme.android.modules.more.places;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 import com.yandex.mapkit.geometry.Point;
@@ -15,11 +17,15 @@ public class AddPlacePresenter extends BasePresenter<AddPlaceView> {
 
     private Place place;
 
+    public AddPlacePresenter(Context context) {
+        super(context);
+    }
+
     @Subscribe
     public void onPlaceAdded(PlaceAddedEvent event) {
         if (event.getMessage().equalsIgnoreCase("added")) {
             getViewState().onSuccess();
-            CareMeApp.getCareMeComponent().getBus().post(place);
+            getBus().post(place);
         } else {
             getViewState().onFailure();
         }

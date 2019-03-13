@@ -1,5 +1,7 @@
 package kz.careme.android.modules.preloader;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
@@ -17,6 +19,10 @@ import kz.careme.android.modules.BasePresenter;
 public class PreloaderPresenter extends BasePresenter<PreloaderView> {
 
     private int accountType;
+
+    public PreloaderPresenter(Context context) {
+        super(context);
+    }
 
     @Subscribe
     public void onLogin(AuthEvent authEvent) {

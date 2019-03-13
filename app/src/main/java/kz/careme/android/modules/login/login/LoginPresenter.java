@@ -1,5 +1,7 @@
 package kz.careme.android.modules.login.login;
 
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.squareup.otto.Subscribe;
 
@@ -20,6 +22,10 @@ import kz.careme.android.modules.BasePresenter;
 public class LoginPresenter extends BasePresenter<LoginView> {
 
     private int accountType;
+
+    public LoginPresenter(Context context) {
+        super(context);
+    }
 
     @Subscribe
     public void onLogin(AuthEvent actionAuth) {

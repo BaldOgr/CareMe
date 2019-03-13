@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +50,11 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     private int mAccountType;
 
+    @ProvidePresenter
+    LoginPresenter getPresenter() {
+        return new LoginPresenter(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +62,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         ButterKnife.bind(this);
         initializeActionBar(true, "");
         if (getIntent().getBooleanExtra(Const.ACTION_AUTH, false)) {
-            Account account = CareMeApp.getCareMeComponent().getProfiler().getAccount();
+            Account account = ((CareMeApp) getApplicationContext()).getCareMeComponent().getProfiler().getAccount();
             presenter.auth(account.getEmail(), account.getPassword());
             DialogUtil.showDialog(this, "Loading");
         }

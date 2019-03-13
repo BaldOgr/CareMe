@@ -1,5 +1,7 @@
 package kz.careme.android.model.di;
 
+import android.content.Context;
+
 import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
@@ -28,8 +30,8 @@ public class CareMeModule {
 
     @Provides
     @SingletonScope
-    CallService getCallService(OkHttpClient client) {
-        return new CallService(client);
+    CallService getCallService(OkHttpClient client, Context context) {
+        return new CallService(client, context);
     }
 
     @Provides

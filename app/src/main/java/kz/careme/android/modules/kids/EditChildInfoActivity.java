@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -39,6 +40,11 @@ public class EditChildInfoActivity extends BaseActivity implements EditChildInfo
     TextInputEditText mEditTextLastName;
 
     private Kid kid;
+
+    @ProvidePresenter
+    public EditChildInfoPresenter getPresenter() {
+        return new EditChildInfoPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

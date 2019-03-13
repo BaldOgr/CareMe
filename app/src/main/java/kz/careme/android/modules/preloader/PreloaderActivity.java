@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -33,6 +34,11 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
     private boolean mCheckedPermission = false;
     private boolean mAuth = false;
     private Class mActivityToStart;
+
+    @ProvidePresenter
+    PreloaderPresenter getPreloaderPresenter() {
+        return new PreloaderPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

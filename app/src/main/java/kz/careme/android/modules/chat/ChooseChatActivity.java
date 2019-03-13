@@ -30,7 +30,7 @@ public class ChooseChatActivity extends BaseActivity {
 
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        KidsAdapter adapter = new KidsAdapter(CareMeApp.getCareMeComponent().getProfiler().getKids(), new OnKidClick() {
+        KidsAdapter adapter = new KidsAdapter(((CareMeApp) getApplicationContext()).getCareMeComponent().getProfiler().getKids(), new OnKidClick() {
             @Override
             public void onClick(Kid kid) {
                 startActivity(ChatActivity.getParentIntent(ChooseChatActivity.this, Const.TYPE_PARENT, kid));

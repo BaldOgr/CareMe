@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +38,11 @@ public class WriteCodeActivity extends BaseActivity implements WriteCodeView {
 
     @InjectPresenter
     WriteCodePresenter presenter;
+
+    @ProvidePresenter
+    public WriteCodePresenter getPresenter() {
+        return new WriteCodePresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -28,7 +28,7 @@
                 android:layout_height="48dp"
                 android:layout_margin="8dp"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_sendsignalround3x" />
+                android:src="@drawable/ic_callcenterround" />
 
             <TextView
                 android:layout_width="match_parent"

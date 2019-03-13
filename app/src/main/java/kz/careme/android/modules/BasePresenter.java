@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
+import com.squareup.otto.Bus;
 
 import kz.careme.android.CareMeApp;
 import kz.careme.android.model.CallService;
@@ -12,11 +13,14 @@ import kz.careme.android.model.Profiler;
 public abstract class BasePresenter<T extends MvpView> extends MvpPresenter<T> {
     private Profiler profiler;
     private CallService callService;
+    private Bus bus;
 
-    public BasePresenter() {
-        profiler = CareMeApp.getCareMeComponent().getProfiler();
-        callService = CareMeApp.getCareMeComponent().getCallService();
-        CareMeApp.getCareMeComponent().getBus().register(this);
+    public BasePresenter(Context context) {
+        profiler = ((CareMeApp) context.getApplicationContext()).getCareMeComponent().getProfiler();
+        callService = ((CareMeApp) context.getApplicationContext()).getCareMeComponent().getCallService();
+
+        bus = ((CareMeApp) context.getApplicationContext()).getCareMeComponent().getBus();
+        bus.register(this);
     }
 
     public Profiler getProfiler() {
@@ -25,5 +29,9 @@ public abstract class BasePresenter<T extends MvpView> extends MvpPresenter<T> {
 
     public CallService getCallService() {
         return callService;
+    }
+
+    protected Bus getBus() {
+        return bus;
     }
 }

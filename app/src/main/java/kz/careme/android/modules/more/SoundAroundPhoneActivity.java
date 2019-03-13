@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -20,6 +21,11 @@ public class SoundAroundPhoneActivity extends BaseActivity implements SoundAroun
     SoundAroundPhonePresenter presenter;
 
     private int kidId;
+
+    @ProvidePresenter
+    public SoundAroundPhonePresenter getPresenter() {
+        return new SoundAroundPhonePresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

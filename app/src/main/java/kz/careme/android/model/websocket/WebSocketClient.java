@@ -1,5 +1,6 @@
 package kz.careme.android.model.websocket;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -46,8 +47,8 @@ public class WebSocketClient extends WebSocketListener {
     private Bus bus;
 
     @Inject
-    public WebSocketClient() {
-        bus = CareMeApp.getCareMeComponent().getBus();
+    public WebSocketClient(Context context) {
+        bus = ((CareMeApp) context.getApplicationContext()).getCareMeComponent().getBus();
     }
 
     @Override

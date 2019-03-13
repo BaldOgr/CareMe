@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +41,11 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
     private int mAccountType;
     private boolean mRegisterKid;
+
+    @ProvidePresenter
+    public RegisterPresenter getPresenter() {
+        return new RegisterPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
