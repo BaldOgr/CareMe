@@ -2,6 +2,8 @@ package kz.careme.android.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class Kid {
     @SerializedName("id")
     private int id;
@@ -172,6 +174,19 @@ public class Kid {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kid kid = (Kid) o;
+        return id == kid.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

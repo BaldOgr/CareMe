@@ -115,7 +115,7 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
             });
             for (Kid kid : kids) {
                 if (kid.getLatitude() != null)
-                    mapActivityView.setMarker(new Point(kid.getLatitude(), kid.getLongitude()), kid.getAvatar());
+                    mapActivityView.setMarker(new Point(kid.getLatitude(), kid.getLongitude()), kid);
             }
         }
     }

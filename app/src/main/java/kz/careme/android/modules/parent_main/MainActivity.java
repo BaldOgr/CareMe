@@ -34,6 +34,7 @@ import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CompositeIcon;
 import com.yandex.mapkit.map.IconStyle;
+import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.map.RotationType;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.user_location.UserLocationLayer;
@@ -42,11 +43,14 @@ import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
+import kz.careme.android.model.Kid;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.chat.ChatFragment;
 import kz.careme.android.modules.chat.ChooseChatActivity;
@@ -70,6 +74,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     private Toast toast;
     private long time;
     private UserLocationLayer userLocationLayer;
+    private Map<Kid, PlacemarkMapObject> kidsOnMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,21 +240,16 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     }
 
     @Override
-    public void setMarker(final Point point, final String avatar) {
+    public void setMarker(final Point point, final Kid kid) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    if (avatar != null && !avatar.isEmpty()) {
-                        Bitmap avatarImg = Picasso.get().load(avatar).get();
-                        avatarImg = getCroppedBitmap(avatarImg);
-                        mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromBitmap(avatarImg));
-                    } else {
-                        mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromResource(MainActivity.this, R.drawable.ic_map_marker));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (kidsOnMap.containsKey(kid)) {
+                    PlacemarkMapObject placemarkMapObject = kidsOnMap.get(kid);
+                    mapView.getMap().getMapObjects().remove(placemarkMapObject);
                 }
+                PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromResource(MainActivity.this, R.drawable.ic_map_marker));
+                kidsOnMap.put(kid, placemarkMapObject);
             }
         });
     }
