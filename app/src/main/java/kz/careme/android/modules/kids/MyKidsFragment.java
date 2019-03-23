@@ -1,5 +1,8 @@
 package kz.careme.android.modules.kids;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
@@ -9,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -121,27 +125,31 @@ public class MyKidsFragment extends MvpAppCompatFragment implements ViewTreeObse
     }
 
     @OnClick(R.id.reload)
-    public void onReloadClick(View v) {
+    public void onReloadClick(ImageView v) {
         loaded = false;
         presenter.getKids();
         showLoadingAnimation(v);
     }
 
-    private void showLoadingAnimation(final View v) {
-//        v.animate()
-//                .rotation(360)
-//                .setDuration(1000)
-//                .setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                    @Override
-//                    public void onAnimationUpdate(ValueAnimator animation) {
-//                        if (!loaded && !animation.isRunning())
-//                            v.animate()
-//                                    .rotation(360)
-//                                    .setDuration(1000)
-//                            .setUpdateListener(this)
-//                            .start();
-//                    }
-//                })
-//                .start();
+    private void showLoadingAnimation(final ImageView v) {
+        v.animate()
+                .rotation(360)
+                .setDuration(1000)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        animation.start();
+                    }
+                })
+                .setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        if (loaded && animation.getCurrentPlayTime() == animation.getDuration()) {
+                            animation.pause();
+                        }
+                    }
+                })
+                .start();
     }
 }

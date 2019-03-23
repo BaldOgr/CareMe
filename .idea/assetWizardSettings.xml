@@ -207,8 +207,9 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="061976" />
-                            <entry key="outputName" value="ic_callcenterround" />
-                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\CallCenterRound.svg" />
+                            <entry key="outputName" value="ic_reload" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\Daniyar\Desktop\Reload.svg" />
                           </map>
                         </option>
                       </PersistentState>

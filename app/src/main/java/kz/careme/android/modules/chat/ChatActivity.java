@@ -119,7 +119,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
         chip.setText("+");
         chipGroup.addView(chip, new ChipGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        mMessage.addTextChangedListener(new TextWatcher() {
+        /*mMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -160,7 +160,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
             @Override
             public void afterTextChanged(Editable s) {
             }
-        });
+        });*/
     }
 
     @OnClick(R.id.send_message)

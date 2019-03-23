@@ -1,10 +1,8 @@
 package kz.careme.android.modules.parent_main;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
@@ -12,9 +10,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -24,9 +19,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -34,6 +29,7 @@ import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CompositeIcon;
 import com.yandex.mapkit.map.IconStyle;
+import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.map.RotationType;
 import com.yandex.mapkit.mapview.MapView;
@@ -41,15 +37,17 @@ import com.yandex.mapkit.user_location.UserLocationLayer;
 import com.yandex.mapkit.user_location.UserLocationObjectListener;
 import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
+import com.yandex.runtime.ui_view.ViewProvider;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import kz.careme.android.BuildConfig;
 import kz.careme.android.R;
+import kz.careme.android.common.IconStyleGenerator;
 import kz.careme.android.model.Kid;
 import kz.careme.android.modules.BaseActivity;
 import kz.careme.android.modules.chat.ChatFragment;
@@ -75,6 +73,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
     private long time;
     private UserLocationLayer userLocationLayer;
     private Map<Kid, PlacemarkMapObject> kidsOnMap = new HashMap<>();
+    private boolean doMoving;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +82,18 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mapView.getMap().getUserLocationLayer().setEnabled(true);
+        mapView.getMap().setDebugInfoEnabled(BuildConfig.DEBUG);
+        mapView.getMap().addInputListener(new InputListener() {
+            @Override
+            public void onMapTap(com.yandex.mapkit.map.Map map, Point point) {
+                doMoving = false;
+            }
+
+            @Override
+            public void onMapLongTap(com.yandex.mapkit.map.Map map, Point point) {
+                doMoving = false;
+            }
+        });
         userLocationLayer = mapView.getMap().getUserLocationLayer();
         userLocationLayer.setObjectListener(this);
         userLocationLayer.setAutoZoomEnabled(false);
@@ -154,6 +165,7 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
 
     @OnClick(R.id.user_location)
     public void onUserLocationClick(View view) {
+        doMoving = true;
         mapView.getMap().move(userLocationLayer.cameraPosition(),
                 new Animation(Animation.Type.LINEAR, 0.5f), null);
     }
@@ -248,7 +260,13 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                     PlacemarkMapObject placemarkMapObject = kidsOnMap.get(kid);
                     mapView.getMap().getMapObjects().remove(placemarkMapObject);
                 }
-                PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(point, ImageProvider.fromResource(MainActivity.this, R.drawable.ic_map_marker));
+                ImageView imageView = new ImageView(MainActivity.this);
+                imageView.setImageResource(R.drawable.ic_logogreen);
+                PlacemarkMapObject placemarkMapObject = mapView.getMap().getMapObjects().addPlacemark(
+                        point,
+                        new ViewProvider(imageView),
+                        IconStyleGenerator.getIconStyle()
+                );
                 kidsOnMap.put(kid, placemarkMapObject);
             }
         });
@@ -301,7 +319,6 @@ public class MainActivity extends BaseActivity implements ChangeBehaviorListener
                         .setZIndex(1f)
         );
 
-        userLocationView.getAccuracyCircle().setFillColor(Color.TRANSPARENT);
     }
 
     @Override

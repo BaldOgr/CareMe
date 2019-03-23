@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.layers.GeoObjectTapEvent;
@@ -37,6 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kz.careme.android.R;
+import kz.careme.android.common.IconStyleGenerator;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.dialog_util.DialogUtil;
 import kz.careme.android.modules.BaseActivity;
@@ -64,15 +66,17 @@ public class AddPlaceActivity extends BaseActivity implements AddPlaceView {
     private PlacemarkMapObject placeMark;
     private int kidId;
 
+    @ProvidePresenter
+    AddPlacePresenter getPresenter() {
+        return new AddPlacePresenter(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_place);
         ButterKnife.bind(this);
         initializeActionBar(true, "");
-
-//        mapView.getMap().getUserLocationLayer().setEnabled(true);
-//        mapView.getMap().getUserLocationLayer().setAutoZoomEnabled(true);
 
         kidId = getIntent().getIntExtra(Const.KID_ID, 1);
         if (kidId == -1) {
@@ -101,20 +105,6 @@ public class AddPlaceActivity extends BaseActivity implements AddPlaceView {
     }
 
     private void initMapView() {
-//        MapKitFactory.getInstance().createLocationManager().requestSingleUpdate(new LocationListener() {
-//            @Override
-//            public void onLocationUpdated(Location location) {
-//                mapView.getMap().move(new CameraPosition(location.getPosition(), location.getAccuracy().floatValue(), 0, 0));
-//                mapView.getMap().getMapObjects().clear();
-//                mapView.getMap().getMapObjects().addPlacemark(location.getPosition(),
-//                        ImageProvider.fromBitmap(MainActivity.drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker))));
-//            }
-//
-//            @Override
-//            public void onLocationStatusUpdated(LocationStatus locationStatus) {
-//            }
-//        });
-
         mapView.getMap().getMapObjects().clear();
         mapView.getMap().addTapListener(new GeoObjectTapListener() {
             @Override
@@ -146,7 +136,8 @@ public class AddPlaceActivity extends BaseActivity implements AddPlaceView {
                     }
                 }).start();
                 PlacemarkMapObject placemarkMapObject = map.getMapObjects().addPlacemark(point,
-                        ImageProvider.fromBitmap(MainActivity.drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker))));
+                        ImageProvider.fromBitmap(MainActivity.drawableToBitmap(getResources().getDrawable(R.drawable.ic_map_marker))),
+                        IconStyleGenerator.getIconStyle(1f));
                 AddPlaceActivity.this.placeMark = placemarkMapObject;
             }
         });
