@@ -33,6 +33,7 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
     PreloaderPresenter preloaderPresenter;
     private boolean mCheckedPermission = false;
     private boolean mAuth = false;
+    private boolean mNeedAuth = false;
     private Class mActivityToStart;
 
     @ProvidePresenter
@@ -58,13 +59,10 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
                 preloaderPresenter.authKid(email, password);
             }
         } else {
-            startActivity(new Intent(this, ChooseAccountTypeActivity.class));
-            preloaderPresenter.unsubscribe();
-            finish();
+            mNeedAuth = true;
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             String[] permissions = new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -91,6 +89,15 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
         }
         mCheckedPermission = true;
         if (mAuth) startActivity(new Intent(this, mActivityToStart));
+        if (mNeedAuth && mCheckedPermission) {
+            auth();
+        }
+    }
+
+    private void auth() {
+        startActivity(new Intent(this, ChooseAccountTypeActivity.class));
+        preloaderPresenter.unsubscribe();
+        finish();
     }
 
     @Override
@@ -118,6 +125,8 @@ public class PreloaderActivity extends BaseActivity implements PreloaderView {
                 mCheckedPermission = true;
                 if (mAuth) {
                     startActivity(new Intent(this, mActivityToStart));
+                } else if (mNeedAuth) {
+                    auth();
                 }
             }
         }

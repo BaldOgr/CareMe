@@ -3,12 +3,15 @@ package kz.careme.android.model;
 import android.content.Context;
 import android.util.Log;
 
+import com.squareup.otto.Subscribe;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.inject.Inject;
 
 import kz.careme.android.CareMeApp;
+import kz.careme.android.model.actions.ActionNeedReconnect;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.websocket.WebSocketClient;
 import kz.careme.android.modules.service.MyService;
@@ -57,6 +60,11 @@ public class CallService {
         if (sendMessage.getAction() == null || sendMessage.getAction().isEmpty())
             throw new IllegalArgumentException("Action cannot be null or empty!");
         call(sendMessage.toString());
+    }
+
+    @Subscribe
+    public void reconnect(ActionNeedReconnect actionNeedReconnect) {
+
     }
 
     public void reconnect() {

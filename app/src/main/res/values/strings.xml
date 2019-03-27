@@ -52,4 +52,5 @@
     <string name="something_went_wrong">Что-то пошло не так...</string>
     <string name="place_saved">Безопасное место добавлено!</string>
     <string name="error_kid_session_empty">Невозможно выполнить данную операцию, так как ребенок не заходил в приложение</string>
+    <string name="send_signal_notification">Нажмите сюда, чтобы отключить сигнал</string>
 </resources>

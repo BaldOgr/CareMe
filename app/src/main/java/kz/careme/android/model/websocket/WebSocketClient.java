@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import kz.careme.android.CareMeApp;
+import kz.careme.android.model.CallService;
 import kz.careme.android.model.actions.ActionActivateCode;
 import kz.careme.android.model.actions.ActionAuth;
 import kz.careme.android.model.actions.ActionAuthKid;
@@ -20,6 +21,7 @@ import kz.careme.android.model.actions.ActionGenerateCode;
 import kz.careme.android.model.actions.ActionGetMessage;
 import kz.careme.android.model.actions.ActionKidList;
 import kz.careme.android.model.actions.ActionListenSound;
+import kz.careme.android.model.actions.ActionNeedReconnect;
 import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
 import kz.careme.android.model.actions.ActionSavePlace;
@@ -54,13 +56,15 @@ public class WebSocketClient extends WebSocketListener {
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
         Log.d("CallService", "WebSocket Opened!");
-
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         Log.d("CallService", "Response: " + text);
         if (text.isEmpty()) {
+            return;
+        }
+        if (bus == null) {
             return;
         }
         BaseAction action = new Gson().fromJson(text, BaseAction.class);
@@ -124,10 +128,18 @@ public class WebSocketClient extends WebSocketListener {
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
         super.onClosed(webSocket, code, reason);
+        if (bus != null) {
+            bus.post(new ActionNeedReconnect());
+            bus = null;
+        }
     }
 
     @Override
     public void onFailure(final WebSocket webSocket, Throwable t, @Nullable Response response) {
         super.onFailure(webSocket, t, response);
+        if (bus != null) {
+            bus.post(new ActionNeedReconnect());
+            bus = null;
+        }
     }
 }

@@ -36,7 +36,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp">
+        android:layout_marginBottom="4dp"
+        android:visibility="gone">
 
         <android.support.design.chip.ChipGroup
             android:id="@+id/chips"
@@ -52,7 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/chips_layout"
-        android:background="@color/devider_color" />
+        android:background="@color/devider_color"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/layout_chat"

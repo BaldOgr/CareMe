@@ -18,4 +18,5 @@ public class Const {
     public static final String CHIPS = "chips";
     public static final String KID_SESSION_ID = "kid_session_id";
     public static final String ACTION_DISABLE_ALARM = "disable_alarm";
+    public static final String TOKEN = "token";
 }

@@ -60,7 +60,6 @@ public class MyService extends Service {
     };
 
     public MyService() {
-
     }
 
     @Override
@@ -170,7 +169,8 @@ public class MyService extends Service {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 alarmNotification = new NotificationCompat.Builder(this, channelId)
                         .setLocalOnly(true)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentText(getText(R.string.send_signal_notification))
                         .setPriority(NotificationManager.IMPORTANCE_HIGH)
                         .setCategory(Notification.CATEGORY_SERVICE)
                         .setContentIntent(PendingIntent.getService(this,
@@ -181,8 +181,9 @@ public class MyService extends Service {
             } else {
                 alarmNotification = new NotificationCompat.Builder(this, channelId)
                         .setLocalOnly(true)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_notification)
                         .setPriority(Notification.PRIORITY_HIGH)
+                        .setContentText(getText(R.string.send_signal_notification))
                         .setCategory(Notification.CATEGORY_SERVICE)
                         .setContentIntent(PendingIntent.getService(this,
                                 1,
