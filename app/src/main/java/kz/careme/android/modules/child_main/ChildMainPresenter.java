@@ -3,10 +3,7 @@ package kz.careme.android.modules.child_main;
 import android.content.Context;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.squareup.otto.Subscribe;
 
-import kz.careme.android.model.actions.ActionListenSound;
-import kz.careme.android.model.event.ListenSoundEvent;
 import kz.careme.android.modules.BasePresenter;
 
 @InjectViewState

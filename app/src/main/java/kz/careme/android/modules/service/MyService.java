@@ -10,11 +10,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaRecorder;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -24,25 +25,34 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpApplication;
 import com.squareup.otto.Subscribe;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import kz.careme.android.CareMeApp;
 import kz.careme.android.R;
 import kz.careme.android.model.Account;
+import kz.careme.android.model.CallService;
 import kz.careme.android.model.Const;
 import kz.careme.android.model.actions.ActionAuth;
+import kz.careme.android.model.actions.ActionListenSound;
 import kz.careme.android.model.actions.ActionSendGeo;
-import kz.careme.android.model.di.CareMeModule;
+import kz.careme.android.model.actions.ActionStartListenSound;
+import kz.careme.android.model.di.CareMeComponent;
 import kz.careme.android.model.event.ListenSoundEvent;
 import kz.careme.android.model.event.PullABellEvent;
-import kz.careme.android.modules.child_main.PullABellChildActivity;
 
 public class MyService extends Service {
     MyBinder binder = new MyBinder();
@@ -52,6 +62,8 @@ public class MyService extends Service {
     private Notification alarmNotification;
     private NotificationManager mNotificationManager;
     private int batteryLevel = -1;
+    private Account account;
+    private CallService callService;
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent intent) {
@@ -65,7 +77,10 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((CareMeApp) getApplicationContext()).getCareMeComponent().getBus().register(this);
+        CareMeComponent careMeComponent = ((CareMeApp) getApplicationContext()).getCareMeComponent();
+        careMeComponent.getBus().register(this);
+        account = careMeComponent.getProfiler().getAccount();
+        callService = careMeComponent.getCallService();
 
         RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification);
         remoteViews.setTextViewText(R.id.textView, "CareMe");
@@ -210,6 +225,8 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent == null) return START_STICKY;
+
         if (Const.ACTION_DISABLE_ALARM.equalsIgnoreCase(intent.getAction())) {
             r.stop();
             mNotificationManager.cancel(101);
@@ -219,6 +236,73 @@ public class MyService extends Service {
 
     @Subscribe
     public void showNotification(ActionAuth actionAuth) {
+    }
+
+    @Subscribe
+    public void recordSound(ActionStartListenSound actionListenSound) {
+        Account account = ((CareMeApp) getApplication()).getCareMeComponent().getProfiler().getAccount();
+        if (account == null || (account.getAccountType() != Const.TYPE_CHILD && actionListenSound.getKidId() != account.getId()))
+            return;
+
+        final String fileName = getExternalCacheDir().getAbsolutePath() + "/record.3gp";
+        final MediaRecorder mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setOutputFile(fileName);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mediaRecorder.stop();
+                    mediaRecorder.release();
+                    sendAudio(fileName);
+                }
+            }, 30 * 1000);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendAudio(String fileName) {
+        FTPClient ftpClient = new FTPClient();
+        BufferedInputStream buffIn;
+        try {
+            ftpClient.connect("195.93.152.96");
+            ftpClient.login("ftpuser", "Open111");
+            ftpClient.changeWorkingDirectory("/html/server/sound/");
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+            buffIn = new BufferedInputStream(new FileInputStream(fileName));
+            ftpClient.enterLocalPassiveMode();
+            String uuid = UUID.randomUUID().toString();
+            ftpClient.storeFile(uuid, buffIn);
+            buffIn.close();
+            sendAudioIsSended(uuid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                ftpClient.logout();
+                ftpClient.disconnect();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void sendAudioIsSended(String uuid) {
+        if (account == null) {
+            account = ((CareMeApp) getApplication()).getCareMeComponent().getProfiler().getAccount();
+        }
+        ActionListenSound listenSound = new ActionListenSound();
+        listenSound.setKidSessionId(account.getSid());
+        listenSound.setParentId(account.getParentId());
+        listenSound.setFile(uuid);
+        callService.call(listenSound);
     }
 
     public class MyBinder extends Binder {

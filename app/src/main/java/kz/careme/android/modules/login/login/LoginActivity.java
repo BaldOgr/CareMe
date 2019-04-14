@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     @ProvidePresenter
     LoginPresenter getPresenter() {
-        return new LoginPresenter(this);
+        return new LoginPresenter(getApplicationContext());
     }
 
     @Override

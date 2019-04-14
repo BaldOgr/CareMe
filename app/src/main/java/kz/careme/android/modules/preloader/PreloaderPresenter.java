@@ -50,7 +50,7 @@ public class PreloaderPresenter extends BasePresenter<PreloaderView> {
     public void onCheckCode(CheckCodeKidEvent event){
         if (event.getMessage() == null || event.getMessage().isEmpty()) {
 //            ActionGetParentId actionGetParentId = new ActionGetParentId();
-//            actionGetParentId.setKidSessionId(getProfiler().getAccount().getSid());
+//            actionGetParentId.setKidSessionId(getProfiler().getAccount().getParentId());
 //            getCallService().call(actionGetParentId);
             getProfiler().getAccount().setParentId(event.getParentId());
             getViewState().startChildMainActivity(event.getParentId(), event.getChildId());

@@ -1,11 +1,15 @@
 package kz.careme.android.modules.more;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
+
+import java.io.File;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -21,10 +25,11 @@ public class SoundAroundPhoneActivity extends BaseActivity implements SoundAroun
     SoundAroundPhonePresenter presenter;
 
     private int kidId;
+    private MediaPlayer player;
 
     @ProvidePresenter
     public SoundAroundPhonePresenter getPresenter() {
-        return new SoundAroundPhonePresenter(this);
+        return new SoundAroundPhonePresenter(getApplicationContext());
     }
 
     @Override
@@ -60,5 +65,19 @@ public class SoundAroundPhoneActivity extends BaseActivity implements SoundAroun
     @Override
     public void recordingStarted() {
         Toast.makeText(this, "Recording started!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (player != null) {
+            player.stop();
+        }
+    }
+
+    @Override
+    public void playRecord(String localFile) {
+        player = MediaPlayer.create(this, Uri.parse(localFile));
+        player.start();
     }
 }

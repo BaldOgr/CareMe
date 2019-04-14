@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.arello-mobile:moxy-app-compat:1.5.5'
     implementation 'com.arello-mobile:moxy-android:1.5.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'commons-net:commons-net:3.6'
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.5'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'

@@ -14,6 +14,7 @@ public abstract class BasePresenter<T extends MvpView> extends MvpPresenter<T> {
     private Profiler profiler;
     private CallService callService;
     private Bus bus;
+    private Context context;
 
     public BasePresenter(Context context) {
         profiler = ((CareMeApp) context.getApplicationContext()).getCareMeComponent().getProfiler();
@@ -21,6 +22,7 @@ public abstract class BasePresenter<T extends MvpView> extends MvpPresenter<T> {
 
         bus = ((CareMeApp) context.getApplicationContext()).getCareMeComponent().getBus();
         bus.register(this);
+        this.context = context;
     }
 
     public Profiler getProfiler() {
@@ -33,5 +35,9 @@ public abstract class BasePresenter<T extends MvpView> extends MvpPresenter<T> {
 
     protected Bus getBus() {
         return bus;
+    }
+
+    protected Context getContext() {
+        return context;
     }
 }

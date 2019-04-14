@@ -5,35 +5,58 @@ import com.google.gson.annotations.SerializedName;
 public class ActionListenSound extends BaseAction {
     public static final String ACTION = "listen_sound";
 
-    @SerializedName("session_id")
-    private String sid;
+    @SerializedName("parent_id")
+    private int parentId;
+
+    @SerializedName("kid_session_id")
+    private String kidSessionId;
 
     @SerializedName("kid_id")
-    private int kidId;
+    private long kidId;
+
+    @SerializedName("file")
+    private String file;
 
     public ActionListenSound() {
         setAction(ACTION);
     }
 
-    public ActionListenSound(String sid, int kidId) {
+    public ActionListenSound(int parentId, String kidSessionId, String file) {
         this();
-        this.sid = sid;
-        this.kidId = kidId;
+        this.parentId = parentId;
+        this.kidSessionId = kidSessionId;
+        this.file = file;
     }
 
-    public String getSid() {
-        return sid;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setSid(String sid) {
-        this.sid = sid;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
-    public int getKidId() {
+    public String getKidSessionId() {
+        return kidSessionId;
+    }
+
+    public void setKidSessionId(String kidSessionId) {
+        this.kidSessionId = kidSessionId;
+    }
+
+    public long getKidId() {
         return kidId;
     }
 
-    public void setKidId(int kidId) {
+    public void setKidId(long kidId) {
         this.kidId = kidId;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 }

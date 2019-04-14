@@ -19,6 +19,7 @@ import kz.careme.android.model.actions.ActionAuthKid;
 import kz.careme.android.model.actions.ActionEditKid;
 import kz.careme.android.model.actions.ActionGenerateCode;
 import kz.careme.android.model.actions.ActionGetMessage;
+import kz.careme.android.model.actions.ActionGetSound;
 import kz.careme.android.model.actions.ActionKidList;
 import kz.careme.android.model.actions.ActionListenSound;
 import kz.careme.android.model.actions.ActionNeedReconnect;
@@ -26,8 +27,10 @@ import kz.careme.android.model.actions.ActionRegister;
 import kz.careme.android.model.actions.ActionRegisterChild;
 import kz.careme.android.model.actions.ActionSavePlace;
 import kz.careme.android.model.actions.ActionSendMessage;
+import kz.careme.android.model.actions.ActionStartListenSound;
 import kz.careme.android.model.actions.BaseAction;
 import kz.careme.android.model.actions.CheckCodeKidAction;
+import kz.careme.android.model.di.CareMeComponent;
 import kz.careme.android.model.event.AuthEvent;
 import kz.careme.android.model.event.CheckCodeKidEvent;
 import kz.careme.android.model.event.CodeActivatedEvent;
@@ -47,10 +50,12 @@ import okhttp3.WebSocketListener;
 public class WebSocketClient extends WebSocketListener {
 
     private Bus bus;
+    private CareMeComponent careMeComponent;
 
     @Inject
     public WebSocketClient(Context context) {
-        bus = ((CareMeApp) context.getApplicationContext()).getCareMeComponent().getBus();
+        careMeComponent = ((CareMeApp) context.getApplicationContext()).getCareMeComponent();
+        bus = careMeComponent.getBus();
     }
 
     @Override
@@ -65,6 +70,7 @@ public class WebSocketClient extends WebSocketListener {
             return;
         }
         if (bus == null) {
+            bus = careMeComponent.getBus();
             return;
         }
         BaseAction action = new Gson().fromJson(text, BaseAction.class);
@@ -112,10 +118,19 @@ public class WebSocketClient extends WebSocketListener {
                 break;
             case ActionListenSound.ACTION:
                 bus.post(new Gson().fromJson(text, ListenSoundEvent.class));
+                break;
             case ActionSavePlace.ACTION:
                 bus.post(new Gson().fromJson(text, PlaceAddedEvent.class));
+                break;
             case ActionPullABell.ACTION:
                 bus.post(new Gson().fromJson(text, PullABellEvent.class));
+                break;
+            case ActionStartListenSound.ACTION:
+                bus.post(new Gson().fromJson(text, ActionStartListenSound.class));
+                break;
+            case ActionGetSound.ACTION:
+                bus.post(new Gson().fromJson(text, ActionGetSound.class));
+                break;
 
         }
     }

@@ -64,7 +64,7 @@ public class CallService {
 
     @Subscribe
     public void reconnect(ActionNeedReconnect actionNeedReconnect) {
-
+        reconnect();
     }
 
     public void reconnect() {
