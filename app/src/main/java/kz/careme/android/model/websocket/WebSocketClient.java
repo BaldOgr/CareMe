@@ -118,6 +118,7 @@ public class WebSocketClient extends WebSocketListener {
                 break;
             case ActionListenSound.ACTION:
                 bus.post(new Gson().fromJson(text, ListenSoundEvent.class));
+                bus.post(new Gson().fromJson(text, ActionListenSound.class));
                 break;
             case ActionSavePlace.ACTION:
                 bus.post(new Gson().fromJson(text, PlaceAddedEvent.class));
@@ -129,7 +130,11 @@ public class WebSocketClient extends WebSocketListener {
                 bus.post(new Gson().fromJson(text, ActionStartListenSound.class));
                 break;
             case ActionGetSound.ACTION:
-                bus.post(new Gson().fromJson(text, ActionGetSound.class));
+                try {
+                    bus.post(new ActionGetSound(text));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
 
         }

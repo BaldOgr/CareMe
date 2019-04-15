@@ -239,7 +239,7 @@ public class MyService extends Service {
     }
 
     @Subscribe
-    public void recordSound(ActionStartListenSound actionListenSound) {
+    public void recordSound(final ActionStartListenSound actionListenSound) {
         Account account = ((CareMeApp) getApplication()).getCareMeComponent().getProfiler().getAccount();
         if (account == null || (account.getAccountType() != Const.TYPE_CHILD && actionListenSound.getKidId() != account.getId()))
             return;
@@ -258,7 +258,7 @@ public class MyService extends Service {
                 public void run() {
                     mediaRecorder.stop();
                     mediaRecorder.release();
-                    sendAudio(fileName);
+                    sendAudio(fileName, actionListenSound.getId());
                 }
             }, 30 * 1000);
 
@@ -267,7 +267,7 @@ public class MyService extends Service {
         }
     }
 
-    private void sendAudio(String fileName) {
+    private void sendAudio(String fileName, long id) {
         FTPClient ftpClient = new FTPClient();
         BufferedInputStream buffIn;
         try {
@@ -281,7 +281,7 @@ public class MyService extends Service {
             String uuid = UUID.randomUUID().toString();
             ftpClient.storeFile(uuid, buffIn);
             buffIn.close();
-            sendAudioIsSended(uuid);
+            sendAudioIsSended(uuid, id);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -294,13 +294,13 @@ public class MyService extends Service {
         }
     }
 
-    private void sendAudioIsSended(String uuid) {
+    private void sendAudioIsSended(String uuid, long id) {
         if (account == null) {
             account = ((CareMeApp) getApplication()).getCareMeComponent().getProfiler().getAccount();
         }
         ActionListenSound listenSound = new ActionListenSound();
         listenSound.setKidSessionId(account.getSid());
-        listenSound.setParentId(account.getParentId());
+        listenSound.setId(id);
         listenSound.setFile(uuid);
         callService.call(listenSound);
     }

@@ -9,6 +9,8 @@ public class ActionStartListenSound extends BaseAction {
     private long kidId;
     @SerializedName("session_id")
     private String sessionId;
+    @SerializedName("id")
+    private long id;
 
     public ActionStartListenSound() {
         setAction(ACTION);
@@ -28,5 +30,13 @@ public class ActionStartListenSound extends BaseAction {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

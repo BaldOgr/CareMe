@@ -16,6 +16,8 @@ public class ActionListenSound extends BaseAction {
 
     @SerializedName("file")
     private String file;
+    @SerializedName("id")
+    private long id;
 
     public ActionListenSound() {
         setAction(ACTION);
@@ -58,5 +60,13 @@ public class ActionListenSound extends BaseAction {
 
     public void setFile(String file) {
         this.file = file;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 }
